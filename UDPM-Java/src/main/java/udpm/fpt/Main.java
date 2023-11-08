@@ -4,7 +4,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
-import udpm.fpt.form.MainView;
+import udpm.fpt.view.HomeTest;
 
 /**
  *
@@ -32,10 +32,7 @@ public class Main {
     public static void main(String[] args) {
         context = createApplicationContext(args);
         //Call Frame
-        //new Home().set..
-        new MainView().setVisible(true);
-//        new HomeTest().setVisible(true);
-//        new Hello().setVisible(true);
+        new HomeTest().setVisible(true);
         
         
         //Test data
