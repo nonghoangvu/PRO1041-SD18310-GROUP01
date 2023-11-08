@@ -31,14 +31,13 @@ public class Main {
 
     public static void main(String[] args) {
         context = createApplicationContext(args);
-        //Call Frame
+        // Call Frame
         new HomeTest().setVisible(true);
-        
-        
-        //Test data
-//        IMilk r = getBean(IMilk.class);
-//        r.findAll().forEach(milk -> {
-//            System.out.println(milk.getProduct_name());
-//        });
+
+        // Test data
+        // IMilk r = getBean(IMilk.class);
+        // r.findAll().forEach(milk -> {
+        // System.out.println(milk.getProduct_name());
+        // });
     }
 }
