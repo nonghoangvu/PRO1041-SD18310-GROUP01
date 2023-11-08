@@ -33,5 +33,25 @@
             <version>1.18.30</version>
             <type>jar</type>
         </dependency>
+        <dependency>
+            <groupId>miglayout-4.0</groupId>
+            <artifactId>miglayout-4.0</artifactId>
+            <version>1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>mssql-jdbc-12.2.2.jre12Pro</groupId>
+            <artifactId>mssql-jdbc-12.2.2.jre12Pro</artifactId>
+            <version>1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>pie-chart</groupId>
+            <artifactId>pie-chart</artifactId>
+            <version>1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>TimingFramework-0.55</groupId>
+            <artifactId>TimingFramework-0.55</artifactId>
+            <version>1.1</version>
+        </dependency>
     </dependencies>
 </project>
