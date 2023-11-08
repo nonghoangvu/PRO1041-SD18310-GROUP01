@@ -32,7 +32,7 @@ public class Profile extends javax.swing.JPanel {
         jLabel1.setBackground(new java.awt.Color(255, 255, 255));
         jLabel1.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/icon/Logo_1.png"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/Logo_1.png"))); // NOI18N
         jLabel1.setText("  NONG HOANG VU");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);

@@ -1,6 +1,6 @@
 package udpm.fpt.interfaces.noticeboard;
 
-import com.vunh.swing.scrollbar.ScrollBarCustom;
+import udpm.fpt.interfaces.scrollbar.ScrollBarCustom;
 import java.awt.Color;
 import java.awt.Font;
 import javax.swing.JLabel;

@@ -4,9 +4,9 @@
  */
 package udpm.fpt.interfaces.swing;
 
-import com.vunh.event.EventMenu;
-import com.vunh.event.EventMenuSelected;
-import com.vunh.model.ModelMenu;
+import udpm.fpt.interfaces.event.EventMenu;
+import udpm.fpt.interfaces.event.EventMenuSelected;
+import udpm.fpt.interfaces.model.ModelMenu;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics;

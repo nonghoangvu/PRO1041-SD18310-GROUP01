@@ -962,7 +962,7 @@ public enum GoogleMaterialDesignIcons implements IconCode {
 
             @Override
             public InputStream getFontInputStream() {
-                return GoogleMaterialDesignIcons.class.getResourceAsStream("/com/vunh/swing/icon/MaterialIcons-Regular.ttf");
+                return GoogleMaterialDesignIcons.class.getResourceAsStream("/udpm/fpt/interfaces/icon/MaterialIcons-Regular.ttf");
             }
         };
     }
