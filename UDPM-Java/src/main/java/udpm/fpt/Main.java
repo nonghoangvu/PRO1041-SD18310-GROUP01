@@ -5,8 +5,6 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import udpm.fpt.form.MainView;
-import udpm.fpt.interfaces.form.Hello;
-import udpm.fpt.view.HomeTest;
 
 /**
  *
