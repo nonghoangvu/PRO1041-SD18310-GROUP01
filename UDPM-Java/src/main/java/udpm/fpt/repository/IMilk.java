@@ -1,7 +1,7 @@
-package udpm.fpt.edu.repository;
+package udpm.fpt.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import udpm.fpt.edu.model.Milk;
+import udpm.fpt.model.Milk;
 
 /**
  *

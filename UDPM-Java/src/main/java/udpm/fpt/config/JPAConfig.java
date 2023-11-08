@@ -1,4 +1,4 @@
-package udpm.fpt.edu.config;
+package udpm.fpt.config;
 
 import java.util.Properties;
 import javax.sql.DataSource;
@@ -39,7 +39,7 @@ public class JPAConfig {
         LocalContainerEntityManagerFactoryBean em
                 = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(dataSource());
-        em.setPackagesToScan("udpm.fpt.edu.model");
+        em.setPackagesToScan("udpm.fpt.model");
 
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);

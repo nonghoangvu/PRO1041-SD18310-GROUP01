@@ -1,8 +1,8 @@
-package udpm.fpt.edu.view;
+package udpm.fpt.view;
 
 import javax.swing.table.DefaultTableModel;
-import udpm.fpt.edu.model.Milk;
-import udpm.fpt.edu.servicce.MilkService;
+import udpm.fpt.model.Milk;
+import udpm.fpt.servicce.MilkService;
 
 /**
  *

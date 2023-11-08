@@ -1,10 +1,10 @@
-package udpm.fpt.edu;
+package udpm.fpt;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
-import udpm.fpt.edu.view.HomeTest;
+import udpm.fpt.view.HomeTest;
 
 /**
  *
