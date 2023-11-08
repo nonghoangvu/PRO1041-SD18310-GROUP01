@@ -2,7 +2,7 @@ package udpm.fpt.edu.servicce;
 
 import java.util.ArrayList;
 import java.util.List;
-import static udpm.fpt.Main.getBean;
+import static udpm.fpt.edu.Main.getBean;
 import udpm.fpt.edu.model.Milk;
 import udpm.fpt.edu.repository.IMilk;
 

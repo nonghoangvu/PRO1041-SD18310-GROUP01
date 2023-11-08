@@ -1,4 +1,4 @@
-package udpm.fpt;
+package udpm.fpt.edu;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;

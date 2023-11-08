@@ -26,7 +26,7 @@ public class HomeTest extends javax.swing.JFrame {
         tblModel = (DefaultTableModel) tblMilk.getModel();
         tblModel.setRowCount(0);
         for (Milk milk : this.list.getList()) {
-           tblModel.addRow(new Object[]{milk.getId(), milk.getProduct_name(), milk.getPrice_retail(), milk.getAmount()});
+           tblModel.addRow(new Object[]{milk.getId(), milk.getProduct_name(), milk.getPrice_retail(), milk.getAmount(), milk.getCreate_at()});
         }
     }
     /**
@@ -48,7 +48,7 @@ public class HomeTest extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "Name", "  Price retail", "Amount"
+                "ID", "Name", "  Price retail", "Amount", "Create date"
             }
         ));
         jScrollPane1.setViewportView(tblMilk);
