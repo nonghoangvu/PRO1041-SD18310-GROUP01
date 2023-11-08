@@ -4,7 +4,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
-import udpm.fpt.edu.repository.IMilk;
+import udpm.fpt.edu.view.HomeTest;
 
 /**
  *
@@ -32,11 +32,13 @@ public class Main {
     public static void main(String[] args) {
         context = createApplicationContext(args);
         //Call Frame
-        //new Home().set...
+        //new Home().set..
+        new HomeTest().setVisible(true);
+        
         //Test data
-        IMilk r = getBean(IMilk.class);
-        r.findAll().forEach(milk -> {
-            System.out.println(milk.getProduct_name());
-        });
+//        IMilk r = getBean(IMilk.class);
+//        r.findAll().forEach(milk -> {
+//            System.out.println(milk.getProduct_name());
+//        });
     }
 }
