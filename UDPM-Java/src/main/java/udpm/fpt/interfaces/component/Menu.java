@@ -61,10 +61,10 @@ public class Menu extends javax.swing.JPanel {
     }
 
     public void initMenuItem() {
-        addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/com/icon/dashboard.png")), "Thống kê"));
-        addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/com/icon/product.png")), "Sản phẩm", "Quản lý sản phẩm", "Số lượng tồn kho"));
-        addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/com/icon/history.png")), "Lịch sử"));
-        addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/com/icon/logout.png")), "Thoát"));
+        addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/dashboard.png")), "Thống kê"));
+        addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/product.png")), "Sản phẩm", "Quản lý sản phẩm", "Số lượng tồn kho"));
+        addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/history.png")), "Lịch sử"));
+        addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/logout.png")), "Thoát"));
 
     }
 
@@ -138,13 +138,10 @@ public class Menu extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(sp, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(sp, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(profile1, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(profile1, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -163,7 +160,7 @@ public class Menu extends javax.swing.JPanel {
         GradientPaint gra = new GradientPaint(0, 0, new Color(33, 105, 249), getWidth(), 0, new Color(93, 58, 196));
         g2.setPaint(gra);
         g2.fillRect(0, 0, getWidth(), getHeight());
-        super.paintComponent(g);
+//        super.paintComponent(g);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
