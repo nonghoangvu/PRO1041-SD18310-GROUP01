@@ -16,7 +16,7 @@ public class Profile extends javax.swing.JPanel {
 
                 pic.setForeground(new java.awt.Color(245, 245, 245));
                 pic.setBorderSize(2);
-                pic.setIcon(new javax.swing.ImageIcon(getClass().getResource("/udpm/fpt/icon/profile.jpg"))); // NOI18N
+                pic.setIcon(new javax.swing.ImageIcon(getClass().getResource("/udpm/fpt/icon/LogoTH.png"))); // NOI18N
 
                 javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
                 this.setLayout(layout);

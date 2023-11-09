@@ -34,13 +34,13 @@
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Component class="com.raven.swing.Button" name="cmdMenu">
+    <Component class="udpm.fpt.swing.Button" name="cmdMenu">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="fa" green="fa" red="fa" type="rgb"/>
         </Property>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/com/raven/icon/menu.png"/>
+          <Image iconType="3" name="/udpm/fpt/icon/menu.png"/>
         </Property>
       </Properties>
     </Component>
