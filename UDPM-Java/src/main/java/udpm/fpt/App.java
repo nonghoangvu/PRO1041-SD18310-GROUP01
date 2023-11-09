@@ -4,14 +4,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
-import udpm.fpt.view.HomeTest;
+import udpm.fpt.main.Main;
 
 /**
  *
  * @author NONG HOANG VU
  */
 @SpringBootApplication
-public class Main {
+public class App {
 
     private static ApplicationContext context = null;
 
@@ -32,7 +32,7 @@ public class Main {
     public static void main(String[] args) {
         context = createApplicationContext(args);
         // Call Frame
-        new HomeTest().setVisible(true);
+        new Main().setVisible(true);
 
         // Test data
         // IMilk r = getBean(IMilk.class);
