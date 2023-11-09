@@ -34,8 +34,13 @@ public class Menu extends javax.swing.JPanel {
     }
 
     private void init() {
+        listMenu1.addItem(new Model_Menu("home.png", "Home", Model_Menu.MenuType.MENU));
         listMenu1.addItem(new Model_Menu("box.png", "Product", Model_Menu.MenuType.MENU));
-        listMenu1.addItem(new Model_Menu("logout.png", "Logout", Model_Menu.MenuType.MENU));
+        listMenu1.addItem(new Model_Menu("history.png", "History", Model_Menu.MenuType.MENU));
+        listMenu1.addItem(new Model_Menu("division.png", "Employee", Model_Menu.MenuType.MENU));
+        listMenu1.addItem(new Model_Menu("service.png", "Customer", Model_Menu.MenuType.MENU));
+        listMenu1.addItem(new Model_Menu("dashboard.png", "Dashboard", Model_Menu.MenuType.MENU));
+        listMenu1.addItem(new Model_Menu("exit.png", "Logout", Model_Menu.MenuType.MENU));
     }
 
     @SuppressWarnings("unchecked")
