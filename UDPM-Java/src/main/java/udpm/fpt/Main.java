@@ -33,6 +33,7 @@ public class Main {
         context = createApplicationContext(args);
         // Call Frame
         new HomeTest().setVisible(true);
+        System.out.println("Nong Hoang Vu");
 
         // Test data
         // IMilk r = getBean(IMilk.class);
