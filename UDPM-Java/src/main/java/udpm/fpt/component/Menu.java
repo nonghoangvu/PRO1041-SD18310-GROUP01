@@ -34,7 +34,8 @@ public class Menu extends javax.swing.JPanel {
     }
 
     private void init() {
-        listMenu1.addItem(new Model_Menu("box", "Product", Model_Menu.MenuType.MENU));
+        listMenu1.addItem(new Model_Menu("box.png", "Product", Model_Menu.MenuType.MENU));
+        listMenu1.addItem(new Model_Menu("logout.png", "Logout", Model_Menu.MenuType.MENU));
     }
 
     @SuppressWarnings("unchecked")
