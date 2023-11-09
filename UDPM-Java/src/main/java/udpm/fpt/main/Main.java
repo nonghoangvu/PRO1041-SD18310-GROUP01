@@ -1,5 +1,6 @@
 package udpm.fpt.main;
 
+import java.awt.Component;
 import udpm.fpt.component.MenuLayout;
 import udpm.fpt.event.EventMenuSelected;
 import udpm.fpt.form.MainForm;
@@ -13,8 +14,8 @@ import net.miginfocom.swing.MigLayout;
 import org.jdesktop.animation.timing.Animator;
 import org.jdesktop.animation.timing.TimingTarget;
 import org.jdesktop.animation.timing.TimingTargetAdapter;
-import udpm.fpt.form.Form_2;
-import udpm.fpt.form.HomeTest;
+import udpm.fpt.form.Home;
+import udpm.fpt.form.Product;
 
 public class Main extends javax.swing.JFrame {
 
@@ -22,6 +23,16 @@ public class Main extends javax.swing.JFrame {
     private final MainForm main;
     private final MenuLayout menu;
     private final Animator animator;
+    Boolean status = false;
+    private Component webcam = new Product(getStatus());
+
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
 
     public Main() {
         initComponents();
@@ -90,10 +101,16 @@ public class Main extends javax.swing.JFrame {
         menu.getMenu().addEventMenuSelected(new EventMenuSelected() {
             @Override
             public void selected(int index) {
-                System.out.println("index: " + index);
-                if (index == 0) {
-//                     main.show(new HomeTest());
-                     main.show(new Form_2());
+                switch (index) {
+                    case 0:
+                        main.show(new Home());
+                        break;
+                    case 1:
+                        setStatus(true);
+                        main.show(webcam);
+                        break;
+                    default:
+                        System.out.println("index: " + index);
                 }
             }
         });
