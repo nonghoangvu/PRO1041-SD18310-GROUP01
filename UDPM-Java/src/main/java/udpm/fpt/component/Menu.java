@@ -13,6 +13,10 @@ import java.awt.event.MouseMotionAdapter;
 import java.awt.geom.Path2D;
 import javax.swing.JFrame;
 
+/**
+ *
+ * @author NONG HOANG VU
+ */
 public class Menu extends javax.swing.JPanel {
 
     private EventMenuSelected event;
@@ -30,7 +34,7 @@ public class Menu extends javax.swing.JPanel {
     }
 
     private void init() {
-        listMenu1.addItem(new Model_Menu("001", "Product", Model_Menu.MenuType.MENU));
+        listMenu1.addItem(new Model_Menu("box", "Product", Model_Menu.MenuType.MENU));
     }
 
     @SuppressWarnings("unchecked")
