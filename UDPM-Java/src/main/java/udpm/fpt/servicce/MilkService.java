@@ -13,7 +13,7 @@ import udpm.fpt.repository.IMilk;
 public class MilkService {
 
     private List<Milk> list;
-    private final IMilk r = getBean(IMilk.class);
+    private IMilk r = getBean(IMilk.class);
 
     public MilkService() {
         this.list = new ArrayList<>();
@@ -24,5 +24,4 @@ public class MilkService {
         this.list = r.findAll();
         return list;
     }
-
 }

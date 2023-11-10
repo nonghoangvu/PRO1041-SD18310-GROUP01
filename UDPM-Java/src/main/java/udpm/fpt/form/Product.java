@@ -17,6 +17,10 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import udpm.fpt.model.Milk;
+import udpm.fpt.swing.table.TableCustom;
+import udpm.fpt.servicce.MilkService;
 
 /**
  *
@@ -28,11 +32,24 @@ public class Product extends javax.swing.JPanel implements Runnable, ThreadFacto
     public Webcam webcam;
     private final Executor executor = Executors.newSingleThreadExecutor(this);
     public Boolean status = true;
+    private DefaultTableModel tblModel;
+    private final  MilkService list;
 
     public Product(Boolean status) {
         initComponents();
+        this.list = new MilkService();
         this.status = status;
         initWebcam();
+        TableCustom.apply(jScrollPane1, TableCustom.TableType.MULTI_LINE);
+        fillTable();
+    }
+
+    public void fillTable() {
+        tblModel = (DefaultTableModel) tblProduct.getModel();
+        tblModel.setRowCount(0);
+        for (Milk milk : this.list.getList()) {
+            tblModel.addRow(new Object[]{milk.getId(), milk.getProduct_name(), milk.getFlavor_id(), milk.getPrice_retail(), milk.getPrice_wholesale(), milk.getAmount()});
+        }
     }
 
     public void initWebcam() {
@@ -52,6 +69,8 @@ public class Product extends javax.swing.JPanel implements Runnable, ThreadFacto
     private void initComponents() {
 
         pnCam = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblProduct = new javax.swing.JTable();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -59,13 +78,35 @@ public class Product extends javax.swing.JPanel implements Runnable, ThreadFacto
         pnCam.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Webcam", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
         pnCam.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        tblProduct.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID", "Product Name", "Taste", "Price Retail", "Price Wholesale", "Amount"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, true, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(tblProduct);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(935, Short.MAX_VALUE)
-                .addComponent(pnCam, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 929, Short.MAX_VALUE)
+                        .addComponent(pnCam, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -73,12 +114,16 @@ public class Product extends javax.swing.JPanel implements Runnable, ThreadFacto
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(pnCam, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(427, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel pnCam;
+    private javax.swing.JTable tblProduct;
     // End of variables declaration//GEN-END:variables
 
     @Override
@@ -101,6 +146,11 @@ public class Product extends javax.swing.JPanel implements Runnable, ThreadFacto
                         JOptionPane.showMessageDialog(this, result.getText());
                     }
                 } catch (NotFoundException ex) {
+                }
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace(System.out);
                 }
             } while (this.status);
         } catch (HeadlessException e) {
