@@ -1,11 +1,8 @@
 package udpm.fpt.main;
 
-import java.awt.Component;
 import udpm.fpt.component.MenuLayout;
-import udpm.fpt.event.EventMenuSelected;
 import udpm.fpt.form.MainForm;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JLayeredPane;
@@ -19,6 +16,7 @@ import udpm.fpt.form.Product;
 
 public class Main extends javax.swing.JFrame {
 
+    private Product currentWebcam = null;
     private final MigLayout layout;
     private final MainForm main;
     private final MenuLayout menu;
@@ -77,39 +75,57 @@ public class Main extends javax.swing.JFrame {
                 }
             }
         });
-        main.addEventMenu(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                if (!animator.isRunning()) {
-                    if (!menu.isShow()) {
-                        menu.setVisible(true);
-                        animator.start();
-                    }
+        main.addEventMenu((ActionEvent ae) -> {
+            if (!animator.isRunning()) {
+                if (!menu.isShow()) {
+                    menu.setVisible(true);
+                    animator.start();
                 }
             }
         });
-        menu.getMenu().addEventMenuSelected(new EventMenuSelected() {
-            @Override
-            public void selected(int index) {
-                switch (index) {
-                    case 0 -> {
-                        main.show(new Home());
-                    }
-                    case 1 -> {
-                        main.show(new Product());
-                    }
-                    case 6 -> {
-                        System.exit(0);
-                    }
-                    default ->
-                        System.out.println("index: " + index);
+        menu.getMenu().addEventMenuSelected((int index) -> {
+            stopThread();
+            switch (index) {
+                case 0 -> {
+                    main.show(new Home());
+                }
+                case 1 -> {
+                    startThread();
+                }
+                case 6 -> {
+                    System.exit(0);
+                }
+                default -> {
+                    stopThread();
+                    System.out.println("index: " + index);
                 }
             }
         });
     }
 
+    public void startThread() {
+        stopThread();
+        if (currentWebcam != null) {
+            currentWebcam.status = false;
+            if (currentWebcam.webcam.isOpen()) {
+                currentWebcam.webcam.close();
+            }
+        }
+        currentWebcam = new Product(true);
+        main.show(currentWebcam);
+    }
+
+    public void stopThread() {
+        if (currentWebcam != null) {
+            currentWebcam.status = false;
+            if (currentWebcam.webcam.isOpen()) {
+                currentWebcam.webcam.close();
+            }
+        }
+
+    }
+
     @SuppressWarnings("unchecked")
-     
 
     // <editor-fold defaultstate="collapsed" desc="Generated
     // Code">//GEN-BEGIN:initComponents
@@ -145,30 +161,30 @@ public class Main extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    public static void main(String args[]) {
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new Main().setVisible(true);
-            }
-        });
-    }
+//    public static void main(String args[]) {
+//        try {
+//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+//                if ("Nimbus".equals(info.getName())) {
+//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+//                    break;
+//                }
+//            }
+//        } catch (ClassNotFoundException ex) {
+//            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (InstantiationException ex) {
+//            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (IllegalAccessException ex) {
+//            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+//            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        }
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            @Override
+//            public void run() {
+//                new Main().setVisible(true);
+//            }
+//        });
+//    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLayeredPane mainPanel;
