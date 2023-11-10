@@ -23,16 +23,6 @@ public class Main extends javax.swing.JFrame {
     private final MainForm main;
     private final MenuLayout menu;
     private final Animator animator;
-    Boolean status = false;
-    private Component webcam = new Product(getStatus());
-
-    public Boolean getStatus() {
-        return status;
-    }
-
-    public void setStatus(Boolean status) {
-        this.status = status;
-    }
 
     public Main() {
         initComponents();
@@ -102,14 +92,16 @@ public class Main extends javax.swing.JFrame {
             @Override
             public void selected(int index) {
                 switch (index) {
-                    case 0:
+                    case 0 -> {
                         main.show(new Home());
-                        break;
-                    case 1:
-                        setStatus(true);
-                        main.show(webcam);
-                        break;
-                    default:
+                    }
+                    case 1 -> {
+                        main.show(new Product());
+                    }
+                    case 6 -> {
+                        System.exit(0);
+                    }
+                    default ->
                         System.out.println("index: " + index);
                 }
             }
@@ -117,6 +109,8 @@ public class Main extends javax.swing.JFrame {
     }
 
     @SuppressWarnings("unchecked")
+     
+
     // <editor-fold defaultstate="collapsed" desc="Generated
     // Code">//GEN-BEGIN:initComponents
     private void initComponents() {
