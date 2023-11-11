@@ -13,4 +13,6 @@ import udpm.fpt.model.Milk;
 public interface IMilk extends JpaRepository<Milk, Long> {
     @Query("SELECT m FROM Milk m JOIN FETCH m.flavor")
     List<Milk> findAllWithFlavor();
+
+    public List<Milk> findAllById(Long id);
 }

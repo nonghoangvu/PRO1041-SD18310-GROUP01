@@ -52,7 +52,7 @@ public class Product extends javax.swing.JPanel implements Runnable, ThreadFacto
     public void fillCombo() {
         List<Flavor> listF = new FlavorService().getList();
         DefaultComboBoxModel<Flavor> cbbModel = new DefaultComboBoxModel<>();
-        cbbFlavor.setModel((DefaultComboBoxModel)cbbModel);
+        cbbFlavor.setModel((DefaultComboBoxModel) cbbModel);
         for (Flavor f : listF) {
             cbbModel.addElement(f);
         }
@@ -196,7 +196,8 @@ public class Product extends javax.swing.JPanel implements Runnable, ThreadFacto
                 try {
                     result = new MultiFormatReader().decode(bitmap);
                     if (result.getText() != null) {
-                        JOptionPane.showMessageDialog(this, result.getText());
+                        Milk m = this.list.findMilkByID(Long.valueOf(result.getText()));
+                        JOptionPane.showMessageDialog(this, m.getProduct_name());
                     }
                 } catch (NotFoundException ex) {
                 }

@@ -24,9 +24,8 @@ public class MilkService {
         this.list = r.findAllWithFlavor();
         return list;
     }
-    public List<Milk> getElementById(Long id) {
-        this.list.clear();
-//        this.list = r.findById(id);
-        return list;
+
+    public Milk findMilkByID(Long id) {
+            return r.findById(id).orElseThrow(null);
     }
 }
