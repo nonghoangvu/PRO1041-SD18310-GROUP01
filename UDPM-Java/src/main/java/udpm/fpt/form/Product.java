@@ -13,12 +13,16 @@ import com.google.zxing.common.HybridBinarizer;
 import java.awt.Dimension;
 import java.awt.HeadlessException;
 import java.awt.image.BufferedImage;
+import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import udpm.fpt.model.Flavor;
 import udpm.fpt.model.Milk;
+import udpm.fpt.servicce.FlavorService;
 import udpm.fpt.swing.table.TableCustom;
 import udpm.fpt.servicce.MilkService;
 
@@ -33,7 +37,7 @@ public class Product extends javax.swing.JPanel implements Runnable, ThreadFacto
     private final Executor executor = Executors.newSingleThreadExecutor(this);
     public Boolean status = true;
     private DefaultTableModel tblModel;
-    private final  MilkService list;
+    private final MilkService list;
 
     public Product(Boolean status) {
         initComponents();
@@ -42,13 +46,23 @@ public class Product extends javax.swing.JPanel implements Runnable, ThreadFacto
         initWebcam();
         TableCustom.apply(jScrollPane1, TableCustom.TableType.MULTI_LINE);
         fillTable();
+        fillCombo();
+    }
+
+    public void fillCombo() {
+        List<Flavor> listF = new FlavorService().getList();
+        DefaultComboBoxModel<Flavor> cbbModel = new DefaultComboBoxModel<>();
+        cbbFlavor.setModel((DefaultComboBoxModel)cbbModel);
+        for (Flavor f : listF) {
+            cbbModel.addElement(f);
+        }
     }
 
     public void fillTable() {
         tblModel = (DefaultTableModel) tblProduct.getModel();
         tblModel.setRowCount(0);
         for (Milk milk : this.list.getList()) {
-            tblModel.addRow(new Object[]{milk.getId(), milk.getProduct_name(), milk.getFlavor_id(), milk.getPrice_retail(), milk.getPrice_wholesale(), milk.getAmount()});
+            tblModel.addRow(new Object[]{milk.getId(), milk.getProduct_name(), milk.getFlavor().getTaste(), milk.getPrice_retail(), milk.getPrice_wholesale(), milk.getAmount()});
         }
     }
 
@@ -71,6 +85,9 @@ public class Product extends javax.swing.JPanel implements Runnable, ThreadFacto
         pnCam = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblProduct = new javax.swing.JTable();
+        cbbFlavor = new javax.swing.JComboBox<>();
+        lbID = new javax.swing.JLabel();
+        lbTaste = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -96,6 +113,16 @@ public class Product extends javax.swing.JPanel implements Runnable, ThreadFacto
         });
         jScrollPane1.setViewportView(tblProduct);
 
+        cbbFlavor.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cbbFlavorItemStateChanged(evt);
+            }
+        });
+
+        lbID.setText("Id");
+
+        lbTaste.setText("taste");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -103,25 +130,51 @@ public class Product extends javax.swing.JPanel implements Runnable, ThreadFacto
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1159, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 929, Short.MAX_VALUE)
-                        .addComponent(pnCam, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1))
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lbTaste)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addComponent(cbbFlavor, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(87, 87, 87))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addComponent(lbID, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(340, 340, 340)))
+                                .addComponent(pnCam, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(pnCam, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(pnCam, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(cbbFlavor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(13, 13, 13)
+                        .addComponent(lbID)
+                        .addGap(18, 18, 18)
+                        .addComponent(lbTaste)))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void cbbFlavorItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbbFlavorItemStateChanged
+        Flavor selectedFlavor = (Flavor) cbbFlavor.getSelectedItem();
+        lbID.setText(String.valueOf(selectedFlavor.getId()));
+        lbTaste.setText(selectedFlavor.getTaste());
+    }//GEN-LAST:event_cbbFlavorItemStateChanged
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> cbbFlavor;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lbID;
+    private javax.swing.JLabel lbTaste;
     private javax.swing.JPanel pnCam;
     private javax.swing.JTable tblProduct;
     // End of variables declaration//GEN-END:variables

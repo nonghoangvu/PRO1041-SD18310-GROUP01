@@ -3,42 +3,45 @@ package udpm.fpt.model;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.util.Date;
 import lombok.Getter;
 import lombok.Setter;
 
-/**
- *
- * @author NONG HOANG VU
- */
 @Entity
-@Table(name = "Milk")
+@Table
 @Getter
 @Setter
 public class Milk {
+
     @Id
+    @Column(name = "id")
     private Long id;
-    @Column
+    @Column(name = "product_name")
     private String product_name;
-    @Column
+    @Column(name = "img")
     private String img;
-    @Column
-    private Long flavor_id;
-    @Column
+    @OneToOne
+    @JoinColumn(name = "flavor_id")
+    private Flavor flavor;
+    @Column(name = "price_retail")
     private Float price_retail;
-    @Column
+    @Column(name = "price_wholesale")
     private Float price_wholesale;
-    @Column
+    @Column(name = "amount")
     private int amount;
-    @Column
+    @Column(name = "production_date")
     private Date production_date;
-    @Column
+    @Column(name = "expiration_date")
     private Date expiration_date;
-    @Column
+    @Column(name = "provider")
     private String provider;
-    @Column
+    @Column(name = "create_at")
     private Date create_at;
-    @Column
+    @Column(name = "create_by")
     private String create_by;
 }

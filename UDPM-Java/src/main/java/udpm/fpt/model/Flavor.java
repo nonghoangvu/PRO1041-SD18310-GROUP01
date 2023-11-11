@@ -8,21 +8,23 @@ import java.util.Date;
 import lombok.Getter;
 import lombok.Setter;
 
-/**
- *
- * @author NONG HOANG VU
- */
 @Entity
-@Table(name = "Flavor")
+@Table
 @Getter
 @Setter
 public class Flavor {
     @Id
+    @Column(name = "id")
     private Long id;
-    @Column
+    @Column(name = "taste")
     private String taste;
-    @Column
+    @Column(name = "create_at")
     private Date create_at;
-    @Column
-    private String create_b;
+    @Column(name = "create_by")
+    private String create_by;
+
+    @Override
+    public String toString() {
+        return this.taste;
+    }
 }
