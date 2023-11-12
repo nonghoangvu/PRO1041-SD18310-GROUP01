@@ -25,6 +25,9 @@ public class MilkService {
         return list;
     }
 
+    public void insert(Milk millk){
+        r.save(millk);
+    }
     public Milk findMilkByID(Long id) {
             return r.findById(id).orElseThrow(null);
     }
