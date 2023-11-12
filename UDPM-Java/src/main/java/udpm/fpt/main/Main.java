@@ -6,12 +6,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JLayeredPane;
-import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import net.miginfocom.swing.MigLayout;
 import org.jdesktop.animation.timing.Animator;
 import org.jdesktop.animation.timing.TimingTarget;
 import org.jdesktop.animation.timing.TimingTargetAdapter;
+import udpm.fpt.form.ProductManagement;
 import udpm.fpt.form.Home;
 import udpm.fpt.form.Product;
 
@@ -91,6 +91,9 @@ public class Main extends javax.swing.JFrame {
                     main.show(new Home());
                 }
                 case 1 -> {
+                    main.show(new ProductManagement());
+                }
+                case 2 -> {
                     startThread();
                 }
                 case 6 -> {
