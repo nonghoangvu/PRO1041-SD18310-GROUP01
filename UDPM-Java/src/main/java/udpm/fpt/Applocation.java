@@ -5,6 +5,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import udpm.fpt.main.Main;
+import udpm.fpt.repository.IProductInfo;
 
 /**
  *
@@ -31,6 +32,10 @@ public class Applocation {
 
     public static void main(String[] args) {
         context = createApplicationContext(args);
+        IProductInfo r = getBean(IProductInfo.class);
+        r.findAll().forEach(s -> {
+            System.out.println(s.getMilk().getProduct_name() + " - " + s.getPackagingSpecification().getPackaging_type());
+        });
         new Main().setVisible(true);
     }
 }

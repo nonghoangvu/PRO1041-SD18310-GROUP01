@@ -12,12 +12,12 @@ import org.jdesktop.animation.timing.Animator;
 import org.jdesktop.animation.timing.TimingTarget;
 import org.jdesktop.animation.timing.TimingTargetAdapter;
 import udpm.fpt.form.ProductManagement;
-import udpm.fpt.form.Home;
-import udpm.fpt.form.Product;
+//import udpm.fpt.form.Home;
+//import udpm.fpt.form.Product;
 
 public class Main extends javax.swing.JFrame {
 
-    private Product currentWebcam = null;
+//    private Product currentWebcam = null;
     private final MigLayout layout;
     private final MainForm main;
     private final MenuLayout menu;
@@ -85,48 +85,45 @@ public class Main extends javax.swing.JFrame {
             }
         });
         menu.getMenu().addEventMenuSelected((int index) -> {
-            stopThread();
+//            stopThread();
             switch (index) {
                 case 0 -> {
-                    main.show(new Home());
+//                    main.show(new Home());
                 }
                 case 1 -> {
                     main.show(new ProductManagement());
-                }
-                case 2 -> {
-                    startThread();
                 }
                 case 6 -> {
                     System.exit(0);
                 }
                 default -> {
-                    stopThread();
+//                    stopThread();
                     System.out.println("index: " + index);
                 }
             }
         });
     }
 
-    public void startThread() {
-        stopThread();
-        if (currentWebcam != null) {
-            currentWebcam.status = false;
-            if (currentWebcam.webcam.isOpen()) {
-                currentWebcam.webcam.close();
-            }
-        }
-        currentWebcam = new Product(true);
-        main.show(currentWebcam);
-    }
-
-    public void stopThread() {
-        if (currentWebcam != null) {
-            currentWebcam.status = false;
-            if (currentWebcam.webcam.isOpen()) {
-                currentWebcam.webcam.close();
-            }
-        }
-    }
+//    public void startThread() {
+//        stopThread();
+//        if (currentWebcam != null) {
+//            currentWebcam.status = false;
+//            if (currentWebcam.webcam.isOpen()) {
+//                currentWebcam.webcam.close();
+//            }
+//        }
+//        currentWebcam = new Product(true);
+//        main.show(currentWebcam);
+//    }
+//
+//    public void stopThread() {
+//        if (currentWebcam != null) {
+//            currentWebcam.status = false;
+//            if (currentWebcam.webcam.isOpen()) {
+//                currentWebcam.webcam.close();
+//            }
+//        }
+//    }
 
     @SuppressWarnings("unchecked")
 

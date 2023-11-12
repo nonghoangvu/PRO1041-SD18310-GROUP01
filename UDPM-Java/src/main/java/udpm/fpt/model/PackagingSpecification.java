@@ -2,6 +2,8 @@ package udpm.fpt.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.util.Date;
@@ -18,11 +20,13 @@ import lombok.Setter;
 @Setter
 public class PackagingSpecification {
     @Id
-    private Long id;
-    @Column
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Integer id;
+    @Column(name = "packaging_type")
     private String packaging_type;
-    @Column
+    @Column(name = "create_at")
     private Date create_at;
-    @Column
+    @Column(name = "create_by")
     private String create_by;
 }

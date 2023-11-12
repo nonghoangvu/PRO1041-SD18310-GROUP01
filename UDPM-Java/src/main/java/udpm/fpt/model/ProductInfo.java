@@ -2,7 +2,11 @@ package udpm.fpt.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.util.Date;
 import lombok.Getter;
@@ -19,25 +23,33 @@ import lombok.Setter;
 public class ProductInfo {
 
     @Id
-    private Long id;
-    @Column
-    private Long milk_id;
-    @Column
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Integer id;
+    @OneToOne
+    @JoinColumn(name = "milk_id")
+    private Milk milk;
+    @OneToOne
+    @JoinColumn(name = "flavor_id")
+    private Flavor flavor;
+    @Column(name = "brand")
     private String brand;
-    @Column
+    @Column(name = "volume")
     private Double volume;
-    @Column
-    private Long unit_id;
-    @Column
+    @OneToOne
+    @JoinColumn(name = "unit_id")
+    private Unit unit;
+    @Column(name = "origin")
     private String origin;
-    @Column
+    @Column(name = "composition")
     private String composition;
-    @Column
-    private Long packaging_id;
-    @Column
+    @OneToOne
+    @JoinColumn(name = "packaging_id")
+    private PackagingSpecification packagingSpecification;
+    @Column(name = "product_description")
     private String product_description;
-    @Column
+    @Column(name = "create_at")
     private Date create_at;
-    @Column
+    @Column(name = "create_by")
     private String create_by;
 }

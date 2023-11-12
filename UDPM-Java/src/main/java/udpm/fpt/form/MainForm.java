@@ -8,7 +8,8 @@ public class MainForm extends javax.swing.JPanel {
 
     public MainForm() {
         initComponents();
-        show(new Home());
+//        show(new Home());
+            show(new ProductManagement());
     }
 
     @SuppressWarnings("unchecked")

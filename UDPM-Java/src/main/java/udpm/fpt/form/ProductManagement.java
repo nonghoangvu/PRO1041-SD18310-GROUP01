@@ -1,8 +1,9 @@
 package udpm.fpt.form;
 
 import javax.swing.table.DefaultTableModel;
-import udpm.fpt.model.Milk;
-import udpm.fpt.servicce.MilkService;
+//import udpm.fpt.model.Milk;
+//import udpm.fpt.servicce.MilkService;
+import udpm.fpt.servicce.ProductService;
 import udpm.fpt.swing.table.TableCustom;
 
 /**
@@ -15,11 +16,11 @@ public class ProductManagement extends javax.swing.JPanel {
      * Creates new form ProductManagement
      */
     private DefaultTableModel tblModel;
-    private final MilkService list;
+    private final ProductService list;
 
     public ProductManagement() {
         initComponents();
-        this.list = new MilkService();
+        this.list = new ProductService();
         TableCustom.apply(jScrollPane1, TableCustom.TableType.MULTI_LINE);
         fillTable();
     }
@@ -27,23 +28,22 @@ public class ProductManagement extends javax.swing.JPanel {
     private void fillTable() {
         tblModel = (DefaultTableModel) tblProduct.getModel();
         tblModel.setRowCount(0);
-        for (Milk milk : this.list.getList()) {
-            tblModel.addRow(new Object[]{milk.getId(), milk.getProduct_name(), milk.getFlavor().getTaste(), milk.getPrice_retail(), milk.getAmount(), milk.getProvider()});
-        }
+        
+        
     }
 
     private void setLabel() {
-        Milk m = this.list.getList().get(tblProduct.getSelectedRow());
-        lbId.setText(String.valueOf(m.getId()));
-        lbName.setText(m.getProduct_name());
-        lbTaste.setText(m.getFlavor().getTaste());
-        lbPrice.setText(String.valueOf(m.getPrice_retail()));
-        lbAmount.setText(String.valueOf(m.getAmount()));
-        lbProductionDate.setText(String.valueOf(m.getProduction_date()));
-        lbExpirationDate.setText(String.valueOf(m.getExpiration_date()));
-        lbProvider.setText(m.getProvider());
-        lbCreateAt.setText(String.valueOf(m.getCreate_at()));
-        lbCreateBy.setText(m.getCreate_by());
+//        Milk m = this.list.getList().get(tblProduct.getSelectedRow());
+//        lbId.setText(String.valueOf(m.getId()));
+//        lbName.setText(m.getProduct_name());
+//        lbTaste.setText(m.getFlavor().getTaste());
+//        lbPrice.setText(String.valueOf(m.getPrice_retail()));
+//        lbAmount.setText(String.valueOf(m.getAmount()));
+//        lbProductionDate.setText(String.valueOf(m.getProduction_date()));
+//        lbExpirationDate.setText(String.valueOf(m.getExpiration_date()));
+//        lbProvider.setText(m.getProvider());
+//        lbCreateAt.setText(String.valueOf(m.getCreate_at()));
+//        lbCreateBy.setText(m.getCreate_by());
     }
 
     private void clearLabel() {
