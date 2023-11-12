@@ -58,5 +58,10 @@
             <artifactId>Webcam</artifactId>
             <version>1.1</version>
         </dependency>
+        <dependency>
+            <groupId>datechooser-swing-1.4.1</groupId>
+            <artifactId>datechooser-swing-1.4.1</artifactId>
+            <version>1</version>
+        </dependency>
     </dependencies>
 </project>
