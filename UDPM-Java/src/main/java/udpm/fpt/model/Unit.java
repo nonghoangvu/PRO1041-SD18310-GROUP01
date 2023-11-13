@@ -29,4 +29,9 @@ public class Unit {
     private Date create_at;
     @Column(name = "create_by")
     private String create_by;
+
+    @Override
+    public String toString() {
+        return this.measurement_unit;
+    }
 }

@@ -5,7 +5,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import udpm.fpt.main.Main;
-import udpm.fpt.repository.IProductInfo;
+//import udpm.fpt.repository.IProductInfo;
 
 /**
  *

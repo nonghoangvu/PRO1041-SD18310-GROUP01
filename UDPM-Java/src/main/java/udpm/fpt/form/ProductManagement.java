@@ -600,6 +600,7 @@ public class ProductManagement extends javax.swing.JPanel {
     public void setData(String data) {
         clearLabel();
         lbId.setText(data);
+        fillTable();
     }
 
     public String getData() {
