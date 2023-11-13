@@ -22,7 +22,7 @@ public class Applocation {
     
     public static <T extends Object> T getBean(Class<T> requiredType) {
         return context.getBean(requiredType);
-    }
+    }   
 
     private static ConfigurableApplicationContext createApplicationContext(String[] args) {
         return new SpringApplicationBuilder(Applocation.class)
@@ -32,10 +32,10 @@ public class Applocation {
 
     public static void main(String[] args) {
         context = createApplicationContext(args);
-        IProductInfo r = getBean(IProductInfo.class);
-        r.findAll().forEach(s -> {
-            System.out.println(s.getMilk().getProduct_name() + " - " + s.getPackagingSpecification().getPackaging_type());
-        });
+//        IProductInfo r = getBean(IProductInfo.class);
+//        r.findAll().forEach(s -> {
+//            System.out.println(s.getMilk().getProduct_name() + " - " + s.getPackagingSpecification().getPackaging_type());
+//        });
         new Main().setVisible(true);
     }
 }
