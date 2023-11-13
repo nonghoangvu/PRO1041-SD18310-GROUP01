@@ -24,6 +24,7 @@ public class ProductService {
 
     private List<ProductInfo> list;
     private IProductInfo r = getBean(IProductInfo.class);
+    private IMilk iMilk = getBean(IMilk.class);
 
     public ProductService() {
         this.list = list = new ArrayList<>();
@@ -33,6 +34,10 @@ public class ProductService {
         this.list.clear();
         this.list = r.findAll();
         return list;
+    }
+
+    public Milk getMilkByID(Long id) {
+        return iMilk.findAllById(id);
     }
 
     public List<Flavor> getFlavor() {
@@ -69,7 +74,13 @@ public class ProductService {
     }
 
     public Boolean inserProduct(Milk m, ProductInfo pi) {
-        IMilk iMilk = getBean(IMilk.class);
-        return iMilk.save(m) != null && r.save(pi) != null;
+        if (iMilk.findAllById(m.getId()) == null) {
+            return this.iMilk.save(m) != null && r.save(pi) != null;
+        }
+        return false;
+    }
+
+    public Boolean hideRestoreProduct(Milk m) {
+        return this.iMilk.save(m) != null;
     }
 }
