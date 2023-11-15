@@ -5,6 +5,8 @@ import udpm.fpt.component.IMG;
 import java.awt.Image;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -43,7 +45,7 @@ public class ProductManagement extends javax.swing.JPanel {
         tblModel = (DefaultTableModel) tblProduct.getModel();
         tblModel.setRowCount(0);
         for (ProductInfo prd : this.list.getList()) {
-            if (prd.getMilk().getStatus().equalsIgnoreCase("Sell")) {
+            if (!prd.getMilk().getIsDelete()) {
                 tblModel.addRow(
                         new Object[]{prd.getMilk().getId(), prd.getMilk().getProduct_name(), prd.getFlavor().getTaste(),
                             prd.getMilk().getPrice(), prd.getMilk().getAmount(), prd.getMilk().getProvider()});
@@ -65,6 +67,13 @@ public class ProductManagement extends javax.swing.JPanel {
         }
     }
 
+    public String removeTimeUsingDateTimeFormatter(String inputDate) {
+        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
+        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        LocalDateTime dateTime = LocalDateTime.parse(inputDate, inputFormatter);
+        return dateTime.format(outputFormatter);
+    }
+
     private void setLabel() {
         ProductInfo pi = this.temp.get(tblProduct.getSelectedRow());
         lbId.setText(String.valueOf(pi.getMilk().getId()));
@@ -72,8 +81,8 @@ public class ProductManagement extends javax.swing.JPanel {
         lbTaste.setText(pi.getFlavor().getTaste());
         lbPrice.setText(String.valueOf(pi.getMilk().getPrice()));
         lbAmount.setText(String.valueOf(pi.getMilk().getAmount()));
-        lbProductionDate.setText(String.valueOf(pi.getMilk().getProduction_date()));
-        lbExpirationDate.setText(String.valueOf(pi.getMilk().getExpiration_date()));
+        lbProductionDate.setText(removeTimeUsingDateTimeFormatter(String.valueOf(pi.getMilk().getProduction_date())));
+        lbExpirationDate.setText(removeTimeUsingDateTimeFormatter(String.valueOf(pi.getMilk().getExpiration_date())));
         lbProvider.setText(pi.getMilk().getProvider());
         lbCreateAt.setText(String.valueOf(pi.getCreate_at()));
         lbCreateBy.setText(pi.getCreate_by());
@@ -125,7 +134,7 @@ public class ProductManagement extends javax.swing.JPanel {
         textField6 = new udpm.fpt.swing.TextField();
         textField7 = new udpm.fpt.swing.TextField();
         button2 = new udpm.fpt.swing.Button();
-        button3 = new udpm.fpt.swing.Button();
+        btnApplyFilters = new udpm.fpt.swing.Button();
         btnClear = new udpm.fpt.swing.Button();
         combobox2 = new udpm.fpt.swing.Combobox();
         jSeparator1 = new javax.swing.JSeparator();
@@ -219,11 +228,16 @@ public class ProductManagement extends javax.swing.JPanel {
 
         button2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/udpm/fpt/icon/barcode-scanner.png"))); // NOI18N
 
-        button3.setBackground(new java.awt.Color(102, 204, 255));
-        button3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
-        button3.setForeground(new java.awt.Color(255, 255, 255));
-        button3.setText("Apply Filters");
-        button3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnApplyFilters.setBackground(new java.awt.Color(102, 204, 255));
+        btnApplyFilters.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        btnApplyFilters.setForeground(new java.awt.Color(255, 255, 255));
+        btnApplyFilters.setText("Apply Filters");
+        btnApplyFilters.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnApplyFilters.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnApplyFiltersMouseClicked(evt);
+            }
+        });
 
         btnClear.setBackground(new java.awt.Color(255, 102, 102));
         btnClear.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
@@ -253,7 +267,7 @@ public class ProductManagement extends javax.swing.JPanel {
                             .addComponent(combobox1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(textField5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(textField6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(button3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnApplyFilters, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnClear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                                 .addComponent(textField1, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -295,7 +309,7 @@ public class ProductManagement extends javax.swing.JPanel {
                 .addGap(36, 36, 36)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 89, Short.MAX_VALUE)
-                .addComponent(button3, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnApplyFilters, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnClear, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(43, 43, 43))
@@ -676,7 +690,7 @@ public class ProductManagement extends javax.swing.JPanel {
 
     private void btnHideMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnHideMouseClicked
         Milk m = this.list.getMilkByID(Long.valueOf(lbId.getText()));
-        m.setStatus("Off");
+        m.setIsDelete(true);
         if (this.list.hideRestoreProduct(m)) {
             JOptionPane.showMessageDialog(this, "Success");
             this.temp.clear();
@@ -704,6 +718,10 @@ public class ProductManagement extends javax.swing.JPanel {
     private void btnClearMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnClearMouseClicked
         clearLabel();
     }//GEN-LAST:event_btnClearMouseClicked
+
+    private void btnApplyFiltersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnApplyFiltersMouseClicked
+
+    }//GEN-LAST:event_btnApplyFiltersMouseClicked
 
     private void setImange(String url) {
         lbproductgallery.setText(null);
@@ -742,13 +760,13 @@ public class ProductManagement extends javax.swing.JPanel {
     }// GEN-LAST:event_tblProductMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private udpm.fpt.swing.Button btnApplyFilters;
     private udpm.fpt.swing.Button btnClear;
     private javax.swing.JButton btnHide;
     private javax.swing.JButton btnNew;
     private javax.swing.JButton btnUpdate;
     private udpm.fpt.swing.Button button1;
     private udpm.fpt.swing.Button button2;
-    private udpm.fpt.swing.Button button3;
     private udpm.fpt.swing.Combobox combobox1;
     private udpm.fpt.swing.Combobox combobox2;
     private javax.swing.JLabel jLabel1;

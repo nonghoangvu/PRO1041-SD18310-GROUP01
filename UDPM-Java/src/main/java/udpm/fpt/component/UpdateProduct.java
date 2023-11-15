@@ -6,6 +6,8 @@ import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import javax.imageio.ImageIO;
 import javax.swing.DefaultComboBoxModel;
@@ -25,12 +27,12 @@ import udpm.fpt.servicce.ProductService;
  * @author NONG HOANG VU
  */
 public class UpdateProduct extends javax.swing.JFrame {
-
+    
     public ProductManagement perentForm;
     private final ProductService list;
     private String imgName = null;
     private ProductInfo pi;
-
+    
     public UpdateProduct(ProductManagement perentForm, ProductInfo pi) {
         initComponents();
         this.list = new ProductService();
@@ -41,24 +43,26 @@ public class UpdateProduct extends javax.swing.JFrame {
         filDataCombo();
         loadData();
     }
-
+    
     private void loadData() {
         txtId.setText(String.valueOf(this.pi.getMilk().getId()));
         txtBrand.setText(this.pi.getBrand());
         txtName.setText(this.pi.getMilk().getProduct_name());
         txtPrice.setText(String.valueOf(this.pi.getMilk().getPrice()));
         txtAmount.setValue(this.pi.getMilk().getAmount());
-        txtProductionDate.setText(String.valueOf(this.pi.getMilk().getProduction_date()));
-        txtExpirationDate.setText(String.valueOf(this.pi.getMilk().getExpiration_date()));
+        txtProductionDate.setText(removeTimeUsingDateTimeFormatter(String.valueOf(this.pi.getMilk().getProduction_date())));
+        txtExpirationDate.setText(removeTimeUsingDateTimeFormatter(String.valueOf(this.pi.getMilk().getExpiration_date())));
         txtVolume.setText(String.valueOf(this.pi.getVolume()));
         txtDescription.setText(this.pi.getProduct_description());
         txtComposition.setText(this.pi.getComposition());
         txtOrgin.setText(this.pi.getOrigin());
         txtProvider.setText(this.pi.getMilk().getProvider());
+        cbbTaste.setSelectedItem(this.pi.getFlavor());
+        cbbUnit.setSelectedItem(this.pi.getUnit());
+        cbbPackagingSpecification.setSelectedItem(this.pi.getPackagingSpecification());
         setImange(this.pi.getMilk().getImg());
-        loadCombo();
     }
-
+    
     private void setImange(String url) {
         lbproductgallery.setText(null);
         try {
@@ -74,12 +78,12 @@ public class UpdateProduct extends javax.swing.JFrame {
             lbproductgallery.setText("Image not found");
         }
     }
-
+    
     private void textDate() {
         getProductionDate();
         getExpirationDate();
     }
-
+    
     private void getProductionDate() {
         DateChooser dateChooser = new DateChooser();
         dateChooser.setDateSelectionMode(DateChooser.DateSelectionMode.SINGLE_DATE_SELECTED);
@@ -87,7 +91,7 @@ public class UpdateProduct extends javax.swing.JFrame {
         dateChooser.setDateFormat(new SimpleDateFormat("dd-MM-yyyy"));
         dateChooser.setTextField(txtProductionDate);
     }
-
+    
     private void getExpirationDate() {
         DateChooser dateChooser = new DateChooser();
         dateChooser.setDateSelectionMode(DateChooser.DateSelectionMode.SINGLE_DATE_SELECTED);
@@ -95,27 +99,21 @@ public class UpdateProduct extends javax.swing.JFrame {
         dateChooser.setDateFormat(new SimpleDateFormat("dd-MM-yyyy"));
         dateChooser.setTextField(txtExpirationDate);
     }
-
+    
     public void setData(String data) {
         txtId.setText(data);
     }
-
+    
     public String getData() {
         return txtId.getText();
     }
-
+    
     public void filDataCombo() {
         dataFlavor();
         dataUnit();
         dataPackagingSpecification();
     }
-
-    private void loadCombo() {
-        cbbTaste.setSelectedItem(this.pi.getFlavor());
-        cbbUnit.setSelectedItem(this.pi.getUnit());
-        cbbPackagingSpecification.setSelectedItem(this.pi.getPackagingSpecification());
-    }
-
+    
     private void dataFlavor() {
         DefaultComboBoxModel<Flavor> cbbModel = new DefaultComboBoxModel<>();
         cbbTaste.setModel((DefaultComboBoxModel) cbbModel);
@@ -123,7 +121,7 @@ public class UpdateProduct extends javax.swing.JFrame {
             cbbModel.addElement(flavor);
         }
     }
-
+    
     private void dataUnit() {
         DefaultComboBoxModel<Unit> cbbModel = new DefaultComboBoxModel<>();
         cbbUnit.setModel((DefaultComboBoxModel) cbbModel);
@@ -131,7 +129,7 @@ public class UpdateProduct extends javax.swing.JFrame {
             cbbModel.addElement(unit);
         }
     }
-
+    
     private void dataPackagingSpecification() {
         DefaultComboBoxModel<PackagingSpecification> cbbModel = new DefaultComboBoxModel<>();
         cbbPackagingSpecification.setModel((DefaultComboBoxModel) cbbModel);
@@ -139,7 +137,7 @@ public class UpdateProduct extends javax.swing.JFrame {
             cbbModel.addElement(packagingSpecification);
         }
     }
-
+    
     public Date dateFM(String date) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         try {
@@ -151,7 +149,14 @@ public class UpdateProduct extends javax.swing.JFrame {
             return null;
         }
     }
-
+    
+    public String removeTimeUsingDateTimeFormatter(String inputDate) {
+        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
+        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        LocalDateTime dateTime = LocalDateTime.parse(inputDate, inputFormatter);
+        return dateTime.format(outputFormatter);
+    }
+    
     private Milk getMilk() {
         Milk milk = new Milk();
         milk.setId(this.pi.getMilk().getId());
@@ -162,10 +167,10 @@ public class UpdateProduct extends javax.swing.JFrame {
         milk.setProduction_date(dateFM(txtProductionDate.getText()));
         milk.setExpiration_date(dateFM(txtExpirationDate.getText()));
         milk.setProvider(txtProvider.getText());
-        milk.setStatus("Sell");
+        milk.setIsDelete(false);
         return milk;
     }
-
+    
     private ProductInfo getProductInfo() {
         ProductInfo p = new ProductInfo();
         p.setId(this.pi.getId());
@@ -182,14 +187,14 @@ public class UpdateProduct extends javax.swing.JFrame {
         p.setCreate_by("NongHoangVu");
         return p;
     }
-
+    
     public String urlImage(Boolean get_set) {
         try {
             String currentDirectory = System.getProperty("user.dir") + "/src/main/java/udpm/fpt/productgallery/";
             JFileChooser fileChooser = new JFileChooser(currentDirectory);
             fileChooser.showOpenDialog(null);
             File selectedFile = fileChooser.getSelectedFile();
-
+            
             if (selectedFile != null) {
                 if (get_set) {
                     return selectedFile.getName();
@@ -536,7 +541,7 @@ public class UpdateProduct extends javax.swing.JFrame {
     private void lbproductgalleryMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbproductgalleryMouseClicked
         this.imgName = urlImage(false);
     }//GEN-LAST:event_lbproductgalleryMouseClicked
-
+    
     private void btnNewUnitActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnNewUnitActionPerformed
         String measurement_unit = JOptionPane.showInputDialog("New measurement unit");
         Date defaultValue = new Date();
@@ -594,11 +599,11 @@ public class UpdateProduct extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(this, "Fail");
         }
-
+        
     }// GEN-LAST:event_btnSaveActionPerformed
 
     private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnClearActionPerformed
-        JOptionPane.showMessageDialog(this, cbbTaste.getSelectedItem().toString());
+        JOptionPane.showMessageDialog(this, this.pi.getMilk().getProduction_date());
     }// GEN-LAST:event_btnClearActionPerformed
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnCancelActionPerformed

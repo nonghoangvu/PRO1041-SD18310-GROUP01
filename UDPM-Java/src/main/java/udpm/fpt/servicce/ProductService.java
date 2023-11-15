@@ -23,9 +23,8 @@ import udpm.fpt.repository.IUnit;
 public class ProductService {
 
     private List<ProductInfo> list;
-    private IProductInfo r = getBean(IProductInfo.class);
-    private IMilk iMilk = getBean(IMilk.class);
-
+    private final IProductInfo r = getBean(IProductInfo.class);
+    private final IMilk iMilk = getBean(IMilk.class);
     public ProductService() {
         this.list = list = new ArrayList<>();
     }

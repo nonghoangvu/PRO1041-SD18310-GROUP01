@@ -135,7 +135,7 @@ public class NewProduct extends javax.swing.JFrame {
         milk.setProduction_date(dateFM(txtProductionDate.getText()));
         milk.setExpiration_date(dateFM(txtExpirationDate.getText()));
         milk.setProvider(txtProvider.getText());
-        milk.setStatus("Sell");
+        milk.setIsDelete(false);
         return milk;
     }
 

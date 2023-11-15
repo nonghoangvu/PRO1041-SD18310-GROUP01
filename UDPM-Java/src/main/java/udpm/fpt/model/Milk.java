@@ -3,8 +3,6 @@ package udpm.fpt.model;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.util.Date;
 import lombok.Getter;
@@ -33,6 +31,6 @@ public class Milk {
     private Date expiration_date;
     @Column(name = "provider")
     private String provider;
-    @Column(name = "status")
-    private String status;
+    @Column(name = "isDelete")
+    private Boolean isDelete;
 }
