@@ -1,23 +1,19 @@
 package udpm.fpt.form;
 
+import udpm.fpt.component.NewProduct;
+import udpm.fpt.component.IMG;
 import java.awt.Image;
-import java.io.File;
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import udpm.fpt.component.UpdateProduct;
 import udpm.fpt.model.Milk;
-
 import udpm.fpt.model.ProductInfo;
-//import udpm.fpt.model.Milk;
-//import udpm.fpt.servicce.MilkService;
 import udpm.fpt.servicce.ProductService;
 import udpm.fpt.swing.table.TableCustom;
 
@@ -43,6 +39,7 @@ public class ProductManagement extends javax.swing.JPanel {
     }
 
     private void fillTable() {
+        this.temp.clear();
         tblModel = (DefaultTableModel) tblProduct.getModel();
         tblModel.setRowCount(0);
         for (ProductInfo prd : this.list.getList()) {
@@ -88,19 +85,22 @@ public class ProductManagement extends javax.swing.JPanel {
     }
 
     private void clearLabel() {
-        lbId.setText("null");
-        lbName.setText("null");
-        lbTaste.setText("null");
-        lbPrice.setText("null");
-        lbAmount.setText("null");
-        lbProductionDate.setText("null");
-        lbExpirationDate.setText("null");
-        lbProvider.setText("null");
-        lbVolume.setText("null");
-        lbMeasurementUnit.setText("null");
-        lbPackagingSpecification.setText("null");
-        lbCreateAt.setText("null");
-        lbCreateBy.setText("null");
+        lbId.setText(null);
+        lbName.setText(null);
+        lbTaste.setText(null);
+        lbPrice.setText(null);
+        lbAmount.setText(null);
+        lbProductionDate.setText(null);
+        lbExpirationDate.setText(null);
+        lbProvider.setText(null);
+        lbVolume.setText(null);
+        lbMeasurementUnit.setText(null);
+        lbPackagingSpecification.setText(null);
+        lbCreateAt.setText(null);
+        lbCreateBy.setText(null);
+        lbDescrription.setText(null);
+        lbproductgallery.setIcon(null);
+        tblProduct.clearSelection();
     }
 
     /**
@@ -126,7 +126,7 @@ public class ProductManagement extends javax.swing.JPanel {
         textField7 = new udpm.fpt.swing.TextField();
         button2 = new udpm.fpt.swing.Button();
         button3 = new udpm.fpt.swing.Button();
-        button4 = new udpm.fpt.swing.Button();
+        btnClear = new udpm.fpt.swing.Button();
         combobox2 = new udpm.fpt.swing.Combobox();
         jSeparator1 = new javax.swing.JSeparator();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -164,7 +164,7 @@ public class ProductManagement extends javax.swing.JPanel {
         jPanel3 = new javax.swing.JPanel();
         lbproductgallery = new javax.swing.JLabel();
         btnNew = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnUpdate = new javax.swing.JButton();
         btnHide = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
@@ -225,11 +225,16 @@ public class ProductManagement extends javax.swing.JPanel {
         button3.setText("Apply Filters");
         button3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
 
-        button4.setBackground(new java.awt.Color(255, 102, 102));
-        button4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
-        button4.setForeground(new java.awt.Color(255, 255, 255));
-        button4.setText("Clear All");
-        button4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnClear.setBackground(new java.awt.Color(255, 102, 102));
+        btnClear.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        btnClear.setForeground(new java.awt.Color(255, 255, 255));
+        btnClear.setText("Clear All");
+        btnClear.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnClear.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnClearMouseClicked(evt);
+            }
+        });
 
         combobox2.setLabeText("Packaging Specification");
 
@@ -249,7 +254,7 @@ public class ProductManagement extends javax.swing.JPanel {
                             .addComponent(textField5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(textField6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(button3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(button4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnClear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                                 .addComponent(textField1, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -292,7 +297,7 @@ public class ProductManagement extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 89, Short.MAX_VALUE)
                 .addComponent(button3, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(button4, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnClear, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(43, 43, 43))
         );
 
@@ -371,67 +376,56 @@ public class ProductManagement extends javax.swing.JPanel {
         jLabel1.setText("ID: ");
 
         lbId.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lbId.setText("null");
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel3.setText("Product name:");
 
         lbName.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lbName.setText("null");
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel5.setText("Taste:");
 
         lbTaste.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lbTaste.setText("null");
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel7.setText("Price");
 
         lbPrice.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lbPrice.setText("null");
 
         jLabel9.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel9.setText("Amount:");
 
         lbAmount.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lbAmount.setText("null");
 
         jLabel11.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel11.setText("Production date:");
 
         lbProductionDate.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lbProductionDate.setText("null");
 
         jLabel13.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel13.setText("Expiration date:");
 
         lbExpirationDate.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lbExpirationDate.setText("null");
 
         jLabel15.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel15.setText("Provider:");
 
         lbProvider.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lbProvider.setText("null");
 
         jLabel17.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel17.setText("Volume:");
 
         lbVolume.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lbVolume.setText("null");
 
         jLabel19.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel19.setText("Measurement unit:");
 
         lbMeasurementUnit.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lbMeasurementUnit.setText("null");
 
         jLabel21.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel21.setText("Packaging Specification:");
 
         lbPackagingSpecification.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lbPackagingSpecification.setText("null");
 
         jLabel23.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel23.setText("Description:");
@@ -445,25 +439,29 @@ public class ProductManagement extends javax.swing.JPanel {
         jLabel24.setText("Create at:");
 
         lbCreateAt.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lbCreateAt.setText("null");
 
         jLabel26.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel26.setText("Create by:");
 
         lbCreateBy.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lbCreateBy.setText("null");
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
+        lbproductgallery.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lbproductgallery.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lbproductgallery.setText("img");
+        lbproductgallery.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lbproductgalleryMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lbproductgallery, javax.swing.GroupLayout.DEFAULT_SIZE, 227, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addComponent(lbproductgallery, javax.swing.GroupLayout.DEFAULT_SIZE, 258, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -481,14 +479,14 @@ public class ProductManagement extends javax.swing.JPanel {
             }
         });
 
-        jButton2.setBackground(new java.awt.Color(102, 204, 255));
-        jButton2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(255, 255, 255));
-        jButton2.setText("Update");
-        jButton2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
-        jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
+        btnUpdate.setBackground(new java.awt.Color(102, 204, 255));
+        btnUpdate.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnUpdate.setForeground(new java.awt.Color(255, 255, 255));
+        btnUpdate.setText("Update");
+        btnUpdate.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        btnUpdate.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton2MouseClicked(evt);
+                btnUpdateMouseClicked(evt);
             }
         });
 
@@ -510,7 +508,6 @@ public class ProductManagement extends javax.swing.JPanel {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel13)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -570,15 +567,16 @@ public class ProductManagement extends javax.swing.JPanel {
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(btnNew, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnHide, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
-        jPanel2Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnHide, btnNew, jButton2});
+        jPanel2Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnHide, btnNew, btnUpdate});
 
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -643,13 +641,13 @@ public class ProductManagement extends javax.swing.JPanel {
                     .addComponent(lbCreateBy))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnHide, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnNew, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(23, 23, 23))
         );
 
-        jPanel2Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {btnNew, jButton2});
+        jPanel2Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {btnNew, btnUpdate});
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -661,7 +659,8 @@ public class ProductManagement extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 866, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -687,45 +686,38 @@ public class ProductManagement extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btnHideMouseClicked
 
-    private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
-        System.out.println(urlImage(false));
-    }//GEN-LAST:event_jButton2MouseClicked
+    private void btnUpdateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnUpdateMouseClicked
+        ProductInfo pi = temp.get(tblProduct.getSelectedRow());
+        UpdateProduct prd = new UpdateProduct(this, pi);
+        prd.setVisible(true);
+    }//GEN-LAST:event_btnUpdateMouseClicked
 
-    public String urlImage(Boolean get_set) {
-        try {
-            String currentDirectory = System.getProperty("user.dir") + "\\src\\main\\java\\udpm\\fpt\\productgallery";
-            System.out.println(currentDirectory);
-            JFileChooser fileChoice = new JFileChooser(currentDirectory);
-            fileChoice.showOpenDialog(null);
-            File file = fileChoice.getSelectedFile();
-            if (get_set) {
-                return String.valueOf(file);
-            }
-            if (file != null) {
-                Image img = ImageIO.read(file);
-                lbproductgallery.setText(null);
-                lbproductgallery.setIcon(new ImageIcon(
-                        img.getScaledInstance(lbproductgallery.getWidth(), lbproductgallery.getHeight(), lbproductgallery.getWidth())));
-                return String.valueOf(file);
-            }
-        } catch (IOException ex) {
-            ex.printStackTrace(System.out);
+    private void lbproductgalleryMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbproductgalleryMouseClicked
+        if (lbproductgallery.getIcon() == null) {
+            new IMG("ImageNull.png").setVisible(true);
+        } else {
+            ProductInfo pi = this.temp.get(tblProduct.getSelectedRow());
+            new IMG(pi.getMilk().getImg()).setVisible(true);
         }
-        return null;
-    }
+    }//GEN-LAST:event_lbproductgalleryMouseClicked
 
-    public void setImange(String url) {
-        if (url == null || url.isBlank() ||url.equalsIgnoreCase("NULL")) {
-            url = System.getProperty("user.dir") + "src\\main\\java\\udpm\\fpt\\productgallery\\ImageNull.png";//url when img null
-        } 
+    private void btnClearMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnClearMouseClicked
+        clearLabel();
+    }//GEN-LAST:event_btnClearMouseClicked
+
+    private void setImange(String url) {
+        lbproductgallery.setText(null);
         try {
-            File file = new File(url);
-            Image img = ImageIO.read(file);
-            lbproductgallery.setText(null);
-            lbproductgallery.setIcon(new ImageIcon(
-                    img.getScaledInstance(lbproductgallery.getWidth(), lbproductgallery.getHeight(), lbproductgallery.getWidth())));
-        } catch (IOException ex) {
-            ex.printStackTrace(System.out);
+            int labelWidth = lbproductgallery.getWidth();
+            int labelHeight = lbproductgallery.getHeight();
+            ImageIcon originalIcon = new javax.swing.ImageIcon(getClass().getResource("/udpm/fpt/productgallery/" + url));
+            Image originalImage = originalIcon.getImage();
+            Image scaledImage = originalImage.getScaledInstance(labelWidth, labelHeight, Image.SCALE_SMOOTH);
+            ImageIcon scaledIcon = new ImageIcon(scaledImage);
+            lbproductgallery.setIcon(scaledIcon);
+        } catch (Exception e) {
+            lbproductgallery.setIcon(null);
+            lbproductgallery.setText("Image not found");
         }
     }
 
@@ -750,15 +742,15 @@ public class ProductManagement extends javax.swing.JPanel {
     }// GEN-LAST:event_tblProductMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private udpm.fpt.swing.Button btnClear;
     private javax.swing.JButton btnHide;
     private javax.swing.JButton btnNew;
+    private javax.swing.JButton btnUpdate;
     private udpm.fpt.swing.Button button1;
     private udpm.fpt.swing.Button button2;
     private udpm.fpt.swing.Button button3;
-    private udpm.fpt.swing.Button button4;
     private udpm.fpt.swing.Combobox combobox1;
     private udpm.fpt.swing.Combobox combobox2;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel13;

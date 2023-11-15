@@ -1,4 +1,4 @@
-package udpm.fpt.form;
+package udpm.fpt.component;
 
 import com.github.sarxos.webcam.Webcam;
 import com.github.sarxos.webcam.WebcamPanel;
@@ -20,14 +20,14 @@ import java.util.concurrent.ThreadFactory;
  *
  * @author NONG HOANG VU
  */
-public class WebCamOpen extends javax.swing.JFrame implements Runnable, ThreadFactory {
+public class WebCamProduct extends javax.swing.JFrame implements Runnable, ThreadFactory {
 
     public NewProduct postId;
     private WebcamPanel panel;
     public Webcam webcam;
     private final Executor executor = Executors.newSingleThreadExecutor(this);
 
-    public WebCamOpen(NewProduct postId) {
+    public WebCamProduct(NewProduct postId) {
         initComponents();
         this.postId = postId;
         initWebcam();
@@ -117,6 +117,7 @@ public class WebCamOpen extends javax.swing.JFrame implements Runnable, ThreadFa
 
     private void btnGet_CancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGet_CancelActionPerformed
         if (btnGet_Cancel.getText().equalsIgnoreCase("Cancel")) {
+            this.webcam.close();
             this.dispose();
         } else {
             String id = lbId.getText();

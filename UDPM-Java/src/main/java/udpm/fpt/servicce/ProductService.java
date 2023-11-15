@@ -80,6 +80,10 @@ public class ProductService {
         return false;
     }
 
+    public Boolean updateProduct(Milk m, ProductInfo pi) {
+        return this.iMilk.save(m) != null && r.save(pi) != null;
+    }
+
     public Boolean hideRestoreProduct(Milk m) {
         return this.iMilk.save(m) != null;
     }
