@@ -2,7 +2,7 @@
 
 Facebook: [Nong Hoang Vu](https://www.facebook.com/NongHoangVu04)
 
-## Lib
+## Library
 - TimingFramework-0.55
 - Webcam
 - datechooser-swing-1.4.1
