@@ -22,7 +22,7 @@ public class Milk {
     @Column(name = "img")
     private String img;
     @Column(name = "price")
-    private Float price;
+    private Integer price;
     @Column(name = "amount")
     private int amount;
     @Column(name = "production_date")

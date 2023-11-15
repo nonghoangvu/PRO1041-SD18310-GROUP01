@@ -13,8 +13,8 @@ import udpm.fpt.model.Milk;
 public interface IMilk extends JpaRepository<Milk, Long> {
 
     @Modifying
-    @Query("UPDATE Milk m SET m.status = :newStatus WHERE m.id = :milkId")
-    int updateStatus(@Param("milkId") Long milkId, @Param("newStatus") String newStatus);
+    @Query("UPDATE Milk m SET m.isDelete = :newIsDelete WHERE m.id = :milkId")
+    int updateStatus(@Param("milkId") Long milkId, @Param("newIsDelete") String newIsDelete);
 
     public Milk findAllById(Long id);
 }

@@ -14,6 +14,8 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.event.ChangeEvent;
+import javax.swing.text.AbstractDocument;
 import udpm.fpt.form.ProductManagement;
 import udpm.fpt.model.Flavor;
 import udpm.fpt.model.Milk;
@@ -21,18 +23,19 @@ import udpm.fpt.model.PackagingSpecification;
 import udpm.fpt.model.ProductInfo;
 import udpm.fpt.model.Unit;
 import udpm.fpt.servicce.ProductService;
+import udpm.fpt.swing.NumberOnlyFilter;
 
 /**
  *
  * @author NONG HOANG VU
  */
 public class UpdateProduct extends javax.swing.JFrame {
-    
+
     public ProductManagement perentForm;
     private final ProductService list;
     private String imgName = null;
     private ProductInfo pi;
-    
+
     public UpdateProduct(ProductManagement perentForm, ProductInfo pi) {
         initComponents();
         this.list = new ProductService();
@@ -41,17 +44,33 @@ public class UpdateProduct extends javax.swing.JFrame {
         this.pi = pi;
         this.imgName = this.pi.getMilk().getImg();
         filDataCombo();
+        setTextField();
         loadData();
     }
-    
+
+    public void setTextField() {
+        ((AbstractDocument) txtId.getDocument()).setDocumentFilter(new NumberOnlyFilter());
+        ((AbstractDocument) txtPrice.getDocument()).setDocumentFilter(new NumberOnlyFilter());
+        txtAmount.addChangeListener((ChangeEvent e) -> {
+            int value = (int) txtAmount.getValue();
+            if (value < 0) {
+                txtAmount.setValue(0);
+            }
+        });
+    }
+
     private void loadData() {
         txtId.setText(String.valueOf(this.pi.getMilk().getId()));
         txtBrand.setText(this.pi.getBrand());
         txtName.setText(this.pi.getMilk().getProduct_name());
         txtPrice.setText(String.valueOf(this.pi.getMilk().getPrice()));
         txtAmount.setValue(this.pi.getMilk().getAmount());
-        txtProductionDate.setText(removeTimeUsingDateTimeFormatter(String.valueOf(this.pi.getMilk().getProduction_date())));
-        txtExpirationDate.setText(removeTimeUsingDateTimeFormatter(String.valueOf(this.pi.getMilk().getExpiration_date())));
+        txtProductionDate
+                .setText(removeTimeUsingDateTimeFormatter(
+                        String.valueOf(this.pi.getMilk().getProduction_date())));
+        txtExpirationDate
+                .setText(removeTimeUsingDateTimeFormatter(
+                        String.valueOf(this.pi.getMilk().getExpiration_date())));
         txtVolume.setText(String.valueOf(this.pi.getVolume()));
         txtDescription.setText(this.pi.getProduct_description());
         txtComposition.setText(this.pi.getComposition());
@@ -62,15 +81,17 @@ public class UpdateProduct extends javax.swing.JFrame {
         cbbPackagingSpecification.setSelectedItem(this.pi.getPackagingSpecification());
         setImange(this.pi.getMilk().getImg());
     }
-    
+
     private void setImange(String url) {
         lbproductgallery.setText(null);
         try {
             int labelWidth = lbproductgallery.getWidth();
             int labelHeight = lbproductgallery.getHeight();
-            ImageIcon originalIcon = new javax.swing.ImageIcon(getClass().getResource("/udpm/fpt/productgallery/" + url));
+            ImageIcon originalIcon = new javax.swing.ImageIcon(
+                    getClass().getResource("/udpm/fpt/productgallery/" + url));
             Image originalImage = originalIcon.getImage();
-            Image scaledImage = originalImage.getScaledInstance(labelWidth, labelHeight, Image.SCALE_SMOOTH);
+            Image scaledImage = originalImage.getScaledInstance(labelWidth, labelHeight,
+                    Image.SCALE_SMOOTH);
             ImageIcon scaledIcon = new ImageIcon(scaledImage);
             lbproductgallery.setIcon(scaledIcon);
         } catch (Exception e) {
@@ -78,12 +99,12 @@ public class UpdateProduct extends javax.swing.JFrame {
             lbproductgallery.setText("Image not found");
         }
     }
-    
+
     private void textDate() {
         getProductionDate();
         getExpirationDate();
     }
-    
+
     private void getProductionDate() {
         DateChooser dateChooser = new DateChooser();
         dateChooser.setDateSelectionMode(DateChooser.DateSelectionMode.SINGLE_DATE_SELECTED);
@@ -91,7 +112,7 @@ public class UpdateProduct extends javax.swing.JFrame {
         dateChooser.setDateFormat(new SimpleDateFormat("dd-MM-yyyy"));
         dateChooser.setTextField(txtProductionDate);
     }
-    
+
     private void getExpirationDate() {
         DateChooser dateChooser = new DateChooser();
         dateChooser.setDateSelectionMode(DateChooser.DateSelectionMode.SINGLE_DATE_SELECTED);
@@ -99,21 +120,21 @@ public class UpdateProduct extends javax.swing.JFrame {
         dateChooser.setDateFormat(new SimpleDateFormat("dd-MM-yyyy"));
         dateChooser.setTextField(txtExpirationDate);
     }
-    
+
     public void setData(String data) {
         txtId.setText(data);
     }
-    
+
     public String getData() {
         return txtId.getText();
     }
-    
+
     public void filDataCombo() {
         dataFlavor();
         dataUnit();
         dataPackagingSpecification();
     }
-    
+
     private void dataFlavor() {
         DefaultComboBoxModel<Flavor> cbbModel = new DefaultComboBoxModel<>();
         cbbTaste.setModel((DefaultComboBoxModel) cbbModel);
@@ -121,7 +142,7 @@ public class UpdateProduct extends javax.swing.JFrame {
             cbbModel.addElement(flavor);
         }
     }
-    
+
     private void dataUnit() {
         DefaultComboBoxModel<Unit> cbbModel = new DefaultComboBoxModel<>();
         cbbUnit.setModel((DefaultComboBoxModel) cbbModel);
@@ -129,7 +150,7 @@ public class UpdateProduct extends javax.swing.JFrame {
             cbbModel.addElement(unit);
         }
     }
-    
+
     private void dataPackagingSpecification() {
         DefaultComboBoxModel<PackagingSpecification> cbbModel = new DefaultComboBoxModel<>();
         cbbPackagingSpecification.setModel((DefaultComboBoxModel) cbbModel);
@@ -137,7 +158,7 @@ public class UpdateProduct extends javax.swing.JFrame {
             cbbModel.addElement(packagingSpecification);
         }
     }
-    
+
     public Date dateFM(String date) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         try {
@@ -149,20 +170,72 @@ public class UpdateProduct extends javax.swing.JFrame {
             return null;
         }
     }
-    
+
     public String removeTimeUsingDateTimeFormatter(String inputDate) {
         DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
         DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         LocalDateTime dateTime = LocalDateTime.parse(inputDate, inputFormatter);
         return dateTime.format(outputFormatter);
     }
-    
+
+    private Boolean isDateValid(Date a, Date b) {
+        return a.compareTo(b) > 0;
+    }
+
+    private Boolean isValidate() {
+        if (txtId.getText().isBlank()) {
+            new Notification(this, Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP, "The ID is empty!").showNotification();
+            return false;
+        } else if (txtName.getText().isBlank()) {
+            new Notification(this, Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP, "The product name is empty!").showNotification();
+            return false;
+        } else if (isDateValid(dateFM(txtProductionDate.getText()), dateFM(txtExpirationDate.getText()))) {
+            new Notification(this, Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP, "Invalid date!").showNotification();
+            return false;
+        } else if (txtPrice.getText().isBlank()) {
+            new Notification(this, Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP, "The price is empty!").showNotification();
+            return false;
+        } else if (txtProvider.getText().isBlank()) {
+            new Notification(this, Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP, "The provider is empty!").showNotification();
+            return false;
+        } else if (txtBrand.getText().isBlank()) {
+            new Notification(this, Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP, "The brand is empty!").showNotification();
+            return false;
+        } else if (txtVolume.getText().isBlank()) {
+            new Notification(this, Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP, "You haven't entered the product volume!").showNotification();
+            return false;
+        } else if (txtOrgin.getText().isBlank()) {
+            new Notification(this, Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP, "No data added for the origin!").showNotification();
+            return false;
+        } else if (txtComposition.getText().isBlank()) {
+            new Notification(this, Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP, "The field for the component is empty.!").showNotification();
+            return false;
+        } else if (txtDescription.getText().isBlank()) {
+            new Notification(this, Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP, "You haven't added a product description!").showNotification();
+            return true;
+        } else {
+            try {
+                if (Integer.parseInt(txtPrice.getText()) < 4000) {
+                    new Notification(this, Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP, "Invalid price!").showNotification();
+                    return false;
+                } else if (Float.parseFloat(txtVolume.getText()) < 0) {
+                    new Notification(this, Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP, "Invalid volume!").showNotification();
+                    return false;
+                }
+            } catch (NumberFormatException e) {
+                new Notification(this, Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP, "Invalid input data!").showNotification();
+                return false;
+            }
+        }
+        return true;
+    }
+
     private Milk getMilk() {
         Milk milk = new Milk();
         milk.setId(this.pi.getMilk().getId());
         milk.setProduct_name(txtName.getText());
         milk.setImg(this.imgName);
-        milk.setPrice(Float.valueOf(txtPrice.getText()));
+        milk.setPrice(Integer.valueOf(txtPrice.getText()));
         milk.setAmount((int) txtAmount.getValue());
         milk.setProduction_date(dateFM(txtProductionDate.getText()));
         milk.setExpiration_date(dateFM(txtExpirationDate.getText()));
@@ -170,7 +243,7 @@ public class UpdateProduct extends javax.swing.JFrame {
         milk.setIsDelete(false);
         return milk;
     }
-    
+
     private ProductInfo getProductInfo() {
         ProductInfo p = new ProductInfo();
         p.setId(this.pi.getId());
@@ -187,14 +260,15 @@ public class UpdateProduct extends javax.swing.JFrame {
         p.setCreate_by("NongHoangVu");
         return p;
     }
-    
+
     public String urlImage(Boolean get_set) {
         try {
-            String currentDirectory = System.getProperty("user.dir") + "/src/main/java/udpm/fpt/productgallery/";
+            String currentDirectory = System.getProperty("user.dir")
+                    + "/src/main/java/udpm/fpt/productgallery/";
             JFileChooser fileChooser = new JFileChooser(currentDirectory);
             fileChooser.showOpenDialog(null);
             File selectedFile = fileChooser.getSelectedFile();
-            
+
             if (selectedFile != null) {
                 if (get_set) {
                     return selectedFile.getName();
@@ -202,7 +276,9 @@ public class UpdateProduct extends javax.swing.JFrame {
                 Image img = ImageIO.read(selectedFile);
                 lbproductgallery.setText(null);
                 lbproductgallery.setIcon(new ImageIcon(
-                        img.getScaledInstance(lbproductgallery.getWidth(), lbproductgallery.getHeight(), lbproductgallery.getWidth())));
+                        img.getScaledInstance(lbproductgallery.getWidth(),
+                                lbproductgallery.getHeight(),
+                                lbproductgallery.getWidth())));
                 return selectedFile.getName();
             }
         } catch (IOException ex) {
@@ -211,12 +287,8 @@ public class UpdateProduct extends javax.swing.JFrame {
         return null;
     }
 
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
     @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated
     // <editor-fold defaultstate="collapsed" desc="Generated
     // <editor-fold defaultstate="collapsed" desc="Generated
     // <editor-fold defaultstate="collapsed" desc="Generated
@@ -235,7 +307,6 @@ public class UpdateProduct extends javax.swing.JFrame {
         txtProvider = new udpm.fpt.swing.TextField();
         btnSave = new javax.swing.JButton();
         btnCancel = new javax.swing.JButton();
-        btnClear = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         cbbTaste = new udpm.fpt.swing.Combobox();
         txtOrgin = new udpm.fpt.swing.TextField();
@@ -298,16 +369,6 @@ public class UpdateProduct extends javax.swing.JFrame {
             }
         });
 
-        btnClear.setBackground(new java.awt.Color(102, 204, 255));
-        btnClear.setForeground(new java.awt.Color(255, 255, 255));
-        btnClear.setText("Clear");
-        btnClear.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
-        btnClear.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnClearActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -323,15 +384,14 @@ public class UpdateProduct extends javax.swing.JFrame {
                     .addComponent(txtProvider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(46, 46, 46)
                         .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(12, 12, 12)
-                        .addComponent(btnClear, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(56, 56, 56))
                     .addComponent(txtId, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(23, Short.MAX_VALUE))
         );
 
-        jPanel2Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnCancel, btnClear});
+        jPanel2Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnCancel, btnSave});
 
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -349,15 +409,14 @@ public class UpdateProduct extends javax.swing.JFrame {
                 .addComponent(txtProvider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(txtAmount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnCancel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnClear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnCancel))
                 .addContainerGap())
         );
+
+        jPanel2Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {btnCancel, btnSave});
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Detail", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14))); // NOI18N
@@ -457,8 +516,8 @@ public class UpdateProduct extends javax.swing.JFrame {
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addComponent(txtVolume, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(cbbUnit, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(cbbUnit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnNewUnit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(txtOrgin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(txtBrand, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -538,10 +597,10 @@ public class UpdateProduct extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void lbproductgalleryMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbproductgalleryMouseClicked
+    private void lbproductgalleryMouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_lbproductgalleryMouseClicked
         this.imgName = urlImage(false);
-    }//GEN-LAST:event_lbproductgalleryMouseClicked
-    
+    }
+
     private void btnNewUnitActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnNewUnitActionPerformed
         String measurement_unit = JOptionPane.showInputDialog("New measurement unit");
         Date defaultValue = new Date();
@@ -552,11 +611,14 @@ public class UpdateProduct extends javax.swing.JFrame {
         if (this.list.insertUnit(unit)) {
             cbbUnit.removeAll();
             dataUnit();
-            JOptionPane.showMessageDialog(this, "Success");
+            Notification n = new Notification(this, Notification.Type.SUCCESS,
+                    Notification.Location.DEFAULT_DESKTOP, "SUCCESS");
+            n.showNotification();
         } else {
-            JOptionPane.showMessageDialog(this, "Fail");
+            Notification n = new Notification(this, Notification.Type.INFO, Notification.Location.DEFAULT_DESKTOP, "FAILED");
+            n.showNotification();
         }
-    }// GEN-LAST:event_btnNewUnitActionPerformed
+    }
 
     private void btnNewPackagingSpecificationMouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_btnNewPackagingSpecificationMouseClicked
         String packagingType = JOptionPane.showInputDialog("New packaging type");
@@ -568,11 +630,15 @@ public class UpdateProduct extends javax.swing.JFrame {
         if (this.list.insertPackagingSpecification(packagingSpecification)) {
             cbbUnit.removeAll();
             dataPackagingSpecification();
-            JOptionPane.showMessageDialog(this, "Success");
+            Notification n = new Notification(this, Notification.Type.SUCCESS,
+                    Notification.Location.DEFAULT_DESKTOP, "SUCCESS");
+            n.showNotification();
         } else {
-            JOptionPane.showMessageDialog(this, "Fail");
+            Notification n = new Notification(this, Notification.Type.INFO, Notification.Location.DEFAULT_DESKTOP,
+                    "FAILED");
+            n.showNotification();
         }
-    }// GEN-LAST:event_btnNewPackagingSpecificationMouseClicked
+    }
 
     private void btnNewFlavorMouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_btnNewFlavorMouseClicked
         String taste = JOptionPane.showInputDialog("New Taste");
@@ -584,36 +650,40 @@ public class UpdateProduct extends javax.swing.JFrame {
         if (this.list.insertFlavor(flavor)) {
             cbbTaste.removeAll();
             dataFlavor();
-            JOptionPane.showMessageDialog(this, "Success");
+            Notification n = new Notification(this, Notification.Type.SUCCESS,
+                    Notification.Location.DEFAULT_DESKTOP, "SUCCESS");
+            n.showNotification();
         } else {
-            JOptionPane.showMessageDialog(this, "Fail");
+            Notification n = new Notification(this, Notification.Type.INFO, Notification.Location.DEFAULT_DESKTOP,
+                    "FAILED");
+            n.showNotification();
         }
-    }// GEN-LAST:event_btnNewFlavorMouseClicked
+    }
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnSaveActionPerformed
+        if (!isValidate()) {
+            return;
+        }
         if (this.list.updateProduct(getMilk(), getProductInfo())) {
-            JOptionPane.showMessageDialog(this, "Success");
+            Notification n = new Notification(this, Notification.Type.SUCCESS,
+                    Notification.Location.DEFAULT_DESKTOP, "SUCCESS");
+            n.showNotification();
             String data = txtId.getText();
             perentForm.setData(data);
             dispose();
         } else {
-            JOptionPane.showMessageDialog(this, "Fail");
+            Notification n = new Notification(this, Notification.Type.INFO, Notification.Location.DEFAULT_DESKTOP, "Unable to add the product with this ID");
+            n.showNotification();
         }
-        
-    }// GEN-LAST:event_btnSaveActionPerformed
 
-    private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnClearActionPerformed
-        JOptionPane.showMessageDialog(this, this.pi.getMilk().getProduction_date());
-    }// GEN-LAST:event_btnClearActionPerformed
+    }
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnCancelActionPerformed
         this.dispose();
-    }// GEN-LAST:event_btnCancelActionPerformed
-
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancel;
-    private javax.swing.JButton btnClear;
     private udpm.fpt.swing.Button btnNewFlavor;
     private udpm.fpt.swing.Button btnNewPackagingSpecification;
     private udpm.fpt.swing.Button btnNewUnit;

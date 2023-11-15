@@ -3,6 +3,7 @@ package udpm.fpt.form;
 import udpm.fpt.component.NewProduct;
 import udpm.fpt.component.IMG;
 import java.awt.Image;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -11,7 +12,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import udpm.fpt.component.UpdateProduct;
 import udpm.fpt.model.Milk;
@@ -74,12 +74,16 @@ public class ProductManagement extends javax.swing.JPanel {
         return dateTime.format(outputFormatter);
     }
 
+    private String setSelectedIndex(int number){
+        DecimalFormat decimalFormat = new DecimalFormat("#,###");
+        return decimalFormat.format(number);
+    }
     private void setLabel() {
         ProductInfo pi = this.temp.get(tblProduct.getSelectedRow());
         lbId.setText(String.valueOf(pi.getMilk().getId()));
         lbName.setText(pi.getMilk().getProduct_name());
         lbTaste.setText(pi.getFlavor().getTaste());
-        lbPrice.setText(String.valueOf(pi.getMilk().getPrice()));
+        lbPrice.setText(setSelectedIndex(pi.getMilk().getPrice()) + " VND");
         lbAmount.setText(String.valueOf(pi.getMilk().getAmount()));
         lbProductionDate.setText(removeTimeUsingDateTimeFormatter(String.valueOf(pi.getMilk().getProduction_date())));
         lbExpirationDate.setText(removeTimeUsingDateTimeFormatter(String.valueOf(pi.getMilk().getExpiration_date())));
@@ -507,7 +511,7 @@ public class ProductManagement extends javax.swing.JPanel {
         btnHide.setBackground(new java.awt.Color(102, 204, 255));
         btnHide.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnHide.setForeground(new java.awt.Color(255, 255, 255));
-        btnHide.setText("Hide");
+        btnHide.setText("Delete");
         btnHide.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         btnHide.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -579,19 +583,16 @@ public class ProductManagement extends javax.swing.JPanel {
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addComponent(lbPrice, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(btnNew, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnHide, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(btnNew, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnHide, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
-
-        jPanel2Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnHide, btnNew, btnUpdate});
-
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
@@ -692,15 +693,15 @@ public class ProductManagement extends javax.swing.JPanel {
         Milk m = this.list.getMilkByID(Long.valueOf(lbId.getText()));
         m.setIsDelete(true);
         if (this.list.hideRestoreProduct(m)) {
-            JOptionPane.showMessageDialog(this, "Success");
             this.temp.clear();
             fillTable();
-        } else {
-            JOptionPane.showMessageDialog(this, "Faild");
         }
     }//GEN-LAST:event_btnHideMouseClicked
 
     private void btnUpdateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnUpdateMouseClicked
+        if (tblProduct.getSelectedRow() < 0) {
+            return;
+        }
         ProductInfo pi = temp.get(tblProduct.getSelectedRow());
         UpdateProduct prd = new UpdateProduct(this, pi);
         prd.setVisible(true);
