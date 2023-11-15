@@ -4,17 +4,108 @@
  */
 package udpm.fpt.form;
 
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+import udpm.fpt.event.TableActionEvent;
+import udpm.fpt.model.Milk;
+import udpm.fpt.model.ProductInfo;
+import udpm.fpt.servicce.ProductService;
+import udpm.fpt.swing.table.TableActionCellEditor;
+import udpm.fpt.swing.table.TableActionCellRender;
+import udpm.fpt.swing.table.TableCustom;
+
 /**
  *
  * @author NONG HOANG VU
  */
 public class History extends javax.swing.JPanel {
 
-    /**
-     * Creates new form History
-     */
+    private DefaultTableModel tblModel;
+    private final ProductService list;
+    private List<ProductInfo> temp;
+
     public History() {
         initComponents();
+        this.list = new ProductService();
+        this.temp = new ArrayList<>();
+        tableFormat();
+        fillCatelogy();
+        fillDeleted();
+    }
+
+    private void fillCatelogy() {
+        String[] catelogy = {"Archive", "Product edit history"};
+        for (String s : catelogy) {
+            cbbCatelogy.addItem(s);
+        }
+    }
+
+    private void fillDeleted() {
+        this.temp.clear();
+        tblModel = (DefaultTableModel) tblHistory.getModel();
+        tblModel.setRowCount(0);
+        for (ProductInfo prd : this.list.getList()) {
+            if (prd.getMilk().getIsDelete()) {
+                tblModel.addRow(
+                        new Object[]{prd.getMilk().getId(), prd.getMilk().getProduct_name(), prd.getFlavor().getTaste(),
+                            prd.getMilk().getPrice(), prd.getMilk().getAmount(), prd.getMilk().getProvider()});
+                this.temp.add(prd);
+            }
+        }
+    }
+
+    private void fillEdit() {
+        tblModel = (DefaultTableModel) tblHistory.getModel();
+        tblModel.setRowCount(0);
+    }
+
+    private Long getId() {
+        ProductInfo id = temp.get(tblHistory.getSelectedRow());
+        return id.getMilk().getId();
+    }
+
+    private void tableFormat() {
+        TableActionEvent event = new TableActionEvent() {
+            @Override
+            public void onRestore(int row) {
+                ProductService productService = new ProductService();
+                Milk m = productService.getMilkByID(getId());
+                m.setIsDelete(false);
+                if (productService.hideRestoreProduct(m)) {
+                    if (cbbCatelogy.getSelectedItem().equals("Archive")) {
+                        fillDeleted();
+                    } else {
+                        fillEdit();
+                    }
+                }
+            }
+
+            @Override
+            public void onDelete(int row) {
+                if (tblHistory.isEditing()) {
+                    tblHistory.getCellEditor().stopCellEditing();
+                }
+                ProductService productService = new ProductService();
+                ProductInfo pi = temp.get(tblHistory.getSelectedRow());
+                System.out.println(productService.deleteProduct(pi.getMilk().getId(), pi.getId()));
+                fillDeleted();
+
+            }
+
+            @Override
+            public void onView(int row) {
+                System.out.println("View row : " + row);
+            }
+
+        };
+        tblHistory.setRowHeight(40);
+        TableCustom.apply(jScrollPane1, TableCustom.TableType.MULTI_LINE);
+        tblHistory.getColumnModel().getColumn(6).setCellRenderer(new TableActionCellRender());
+        tblHistory.getColumnModel().getColumn(6).setCellEditor(new TableActionCellEditor(event));
+        tblHistory.getColumnModel().getColumn(6).setMinWidth(120);
+        tblHistory.getColumnModel().getColumn(6).setMaxWidth(120);
+        this.temp.clear();
     }
 
     /**
@@ -26,32 +117,71 @@ public class History extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblHistory = new javax.swing.JTable();
+        cbbCatelogy = new udpm.fpt.swing.Combobox();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel1.setText("History");
+        tblHistory.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID", "Name", "Taste", "Price", "Amount", "Provider", "Action"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, true, true, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tblHistory.setSelectionForeground(new java.awt.Color(102, 204, 255));
+        jScrollPane1.setViewportView(tblHistory);
+
+        cbbCatelogy.setLabeText("History");
+        cbbCatelogy.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cbbCatelogyItemStateChanged(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(318, 318, 318)
-                .addComponent(jLabel1)
-                .addContainerGap(1144, Short.MAX_VALUE))
+                .addGap(30, 30, 30)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1450, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbbCatelogy, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(238, 238, 238)
-                .addComponent(jLabel1)
-                .addContainerGap(596, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addComponent(cbbCatelogy, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 763, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void cbbCatelogyItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbbCatelogyItemStateChanged
+        if (cbbCatelogy.getSelectedIndex() == 0) {
+            fillDeleted();
+        } else {
+            fillEdit();
+        }
+    }//GEN-LAST:event_cbbCatelogyItemStateChanged
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
+    private udpm.fpt.swing.Combobox cbbCatelogy;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable tblHistory;
     // End of variables declaration//GEN-END:variables
 }

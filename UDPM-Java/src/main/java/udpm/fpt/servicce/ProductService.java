@@ -25,6 +25,7 @@ public class ProductService {
     private List<ProductInfo> list;
     private final IProductInfo r = getBean(IProductInfo.class);
     private final IMilk iMilk = getBean(IMilk.class);
+
     public ProductService() {
         this.list = list = new ArrayList<>();
     }
@@ -85,5 +86,23 @@ public class ProductService {
 
     public Boolean hideRestoreProduct(Milk m) {
         return this.iMilk.save(m) != null;
+    }
+
+    public Boolean deleteProduct(Long idMilk, Integer idProductInfo) {
+        Boolean milkDeleted;
+        Boolean productInfoDeleted;
+        try {
+            iMilk.deleteById(idMilk);
+            milkDeleted = true;
+        } catch (Exception e) {
+            milkDeleted = false;
+        }
+        try {
+            r.deleteById(idProductInfo);
+            productInfoDeleted = true;
+        } catch (Exception e) {
+            productInfoDeleted = false;
+        }
+        return milkDeleted && productInfoDeleted;
     }
 }
