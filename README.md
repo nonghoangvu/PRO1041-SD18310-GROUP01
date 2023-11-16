@@ -8,7 +8,7 @@ Facebook: [Nong Hoang Vu](https://www.facebook.com/NongHoangVu04)
 - Webcam
 - datechooser-swing-1.4.1
 - miglayout-4.0
-![](https://raw.githubusercontent.com/vunhph33506/Example/main/lib.png)
+
 ## Maven Dependencies
 ```xml
 <dependencies>
@@ -64,3 +64,5 @@ Facebook: [Nong Hoang Vu](https://www.facebook.com/NongHoangVu04)
         <version>1</version>
     </dependency>
 </dependencies>
+```
+![](https://raw.githubusercontent.com/vunhph33506/Example/main/lib.png)
