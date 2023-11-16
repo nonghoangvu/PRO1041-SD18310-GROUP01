@@ -56,7 +56,7 @@ public class FlavorManagement extends javax.swing.JFrame {
                 Notification n = new Notification(this, Notification.Type.INFO, Notification.Location.DEFAULT_DESKTOP, "DATA IS EMPTY");
                 n.showNotification();
                 return;
-            }else if(txtFlavor.getText().length() >= 50){
+            } else if (txtFlavor.getText().length() >= 50) {
                 Notification n = new Notification(this, Notification.Type.INFO, Notification.Location.DEFAULT_DESKTOP, "DATA IS INVALID");
                 n.showNotification();
                 return;
@@ -106,7 +106,7 @@ public class FlavorManagement extends javax.swing.JFrame {
 
     private Boolean findFlavor(String data) {
         for (Flavor flavor : this.list.getFlavor()) {
-            if (data.equalsIgnoreCase(flavor.getTaste())) {
+            if (data.equalsIgnoreCase(flavor.getTaste().trim())) {
                 return true;
             }
         }

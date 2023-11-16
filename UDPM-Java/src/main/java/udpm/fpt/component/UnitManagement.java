@@ -104,7 +104,7 @@ public class UnitManagement extends javax.swing.JFrame {
 
     private Boolean findUnit(String data) {
         for (Unit unit : this.list.getUnit()) {
-            if (data.equalsIgnoreCase(unit.getMeasurement_unit())) {
+            if (data.equalsIgnoreCase(unit.getMeasurement_unit().trim())) {
                 return true;
             }
         }

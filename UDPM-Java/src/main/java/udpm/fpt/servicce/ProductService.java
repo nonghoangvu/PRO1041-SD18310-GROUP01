@@ -26,7 +26,8 @@ public class ProductService {
     private final IProductInfo r = getBean(IProductInfo.class);
     private final IMilk iMilk = getBean(IMilk.class);
     private final IFlavor iFlavor = getBean(IFlavor.class);
-    private IUnit iUnit = getBean(IUnit.class);
+    private final IUnit iUnit = getBean(IUnit.class);
+    private IPackagingSpecification iPackagingSpecification = getBean(IPackagingSpecification.class);
 
     public ProductService() {
         this.list = list = new ArrayList<>();
@@ -69,18 +70,16 @@ public class ProductService {
     }
 
     public List<PackagingSpecification> getPackagingSpecification() {
-        IPackagingSpecification iPackagingSpecification = getBean(IPackagingSpecification.class);
-        List<PackagingSpecification> listPackagingSpecificationt = iPackagingSpecification.findAll();
+        List<PackagingSpecification> listPackagingSpecificationt = this.iPackagingSpecification.findAll();
         return listPackagingSpecificationt;
     }
 
     public Boolean insertPackagingSpecification(PackagingSpecification packagingSpecification) {
-        IPackagingSpecification iPackagingSpecification = getBean(IPackagingSpecification.class);
-        return iPackagingSpecification.save(packagingSpecification) != null;
+        return this.iPackagingSpecification.save(packagingSpecification) != null;
     }
 
     public void removePackagingSpecification(PackagingSpecification packagingSpecification) {
-        this.iUnit.deleteById(packagingSpecification.getId());
+        this.iPackagingSpecification.deleteById(packagingSpecification.getId());
     }
 
     public Boolean inserProduct(Milk m, ProductInfo pi) {

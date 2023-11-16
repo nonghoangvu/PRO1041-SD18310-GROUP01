@@ -230,9 +230,20 @@ public class UpdateProduct extends javax.swing.JFrame {
                     "The field for the component is empty.!").showNotification();
             return false;
         } else if (txtDescription.getText().isBlank()) {
-            new Notification(this, Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP,
-                    "You haven't added a product description!").showNotification();
+            new Notification(this, Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP, "You haven't added a product description!").showNotification();
             return true;
+        } else if (txtName.getText().length() > 255) {
+            new Notification(this, Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP, "Invalid product name!").showNotification();
+            return false;
+        } else if (txtProvider.getText().length() > 100) {
+            new Notification(this, Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP, "Invalid provider!").showNotification();
+            return false;
+        } else if (txtBrand.getText().length() > 100) {
+            new Notification(this, Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP, "Invalid brand!").showNotification();
+            return false;
+        } else if (txtOrgin.getText().length() > 50) {
+            new Notification(this, Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP, "Invalid orgin!").showNotification();
+            return false;
         } else {
             try {
                 if (Integer.parseInt(txtPrice.getText()) < 4000) {
