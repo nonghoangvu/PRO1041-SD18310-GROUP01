@@ -13,7 +13,6 @@ import javax.imageio.ImageIO;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.text.AbstractDocument;
 import udpm.fpt.form.ProductManagement;
@@ -137,6 +136,7 @@ public class UpdateProduct extends javax.swing.JFrame {
 
     private void dataFlavor() {
         DefaultComboBoxModel<Flavor> cbbModel = new DefaultComboBoxModel<>();
+        cbbTaste.removeAll();
         cbbTaste.setModel((DefaultComboBoxModel) cbbModel);
         for (Flavor flavor : this.list.getFlavor()) {
             cbbModel.addElement(flavor);
@@ -145,6 +145,7 @@ public class UpdateProduct extends javax.swing.JFrame {
 
     private void dataUnit() {
         DefaultComboBoxModel<Unit> cbbModel = new DefaultComboBoxModel<>();
+        cbbUnit.removeAll();
         cbbUnit.setModel((DefaultComboBoxModel) cbbModel);
         for (Unit unit : this.list.getUnit()) {
             cbbModel.addElement(unit);
@@ -153,6 +154,7 @@ public class UpdateProduct extends javax.swing.JFrame {
 
     private void dataPackagingSpecification() {
         DefaultComboBoxModel<PackagingSpecification> cbbModel = new DefaultComboBoxModel<>();
+        cbbPackagingSpecification.removeAll();
         cbbPackagingSpecification.setModel((DefaultComboBoxModel) cbbModel);
         for (PackagingSpecification packagingSpecification : this.list.getPackagingSpecification()) {
             cbbModel.addElement(packagingSpecification);
@@ -178,52 +180,73 @@ public class UpdateProduct extends javax.swing.JFrame {
         return dateTime.format(outputFormatter);
     }
 
+    private Boolean isDateValidNowDate(Date a, Date currentDate) {
+        return a.compareTo(currentDate) <= 0;
+    }
+
     private Boolean isDateValid(Date a, Date b) {
-        return a.compareTo(b) > 0;
+        Date currentDate = new Date();
+        if (isDateValidNowDate(a, currentDate)) {
+            return a.compareTo(b) > 0;
+        }
+        return true;
     }
 
     private Boolean isValidate() {
         if (txtId.getText().isBlank()) {
-            new Notification(this, Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP, "The ID is empty!").showNotification();
+            new Notification(this, Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP, "The ID is empty!")
+                    .showNotification();
             return false;
         } else if (txtName.getText().isBlank()) {
-            new Notification(this, Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP, "The product name is empty!").showNotification();
+            new Notification(this, Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP,
+                    "The product name is empty!").showNotification();
             return false;
         } else if (isDateValid(dateFM(txtProductionDate.getText()), dateFM(txtExpirationDate.getText()))) {
-            new Notification(this, Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP, "Invalid date!").showNotification();
+            new Notification(this, Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP, "Invalid date!")
+                    .showNotification();
             return false;
         } else if (txtPrice.getText().isBlank()) {
-            new Notification(this, Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP, "The price is empty!").showNotification();
+            new Notification(this, Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP,
+                    "The price is empty!").showNotification();
             return false;
         } else if (txtProvider.getText().isBlank()) {
-            new Notification(this, Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP, "The provider is empty!").showNotification();
+            new Notification(this, Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP,
+                    "The provider is empty!").showNotification();
             return false;
         } else if (txtBrand.getText().isBlank()) {
-            new Notification(this, Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP, "The brand is empty!").showNotification();
+            new Notification(this, Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP,
+                    "The brand is empty!").showNotification();
             return false;
         } else if (txtVolume.getText().isBlank()) {
-            new Notification(this, Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP, "You haven't entered the product volume!").showNotification();
+            new Notification(this, Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP,
+                    "You haven't entered the product volume!").showNotification();
             return false;
         } else if (txtOrgin.getText().isBlank()) {
-            new Notification(this, Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP, "No data added for the origin!").showNotification();
+            new Notification(this, Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP,
+                    "No data added for the origin!").showNotification();
             return false;
         } else if (txtComposition.getText().isBlank()) {
-            new Notification(this, Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP, "The field for the component is empty.!").showNotification();
+            new Notification(this, Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP,
+                    "The field for the component is empty.!").showNotification();
             return false;
         } else if (txtDescription.getText().isBlank()) {
-            new Notification(this, Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP, "You haven't added a product description!").showNotification();
+            new Notification(this, Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP,
+                    "You haven't added a product description!").showNotification();
             return true;
         } else {
             try {
                 if (Integer.parseInt(txtPrice.getText()) < 4000) {
-                    new Notification(this, Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP, "Invalid price!").showNotification();
+                    new Notification(this, Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP,
+                            "Invalid price!").showNotification();
                     return false;
                 } else if (Float.parseFloat(txtVolume.getText()) < 0) {
-                    new Notification(this, Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP, "Invalid volume!").showNotification();
+                    new Notification(this, Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP,
+                            "Invalid volume!").showNotification();
                     return false;
                 }
             } catch (NumberFormatException e) {
-                new Notification(this, Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP, "Invalid input data!").showNotification();
+                new Notification(this, Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP,
+                        "Invalid input data!").showNotification();
                 return false;
             }
         }
@@ -288,6 +311,7 @@ public class UpdateProduct extends javax.swing.JFrame {
     }
 
     @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated
     // <editor-fold defaultstate="collapsed" desc="Generated
     // <editor-fold defaultstate="collapsed" desc="Generated
     // <editor-fold defaultstate="collapsed" desc="Generated
@@ -384,9 +408,9 @@ public class UpdateProduct extends javax.swing.JFrame {
                     .addComponent(txtProvider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(18, 18, 18)
                         .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(txtId, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(23, Short.MAX_VALUE))
         );
@@ -432,6 +456,7 @@ public class UpdateProduct extends javax.swing.JFrame {
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
         lbproductgallery.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbproductgallery.setText("Image");
         lbproductgallery.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lbproductgalleryMouseClicked(evt);
@@ -469,21 +494,21 @@ public class UpdateProduct extends javax.swing.JFrame {
         txtDescription.setRows(5);
         textAreaScroll2.setViewportView(txtDescription);
 
-        btnNewFlavor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/udpm/fpt/icon/plus.png"))); // NOI18N
+        btnNewFlavor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/udpm/fpt/icon/insert.png"))); // NOI18N
         btnNewFlavor.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnNewFlavorMouseClicked(evt);
             }
         });
 
-        btnNewUnit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/udpm/fpt/icon/plus.png"))); // NOI18N
+        btnNewUnit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/udpm/fpt/icon/insert.png"))); // NOI18N
         btnNewUnit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnNewUnitActionPerformed(evt);
             }
         });
 
-        btnNewPackagingSpecification.setIcon(new javax.swing.ImageIcon(getClass().getResource("/udpm/fpt/icon/plus.png"))); // NOI18N
+        btnNewPackagingSpecification.setIcon(new javax.swing.ImageIcon(getClass().getResource("/udpm/fpt/icon/insert.png"))); // NOI18N
         btnNewPackagingSpecification.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnNewPackagingSpecificationMouseClicked(evt);
@@ -592,7 +617,7 @@ public class UpdateProduct extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnSaveMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSaveMouseClicked
+    private void btnSaveMouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_btnSaveMouseClicked
         if (!isValidate()) {
             return;
         }
@@ -604,78 +629,49 @@ public class UpdateProduct extends javax.swing.JFrame {
             perentForm.setData(data);
             dispose();
         } else {
-            Notification n = new Notification(this, Notification.Type.INFO, Notification.Location.DEFAULT_DESKTOP, "Unable to add the product with this ID");
+            Notification n = new Notification(this, Notification.Type.INFO, Notification.Location.DEFAULT_DESKTOP,
+                    "Unable to add the product with this ID");
             n.showNotification();
         }
-    }//GEN-LAST:event_btnSaveMouseClicked
+    }// GEN-LAST:event_btnSaveMouseClicked
 
-    private void btnCancelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCancelMouseClicked
+    private void btnCancelMouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_btnCancelMouseClicked
         this.dispose();
-    }//GEN-LAST:event_btnCancelMouseClicked
+    }// GEN-LAST:event_btnCancelMouseClicked
 
     private void lbproductgalleryMouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_lbproductgalleryMouseClicked
         this.imgName = urlImage(false);
     }
 
     private void btnNewUnitActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnNewUnitActionPerformed
-        String measurement_unit = JOptionPane.showInputDialog("New measurement unit");
-        Date defaultValue = new Date();
-        Unit unit = new Unit();
-        unit.setMeasurement_unit(measurement_unit);
-        unit.setCreate_at(defaultValue);
-        unit.setCreate_by("NongHoangVu");
-        if (this.list.insertUnit(unit)) {
-            cbbUnit.removeAll();
-            dataUnit();
-            Notification n = new Notification(this, Notification.Type.SUCCESS,
-                    Notification.Location.DEFAULT_DESKTOP, "SUCCESS");
-            n.showNotification();
-        } else {
-            Notification n = new Notification(this, Notification.Type.INFO, Notification.Location.DEFAULT_DESKTOP, "FAILED");
-            n.showNotification();
-        }
+        UnitManagement unitManagement = new UnitManagement();
+        unitManagement.setResultCallback((Boolean result) -> {
+            if (result) {
+                dataUnit();
+            }
+        });
+        unitManagement.setVisible(true);
     }
 
     private void btnNewPackagingSpecificationMouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_btnNewPackagingSpecificationMouseClicked
-        String packagingType = JOptionPane.showInputDialog("New packaging type");
-        Date defaultValue = new Date();
-        PackagingSpecification packagingSpecification = new PackagingSpecification();
-        packagingSpecification.setPackaging_type(packagingType);
-        packagingSpecification.setCreate_at(defaultValue);
-        packagingSpecification.setCreate_by("NongHoangVu");
-        if (this.list.insertPackagingSpecification(packagingSpecification)) {
-            cbbUnit.removeAll();
-            dataPackagingSpecification();
-            Notification n = new Notification(this, Notification.Type.SUCCESS,
-                    Notification.Location.DEFAULT_DESKTOP, "SUCCESS");
-            n.showNotification();
-        } else {
-            Notification n = new Notification(this, Notification.Type.INFO, Notification.Location.DEFAULT_DESKTOP,
-                    "FAILED");
-            n.showNotification();
-        }
+        PackagingSpecificationManagement packagingSpecificationManagement = new PackagingSpecificationManagement();
+        packagingSpecificationManagement.setResultCallback((Boolean result) -> {
+            if (result) {
+                dataPackagingSpecification();
+            }
+        });
+        packagingSpecificationManagement.setVisible(true);
     }
 
     private void btnNewFlavorMouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_btnNewFlavorMouseClicked
-        String taste = JOptionPane.showInputDialog("New Taste");
-        Date defaultValue = new Date();
-        Flavor flavor = new Flavor();
-        flavor.setTaste(taste);
-        flavor.setCreate_at(defaultValue);
-        flavor.setCreate_by("NongHoangVu");
-        if (this.list.insertFlavor(flavor)) {
-            cbbTaste.removeAll();
-            dataFlavor();
-            Notification n = new Notification(this, Notification.Type.SUCCESS,
-                    Notification.Location.DEFAULT_DESKTOP, "SUCCESS");
-            n.showNotification();
-        } else {
-            Notification n = new Notification(this, Notification.Type.INFO, Notification.Location.DEFAULT_DESKTOP,
-                    "FAILED");
-            n.showNotification();
-        }
+        FlavorManagement flavorManagement = new FlavorManagement();
+        flavorManagement.setResultCallback((Boolean result) -> {
+            if (result) {
+                dataFlavor();
+            }
+        });
+        flavorManagement.setVisible(true);
     }
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private udpm.fpt.swing.ButtonMessage btnCancel;

@@ -25,6 +25,8 @@ public class ProductService {
     private List<ProductInfo> list;
     private final IProductInfo r = getBean(IProductInfo.class);
     private final IMilk iMilk = getBean(IMilk.class);
+    private final IFlavor iFlavor = getBean(IFlavor.class);
+    private IUnit iUnit = getBean(IUnit.class);
 
     public ProductService() {
         this.list = list = new ArrayList<>();
@@ -41,25 +43,29 @@ public class ProductService {
     }
 
     public List<Flavor> getFlavor() {
-        IFlavor iFlavor = getBean(IFlavor.class);
-        List<Flavor> listFlavor = iFlavor.findAll();
+        List<Flavor> listFlavor = this.iFlavor.findAll();
         return listFlavor;
     }
 
     public Boolean insertFlavor(Flavor flavor) {
-        IFlavor iFlavor = getBean(IFlavor.class);
-        return iFlavor.save(flavor) != null;
+        return this.iFlavor.save(flavor) != null;
+    }
+
+    public Boolean removeByTaste(String flavor) {
+        return this.iFlavor.deleteFlavor(flavor);
     }
 
     public List<Unit> getUnit() {
-        IUnit iUnit = getBean(IUnit.class);
-        List<Unit> listUnit = iUnit.findAll();
+        List<Unit> listUnit = this.iUnit.findAll();
         return listUnit;
     }
 
+    public void removeByMeasurement_unit(Unit unit) {
+        this.iUnit.deleteById(unit.getId());
+    }
+
     public Boolean insertUnit(Unit unit) {
-        IUnit iUnit = getBean(IUnit.class);
-        return iUnit.save(unit) != null;
+        return this.iUnit.save(unit) != null;
     }
 
     public List<PackagingSpecification> getPackagingSpecification() {
@@ -71,6 +77,10 @@ public class ProductService {
     public Boolean insertPackagingSpecification(PackagingSpecification packagingSpecification) {
         IPackagingSpecification iPackagingSpecification = getBean(IPackagingSpecification.class);
         return iPackagingSpecification.save(packagingSpecification) != null;
+    }
+
+    public void removePackagingSpecification(PackagingSpecification packagingSpecification) {
+        this.iUnit.deleteById(packagingSpecification.getId());
     }
 
     public Boolean inserProduct(Milk m, ProductInfo pi) {

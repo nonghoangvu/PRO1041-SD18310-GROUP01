@@ -90,6 +90,7 @@ public class NewProduct extends javax.swing.JFrame {
 
     private void dataFlavor() {
         DefaultComboBoxModel<Flavor> cbbModel = new DefaultComboBoxModel<>();
+        cbbTaste.removeAll();
         cbbTaste.setModel((DefaultComboBoxModel) cbbModel);
         for (Flavor flavor : this.list.getFlavor()) {
             cbbModel.addElement(flavor);
@@ -98,6 +99,7 @@ public class NewProduct extends javax.swing.JFrame {
 
     private void dataUnit() {
         DefaultComboBoxModel<Unit> cbbModel = new DefaultComboBoxModel<>();
+        cbbUnit.removeAll();
         cbbUnit.setModel((DefaultComboBoxModel) cbbModel);
         for (Unit unit : this.list.getUnit()) {
             cbbModel.addElement(unit);
@@ -106,6 +108,7 @@ public class NewProduct extends javax.swing.JFrame {
 
     private void dataPackagingSpecification() {
         DefaultComboBoxModel<PackagingSpecification> cbbModel = new DefaultComboBoxModel<>();
+        cbbPackagingSpecification.removeAll();
         cbbPackagingSpecification.setModel((DefaultComboBoxModel) cbbModel);
         for (PackagingSpecification packagingSpecification : this.list.getPackagingSpecification()) {
             cbbModel.addElement(packagingSpecification);
@@ -180,8 +183,16 @@ public class NewProduct extends javax.swing.JFrame {
         return null;
     }
 
+    private Boolean isDateValidNowDate(Date a, Date currentDate) {
+        return a.compareTo(currentDate) <= 0;
+    }
+
     private Boolean isDateValid(Date a, Date b) {
-        return a.compareTo(b) > 0;
+        Date currentDate = new Date();
+        if (isDateValidNowDate(a, currentDate)) {
+            return a.compareTo(b) > 0;
+        }
+        return true;
     }
 
     private Boolean isValidate() {
@@ -426,21 +437,21 @@ public class NewProduct extends javax.swing.JFrame {
         txtDescription.setRows(5);
         textAreaScroll2.setViewportView(txtDescription);
 
-        btnNewFlavor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/udpm/fpt/icon/plus.png"))); // NOI18N
+        btnNewFlavor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/udpm/fpt/icon/insert.png"))); // NOI18N
         btnNewFlavor.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnNewFlavorMouseClicked(evt);
             }
         });
 
-        btnNewUnit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/udpm/fpt/icon/plus.png"))); // NOI18N
+        btnNewUnit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/udpm/fpt/icon/insert.png"))); // NOI18N
         btnNewUnit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnNewUnitActionPerformed(evt);
             }
         });
 
-        btnNewPackagingSpecification.setIcon(new javax.swing.ImageIcon(getClass().getResource("/udpm/fpt/icon/plus.png"))); // NOI18N
+        btnNewPackagingSpecification.setIcon(new javax.swing.ImageIcon(getClass().getResource("/udpm/fpt/icon/insert.png"))); // NOI18N
         btnNewPackagingSpecification.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnNewPackagingSpecificationMouseClicked(evt);
@@ -460,27 +471,25 @@ public class NewProduct extends javax.swing.JFrame {
                         .addComponent(textAreaScroll2, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                                .addComponent(cbbTaste, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnNewFlavor, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                                        .addComponent(cbbTaste, javax.swing.GroupLayout.DEFAULT_SIZE, 215, Short.MAX_VALUE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(btnNewFlavor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(6, 6, 6))
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel3Layout.createSequentialGroup()
+                                        .addComponent(txtVolume, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(cbbUnit, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(0, 0, Short.MAX_VALUE))
                                     .addComponent(txtOrgin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(txtBrand, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                                        .addComponent(cbbPackagingSpecification, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(btnNewPackagingSpecification, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(txtVolume, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(cbbUnit, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnNewUnit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, Short.MAX_VALUE)))
+                                    .addComponent(cbbPackagingSpecification, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(btnNewPackagingSpecification, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnNewUnit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(18, 18, 18)
                         .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(10, 10, 10))))
         );
@@ -515,6 +524,8 @@ public class NewProduct extends javax.swing.JFrame {
                     .addComponent(textAreaScroll2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
+
+        jPanel3Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {cbbUnit, txtVolume});
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -577,57 +588,33 @@ public class NewProduct extends javax.swing.JFrame {
     }
 
     private void btnNewUnitActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnNewUnitActionPerformed
-        String measurement_unit = JOptionPane.showInputDialog("New measurement unit");
-        Date defaultValue = new Date();
-        Unit unit = new Unit();
-        unit.setMeasurement_unit(measurement_unit);
-        unit.setCreate_at(defaultValue);
-        unit.setCreate_by("NongHoangVu");
-        if (this.list.insertUnit(unit)) {
-            cbbUnit.removeAll();
-            dataUnit();
-            Notification n = new Notification(this, Notification.Type.SUCCESS, Notification.Location.DEFAULT_DESKTOP, "SUCCESS");
-            n.showNotification();
-        } else {
-            Notification n = new Notification(this, Notification.Type.INFO, Notification.Location.DEFAULT_DESKTOP, "FAILED");
-            n.showNotification();
-        }
+        UnitManagement unitManagement = new UnitManagement();
+        unitManagement.setResultCallback((Boolean result) -> {
+            if (result) {
+                dataUnit();
+            }
+        });
+        unitManagement.setVisible(true);
     }
 
     private void btnNewPackagingSpecificationMouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_btnNewPackagingSpecificationMouseClicked
-        String packagingType = JOptionPane.showInputDialog("New packaging type");
-        Date defaultValue = new Date();
-        PackagingSpecification packagingSpecification = new PackagingSpecification();
-        packagingSpecification.setPackaging_type(packagingType);
-        packagingSpecification.setCreate_at(defaultValue);
-        packagingSpecification.setCreate_by("NongHoangVu");
-        if (this.list.insertPackagingSpecification(packagingSpecification)) {
-            cbbUnit.removeAll();
-            dataPackagingSpecification();
-            Notification n = new Notification(this, Notification.Type.SUCCESS, Notification.Location.DEFAULT_DESKTOP, "SUCCESS");
-            n.showNotification();
-        } else {
-            Notification n = new Notification(this, Notification.Type.INFO, Notification.Location.DEFAULT_DESKTOP, "FAILED");
-            n.showNotification();
-        }
+        PackagingSpecificationManagement packagingSpecificationManagement = new PackagingSpecificationManagement();
+        packagingSpecificationManagement.setResultCallback((Boolean result) -> {
+            if (result) {
+                dataPackagingSpecification();
+            }
+        });
+        packagingSpecificationManagement.setVisible(true);
     }
 
     private void btnNewFlavorMouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_btnNewFlavorMouseClicked
-        String taste = JOptionPane.showInputDialog("New Taste");
-        Date defaultValue = new Date();
-        Flavor flavor = new Flavor();
-        flavor.setTaste(taste);
-        flavor.setCreate_at(defaultValue);
-        flavor.setCreate_by("NongHoangVu");
-        if (this.list.insertFlavor(flavor)) {
-            cbbTaste.removeAll();
-            dataFlavor();
-            Notification n = new Notification(this, Notification.Type.SUCCESS, Notification.Location.DEFAULT_DESKTOP, "SUCCESS");
-            n.showNotification();
-        } else {
-            Notification n = new Notification(this, Notification.Type.INFO, Notification.Location.DEFAULT_DESKTOP, "FAILED");
-            n.showNotification();
-        }
+        FlavorManagement flavorManagement = new FlavorManagement();
+        flavorManagement.setResultCallback((Boolean result) -> {
+            if (result) {
+                dataFlavor();
+            }
+        });
+        flavorManagement.setVisible(true);
     }
 
     private void button1ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_button1ActionPerformed
