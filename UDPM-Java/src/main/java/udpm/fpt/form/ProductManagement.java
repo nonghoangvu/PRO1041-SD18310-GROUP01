@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.table.DefaultTableModel;
+import udpm.fpt.component.MessagePanel;
 import udpm.fpt.component.UpdateProduct;
 import udpm.fpt.model.Milk;
 import udpm.fpt.model.ProductInfo;
@@ -74,10 +75,11 @@ public class ProductManagement extends javax.swing.JPanel {
         return dateTime.format(outputFormatter);
     }
 
-    private String setSelectedIndex(int number){
+    private String setSelectedIndex(int number) {
         DecimalFormat decimalFormat = new DecimalFormat("#,###");
         return decimalFormat.format(number);
     }
+
     private void setLabel() {
         ProductInfo pi = this.temp.get(tblProduct.getSelectedRow());
         lbId.setText(String.valueOf(pi.getMilk().getId()));
@@ -114,6 +116,15 @@ public class ProductManagement extends javax.swing.JPanel {
         lbDescrription.setText(null);
         lbproductgallery.setIcon(null);
         tblProduct.clearSelection();
+    }
+
+    public void delete() {
+        Milk m = this.list.getMilkByID(Long.valueOf(lbId.getText()));
+        m.setIsDelete(true);
+        if (this.list.hideRestoreProduct(m)) {
+            this.temp.clear();
+            fillTable();
+        }
     }
 
     /**
@@ -176,9 +187,9 @@ public class ProductManagement extends javax.swing.JPanel {
         lbCreateBy = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         lbproductgallery = new javax.swing.JLabel();
-        btnNew = new javax.swing.JButton();
-        btnUpdate = new javax.swing.JButton();
-        btnHide = new javax.swing.JButton();
+        btnNew = new udpm.fpt.swing.ButtonMessage();
+        btnUpdate = new udpm.fpt.swing.ButtonMessage();
+        btnDelete = new udpm.fpt.swing.ButtonMessage();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -483,39 +494,36 @@ public class ProductManagement extends javax.swing.JPanel {
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lbproductgallery, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(lbproductgallery, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
         );
 
         btnNew.setBackground(new java.awt.Color(102, 204, 255));
-        btnNew.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnNew.setForeground(new java.awt.Color(255, 255, 255));
         btnNew.setText("New");
-        btnNew.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
-        btnNew.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnNewActionPerformed(evt);
+        btnNew.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnNew.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnNewMouseClicked(evt);
             }
         });
 
         btnUpdate.setBackground(new java.awt.Color(102, 204, 255));
-        btnUpdate.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnUpdate.setForeground(new java.awt.Color(255, 255, 255));
         btnUpdate.setText("Update");
-        btnUpdate.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        btnUpdate.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnUpdate.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnUpdateMouseClicked(evt);
             }
         });
 
-        btnHide.setBackground(new java.awt.Color(102, 204, 255));
-        btnHide.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        btnHide.setForeground(new java.awt.Color(255, 255, 255));
-        btnHide.setText("Delete");
-        btnHide.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
-        btnHide.addMouseListener(new java.awt.event.MouseAdapter() {
+        btnDelete.setBackground(new java.awt.Color(255, 51, 51));
+        btnDelete.setForeground(new java.awt.Color(255, 255, 255));
+        btnDelete.setText("Delete");
+        btnDelete.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnDelete.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnHideMouseClicked(evt);
+                btnDeleteMouseClicked(evt);
             }
         });
 
@@ -582,15 +590,16 @@ public class ProductManagement extends javax.swing.JPanel {
                                     .addComponent(jLabel7)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addComponent(lbPrice, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(btnNew, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btnHide, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(btnNew, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -656,13 +665,11 @@ public class ProductManagement extends javax.swing.JPanel {
                     .addComponent(lbCreateBy))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnHide, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnNew, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(23, 23, 23))
+                    .addComponent(btnNew, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(21, 21, 21))
         );
-
-        jPanel2Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {btnNew, btnUpdate});
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -689,24 +696,6 @@ public class ProductManagement extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnHideMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnHideMouseClicked
-        Milk m = this.list.getMilkByID(Long.valueOf(lbId.getText()));
-        m.setIsDelete(true);
-        if (this.list.hideRestoreProduct(m)) {
-            this.temp.clear();
-            fillTable();
-        }
-    }//GEN-LAST:event_btnHideMouseClicked
-
-    private void btnUpdateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnUpdateMouseClicked
-        if (tblProduct.getSelectedRow() < 0) {
-            return;
-        }
-        ProductInfo pi = temp.get(tblProduct.getSelectedRow());
-        UpdateProduct prd = new UpdateProduct(this, pi);
-        prd.setVisible(true);
-    }//GEN-LAST:event_btnUpdateMouseClicked
-
     private void lbproductgalleryMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbproductgalleryMouseClicked
         if (lbproductgallery.getIcon() == null) {
             new IMG("ImageNull.png").setVisible(true);
@@ -723,6 +712,35 @@ public class ProductManagement extends javax.swing.JPanel {
     private void btnApplyFiltersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnApplyFiltersMouseClicked
 
     }//GEN-LAST:event_btnApplyFiltersMouseClicked
+
+    private void btnNewMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnNewMouseClicked
+        NewProduct prd = new NewProduct(this);
+        prd.setVisible(true);
+    }//GEN-LAST:event_btnNewMouseClicked
+
+    private void btnUpdateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnUpdateMouseClicked
+        if (tblProduct.getSelectedRow() < 0) {
+            return;
+        }
+        ProductInfo pi = temp.get(tblProduct.getSelectedRow());
+        UpdateProduct prd = new UpdateProduct(this, pi);
+        prd.setVisible(true);
+    }//GEN-LAST:event_btnUpdateMouseClicked
+
+    private void btnDeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDeleteMouseClicked
+        if (tblProduct.getSelectedRow() < 0) {
+            return;
+        }
+        MessagePanel msg = new MessagePanel();
+        msg.setTitle("Are you sure you want to delete this?");
+        msg.setMessage("If you delete this product, the product will be moved to the storage and can be restored.");
+        msg.setResultCallback((Boolean result) -> {
+            if (result) {
+                delete();
+            }
+        });
+        msg.setVisible(true);
+    }//GEN-LAST:event_btnDeleteMouseClicked
 
     private void setImange(String url) {
         lbproductgallery.setText(null);
@@ -750,12 +768,6 @@ public class ProductManagement extends javax.swing.JPanel {
         return lbId.getText();
     }
 
-    private void btnNewActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnNewActionPerformed
-        NewProduct prd = new NewProduct(this);
-        prd.setVisible(true);
-
-    }// GEN-LAST:event_btnNewActionPerformed
-
     private void tblProductMouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_tblProductMouseClicked
         setLabel();
     }// GEN-LAST:event_tblProductMouseClicked
@@ -763,9 +775,9 @@ public class ProductManagement extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private udpm.fpt.swing.Button btnApplyFilters;
     private udpm.fpt.swing.Button btnClear;
-    private javax.swing.JButton btnHide;
-    private javax.swing.JButton btnNew;
-    private javax.swing.JButton btnUpdate;
+    private udpm.fpt.swing.ButtonMessage btnDelete;
+    private udpm.fpt.swing.ButtonMessage btnNew;
+    private udpm.fpt.swing.ButtonMessage btnUpdate;
     private udpm.fpt.swing.Button button1;
     private udpm.fpt.swing.Button button2;
     private udpm.fpt.swing.Combobox combobox1;
