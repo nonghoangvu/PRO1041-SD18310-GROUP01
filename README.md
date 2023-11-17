@@ -64,3 +64,9 @@ Requirements for use: __JDK 21__
 - Get all icon data into another file
   ![](https://raw.githubusercontent.com/vunhph33506/Document/main/Screenshot%202023-11-17%20103549.png)
 - Open the project with VS Code and paste all the icon you just grabbed and saved.
+
+<br>
+##Illustration
+![](https://raw.githubusercontent.com/vunhph33506/Document/main/Product.png)
+![](https://raw.githubusercontent.com/vunhph33506/Document/main/New.png)
+![](https://raw.githubusercontent.com/vunhph33506/Document/main/NewF.png)
