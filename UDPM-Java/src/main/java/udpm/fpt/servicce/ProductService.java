@@ -27,7 +27,7 @@ public class ProductService {
     private final IMilk iMilk = getBean(IMilk.class);
     private final IFlavor iFlavor = getBean(IFlavor.class);
     private final IUnit iUnit = getBean(IUnit.class);
-    private IPackagingSpecification iPackagingSpecification = getBean(IPackagingSpecification.class);
+    private final IPackagingSpecification iPackagingSpecification = getBean(IPackagingSpecification.class);
 
     public ProductService() {
         this.list = list = new ArrayList<>();
@@ -36,6 +36,18 @@ public class ProductService {
     public List<ProductInfo> getList() {
         this.list.clear();
         this.list = r.findAll();
+        return list;
+    }
+
+    public List<ProductInfo> getSearch(String search) {
+        this.list.clear();
+        this.list = r.findProductInfo(search);
+        return list;
+    }
+
+    public List<ProductInfo> getPriceRange(String search, Integer minPrice, Integer maxPrice) {
+        this.list.clear();
+        this.list = r.findProductInfoInPriceRange(search, minPrice, maxPrice);
         return list;
     }
 

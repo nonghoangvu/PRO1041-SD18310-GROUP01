@@ -11,11 +11,16 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 import udpm.fpt.component.MessagePanel;
 import udpm.fpt.component.UpdateProduct;
+import udpm.fpt.model.Flavor;
 import udpm.fpt.model.Milk;
+import udpm.fpt.model.PackagingSpecification;
 import udpm.fpt.model.ProductInfo;
 import udpm.fpt.servicce.ProductService;
 import udpm.fpt.swing.table.TableCustom;
@@ -26,9 +31,6 @@ import udpm.fpt.swing.table.TableCustom;
  */
 public class ProductManagement extends javax.swing.JPanel {
 
-    /**
-     * Creates new form ProductManagement
-     */
     private DefaultTableModel tblModel;
     private final ProductService list;
     private List<ProductInfo> temp;
@@ -36,11 +38,19 @@ public class ProductManagement extends javax.swing.JPanel {
     public ProductManagement() {
         initComponents();
         this.list = new ProductService();
-        this.temp = new ArrayList<>();
-        TableCustom.apply(jScrollPane1, TableCustom.TableType.MULTI_LINE);
-        fillTable();
+        initProduct();
     }
 
+    public void initProduct() {
+        this.temp = new ArrayList<>();
+        TableCustom.apply(jScrollPane1, TableCustom.TableType.MULTI_LINE);
+        dataFlavor();
+        dataPackagingSpecification();
+        fillTable();
+        findProduct();
+    }
+
+    /*-------------------------------------------Fill Data-------------------------------------------*/
     private void fillTable() {
         this.temp.clear();
         tblModel = (DefaultTableModel) tblProduct.getModel();
@@ -56,6 +66,53 @@ public class ProductManagement extends javax.swing.JPanel {
 
     }
 
+    private void fillSearch(String search) {
+        this.temp.clear();
+        tblModel = (DefaultTableModel) tblProduct.getModel();
+        tblModel.setRowCount(0);
+        for (ProductInfo prd : this.list.getSearch(search)) {
+            if (!prd.getMilk().getIsDelete()) {
+                tblModel.addRow(
+                        new Object[]{prd.getMilk().getId(), prd.getMilk().getProduct_name(), prd.getFlavor().getTaste(),
+                            prd.getMilk().getPrice(), prd.getMilk().getAmount(), prd.getMilk().getProvider()});
+                this.temp.add(prd);
+            }
+        }
+    }
+
+    private void dataFlavor() {
+        DefaultComboBoxModel<Flavor> cbbModel = new DefaultComboBoxModel<>();
+        cbbTaste.removeAll();
+        cbbTaste.setModel((DefaultComboBoxModel) cbbModel);
+        for (Flavor flavor : this.list.getFlavor()) {
+            cbbModel.addElement(flavor);
+        }
+    }
+
+    private void fillRangePrice(String search, Integer minPrice, Integer maxPrice) {
+        this.temp.clear();
+        tblModel = (DefaultTableModel) tblProduct.getModel();
+        tblModel.setRowCount(0);
+        for (ProductInfo prd : this.list.getPriceRange(search, minPrice, maxPrice)) {
+            if (!prd.getMilk().getIsDelete()) {
+                tblModel.addRow(
+                        new Object[]{prd.getMilk().getId(), prd.getMilk().getProduct_name(), prd.getFlavor().getTaste(),
+                            prd.getMilk().getPrice(), prd.getMilk().getAmount(), prd.getMilk().getProvider()});
+                this.temp.add(prd);
+            }
+        }
+    }
+
+    private void dataPackagingSpecification() {
+        DefaultComboBoxModel<PackagingSpecification> cbbModel = new DefaultComboBoxModel<>();
+        cbbPackagingSpecification.removeAll();
+        cbbPackagingSpecification.setModel((DefaultComboBoxModel) cbbModel);
+        for (PackagingSpecification packagingSpecification : this.list.getPackagingSpecification()) {
+            cbbModel.addElement(packagingSpecification);
+        }
+    }
+
+    /*-------------------------------------------Data Format-------------------------------------------*/
     public Date dateFM(String date) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         try {
@@ -80,6 +137,7 @@ public class ProductManagement extends javax.swing.JPanel {
         return decimalFormat.format(number);
     }
 
+    /*-------------------------------------------Set Data-------------------------------------------*/
     private void setLabel() {
         ProductInfo pi = this.temp.get(tblProduct.getSelectedRow());
         lbId.setText(String.valueOf(pi.getMilk().getId()));
@@ -118,6 +176,68 @@ public class ProductManagement extends javax.swing.JPanel {
         tblProduct.clearSelection();
     }
 
+    private void setImange(String url) {
+        lbproductgallery.setText(null);
+        try {
+            int labelWidth = lbproductgallery.getWidth();
+            int labelHeight = lbproductgallery.getHeight();
+            ImageIcon originalIcon = new javax.swing.ImageIcon(getClass().getResource("/udpm/fpt/productgallery/" + url));
+            Image originalImage = originalIcon.getImage();
+            Image scaledImage = originalImage.getScaledInstance(labelWidth, labelHeight, Image.SCALE_SMOOTH);
+            ImageIcon scaledIcon = new ImageIcon(scaledImage);
+            lbproductgallery.setIcon(scaledIcon);
+        } catch (Exception e) {
+            lbproductgallery.setIcon(null);
+            lbproductgallery.setText("Image not found");
+        }
+    }
+
+    public void setData(String data) {
+        clearLabel();
+        lbId.setText(data);
+        fillTable();
+    }
+
+    public String getData() {
+        return lbId.getText();
+    }
+
+    /*-------------------------------------------Search-------------------------------------------*/
+    public void findProduct() {
+        txtSearch.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                String search = txtSearch.getText().trim();
+                if (search.isBlank()) {
+                    fillTable();
+                } else {
+                    fillSearch(search);
+                }
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                String search = txtSearch.getText().trim();
+                if (search.isBlank()) {
+                    fillTable();
+                } else {
+                    fillSearch(search);
+                }
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                String search = txtSearch.getText().trim();
+                if (search.isBlank()) {
+                    fillTable();
+                } else {
+                    fillSearch(search);
+                }
+            }
+        });
+    }
+
+    /*-------------------------------------------Control-------------------------------------------*/
     public void delete() {
         Milk m = this.list.getMilkByID(Long.valueOf(lbId.getText()));
         m.setIsDelete(true);
@@ -127,23 +247,16 @@ public class ProductManagement extends javax.swing.JPanel {
         }
     }
 
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
     @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        textField1 = new udpm.fpt.swing.TextField();
-        combobox1 = new udpm.fpt.swing.Combobox();
+        txtSearch = new udpm.fpt.swing.TextField();
+        cbbTaste = new udpm.fpt.swing.Combobox();
         jPanel4 = new javax.swing.JPanel();
-        textField2 = new udpm.fpt.swing.TextField();
-        textField3 = new udpm.fpt.swing.TextField();
-        button1 = new udpm.fpt.swing.Button();
+        txtTo = new udpm.fpt.swing.TextField();
+        txtFrom = new udpm.fpt.swing.TextField();
         textField4 = new udpm.fpt.swing.TextField();
         textField5 = new udpm.fpt.swing.TextField();
         textField6 = new udpm.fpt.swing.TextField();
@@ -151,7 +264,7 @@ public class ProductManagement extends javax.swing.JPanel {
         button2 = new udpm.fpt.swing.Button();
         btnApplyFilters = new udpm.fpt.swing.Button();
         btnClear = new udpm.fpt.swing.Button();
-        combobox2 = new udpm.fpt.swing.Combobox();
+        cbbPackagingSpecification = new udpm.fpt.swing.Combobox();
         jSeparator1 = new javax.swing.JSeparator();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblProduct = new javax.swing.JTable();
@@ -196,16 +309,16 @@ public class ProductManagement extends javax.swing.JPanel {
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Category", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14))); // NOI18N
 
-        textField1.setLabelText("Search");
+        txtSearch.setLabelText("Search");
 
-        combobox1.setLabeText("Taste");
+        cbbTaste.setLabeText("Taste");
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Price range", javax.swing.border.TitledBorder.LEADING, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12), new java.awt.Color(178, 175, 175))); // NOI18N
 
-        textField2.setLabelText("To");
+        txtTo.setLabelText("To");
 
-        textField3.setLabelText("From");
+        txtFrom.setLabelText("From");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -213,25 +326,23 @@ public class ProductManagement extends javax.swing.JPanel {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(textField3, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtFrom, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(textField2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtTo, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel4Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {textField2, textField3});
+        jPanel4Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {txtFrom, txtTo});
 
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(textField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(textField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtFrom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtTo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(17, Short.MAX_VALUE))
         );
-
-        button1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/udpm/fpt/icon/search.png"))); // NOI18N
 
         textField4.setLabelText("Amount");
 
@@ -265,7 +376,7 @@ public class ProductManagement extends javax.swing.JPanel {
             }
         });
 
-        combobox2.setLabeText("Packaging Specification");
+        cbbPackagingSpecification.setLabeText("Packaging Specification");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -275,36 +386,32 @@ public class ProductManagement extends javax.swing.JPanel {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jPanel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(combobox2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(combobox1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(cbbPackagingSpecification, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(cbbTaste, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(textField5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(textField6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnApplyFilters, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnClear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(textField1, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(button1, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)))
+                            .addComponent(btnClear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addContainerGap())
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(textField7, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(button2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(textField4, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(txtSearch, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addComponent(textField7, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(button2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(textField4, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 11, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(textField1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(button2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -318,9 +425,9 @@ public class ProductManagement extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addComponent(textField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(combobox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cbbTaste, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(combobox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cbbPackagingSpecification, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(36, 36, 36)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 89, Short.MAX_VALUE)
@@ -693,7 +800,6 @@ public class ProductManagement extends javax.swing.JPanel {
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
-
     private void lbproductgalleryMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbproductgalleryMouseClicked
         if (lbproductgallery.getIcon() == null) {
             new IMG("ImageNull.png").setVisible(true);
@@ -708,7 +814,7 @@ public class ProductManagement extends javax.swing.JPanel {
     }//GEN-LAST:event_btnClearMouseClicked
 
     private void btnApplyFiltersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnApplyFiltersMouseClicked
-
+        fillRangePrice(txtSearch.getText(), Integer.valueOf(txtFrom.getText()), Integer.valueOf(txtTo.getText()));
     }//GEN-LAST:event_btnApplyFiltersMouseClicked
 
     private void btnNewMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnNewMouseClicked
@@ -740,35 +846,9 @@ public class ProductManagement extends javax.swing.JPanel {
         msg.setVisible(true);
     }//GEN-LAST:event_btnDeleteMouseClicked
 
-    private void setImange(String url) {
-        lbproductgallery.setText(null);
-        try {
-            int labelWidth = lbproductgallery.getWidth();
-            int labelHeight = lbproductgallery.getHeight();
-            ImageIcon originalIcon = new javax.swing.ImageIcon(getClass().getResource("/udpm/fpt/productgallery/" + url));
-            Image originalImage = originalIcon.getImage();
-            Image scaledImage = originalImage.getScaledInstance(labelWidth, labelHeight, Image.SCALE_SMOOTH);
-            ImageIcon scaledIcon = new ImageIcon(scaledImage);
-            lbproductgallery.setIcon(scaledIcon);
-        } catch (Exception e) {
-            lbproductgallery.setIcon(null);
-            lbproductgallery.setText("Image not found");
-        }
-    }
-
-    public void setData(String data) {
-        clearLabel();
-        lbId.setText(data);
-        fillTable();
-    }
-
-    public String getData() {
-        return lbId.getText();
-    }
-
-    private void tblProductMouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_tblProductMouseClicked
+    private void tblProductMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblProductMouseClicked
         setLabel();
-    }// GEN-LAST:event_tblProductMouseClicked
+    }//GEN-LAST:event_tblProductMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private udpm.fpt.swing.Button btnApplyFilters;
@@ -776,10 +856,9 @@ public class ProductManagement extends javax.swing.JPanel {
     private udpm.fpt.swing.ButtonMessage btnDelete;
     private udpm.fpt.swing.ButtonMessage btnNew;
     private udpm.fpt.swing.ButtonMessage btnUpdate;
-    private udpm.fpt.swing.Button button1;
     private udpm.fpt.swing.Button button2;
-    private udpm.fpt.swing.Combobox combobox1;
-    private udpm.fpt.swing.Combobox combobox2;
+    private udpm.fpt.swing.Combobox cbbPackagingSpecification;
+    private udpm.fpt.swing.Combobox cbbTaste;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel13;
@@ -817,13 +896,13 @@ public class ProductManagement extends javax.swing.JPanel {
     private javax.swing.JLabel lbVolume;
     private javax.swing.JLabel lbproductgallery;
     private javax.swing.JTable tblProduct;
-    private udpm.fpt.swing.TextField textField1;
-    private udpm.fpt.swing.TextField textField2;
-    private udpm.fpt.swing.TextField textField3;
     private udpm.fpt.swing.TextField textField4;
     private udpm.fpt.swing.TextField textField5;
     private udpm.fpt.swing.TextField textField6;
     private udpm.fpt.swing.TextField textField7;
+    private udpm.fpt.swing.TextField txtFrom;
+    private udpm.fpt.swing.TextField txtSearch;
+    private udpm.fpt.swing.TextField txtTo;
     // End of variables declaration//GEN-END:variables
 
 }

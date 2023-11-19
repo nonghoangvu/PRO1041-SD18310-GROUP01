@@ -68,33 +68,31 @@
               <Group type="102" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="1" attributes="0">
+                      <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="1" attributes="0">
                               <Component id="jPanel4" alignment="0" max="32767" attributes="0"/>
-                              <Component id="combobox2" alignment="0" max="32767" attributes="0"/>
-                              <Component id="combobox1" alignment="0" max="32767" attributes="0"/>
+                              <Component id="cbbPackagingSpecification" alignment="0" max="32767" attributes="0"/>
+                              <Component id="cbbTaste" alignment="0" max="32767" attributes="0"/>
                               <Component id="textField5" alignment="0" max="32767" attributes="0"/>
                               <Component id="textField6" alignment="0" max="32767" attributes="0"/>
                               <Component id="btnApplyFilters" alignment="0" max="32767" attributes="0"/>
                               <Component id="btnClear" alignment="1" max="32767" attributes="0"/>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="textField1" min="-2" pref="213" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="button1" pref="43" max="32767" attributes="0"/>
-                              </Group>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" attributes="0">
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="textField7" min="-2" pref="213" max="-2" attributes="0"/>
-                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                  <Component id="button2" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                              <Component id="txtSearch" alignment="0" max="32767" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="textField7" min="-2" pref="213" max="-2" attributes="0"/>
+                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                      <Component id="button2" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Component id="textField4" alignment="0" min="-2" pref="118" max="-2" attributes="0"/>
                               </Group>
-                              <Component id="textField4" alignment="0" min="-2" pref="118" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          <EmptySpace min="0" pref="11" max="32767" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -104,10 +102,7 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Component id="textField1" max="32767" attributes="0"/>
-                      <Component id="button1" min="-2" pref="46" max="-2" attributes="0"/>
-                  </Group>
+                  <Component id="txtSearch" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="button2" linkSize="5" min="-2" max="-2" attributes="0"/>
@@ -122,9 +117,9 @@
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="textField5" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Component id="combobox1" min="-2" max="-2" attributes="0"/>
+                  <Component id="cbbTaste" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Component id="combobox2" min="-2" max="-2" attributes="0"/>
+                  <Component id="cbbPackagingSpecification" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
                   <Component id="jPanel4" min="-2" max="-2" attributes="0"/>
                   <EmptySpace pref="89" max="32767" attributes="0"/>
@@ -137,12 +132,12 @@
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Component class="udpm.fpt.swing.TextField" name="textField1">
+        <Component class="udpm.fpt.swing.TextField" name="txtSearch">
           <Properties>
             <Property name="labelText" type="java.lang.String" value="Search"/>
           </Properties>
         </Component>
-        <Component class="udpm.fpt.swing.Combobox" name="combobox1">
+        <Component class="udpm.fpt.swing.Combobox" name="cbbTaste">
           <Properties>
             <Property name="labeText" type="java.lang.String" value="Taste"/>
           </Properties>
@@ -167,9 +162,9 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="textField3" linkSize="4" min="-2" pref="101" max="-2" attributes="0"/>
+                      <Component id="txtFrom" linkSize="4" min="-2" pref="101" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="textField2" linkSize="4" min="-2" pref="100" max="-2" attributes="0"/>
+                      <Component id="txtTo" linkSize="4" min="-2" pref="100" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
@@ -179,8 +174,8 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="textField3" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="textField2" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="txtFrom" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="txtTo" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace pref="17" max="32767" attributes="0"/>
                   </Group>
@@ -188,25 +183,18 @@
             </DimensionLayout>
           </Layout>
           <SubComponents>
-            <Component class="udpm.fpt.swing.TextField" name="textField2">
+            <Component class="udpm.fpt.swing.TextField" name="txtTo">
               <Properties>
                 <Property name="labelText" type="java.lang.String" value="To"/>
               </Properties>
             </Component>
-            <Component class="udpm.fpt.swing.TextField" name="textField3">
+            <Component class="udpm.fpt.swing.TextField" name="txtFrom">
               <Properties>
                 <Property name="labelText" type="java.lang.String" value="From"/>
               </Properties>
             </Component>
           </SubComponents>
         </Container>
-        <Component class="udpm.fpt.swing.Button" name="button1">
-          <Properties>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/udpm/fpt/icon/search.png"/>
-            </Property>
-          </Properties>
-        </Component>
         <Component class="udpm.fpt.swing.TextField" name="textField4">
           <Properties>
             <Property name="labelText" type="java.lang.String" value="Amount"/>
@@ -282,7 +270,7 @@
             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnClearMouseClicked"/>
           </Events>
         </Component>
-        <Component class="udpm.fpt.swing.Combobox" name="combobox2">
+        <Component class="udpm.fpt.swing.Combobox" name="cbbPackagingSpecification">
           <Properties>
             <Property name="labeText" type="java.lang.String" value="Packaging Specification"/>
           </Properties>

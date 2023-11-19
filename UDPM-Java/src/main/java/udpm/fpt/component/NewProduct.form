@@ -331,6 +331,9 @@
               <Properties>
                 <Property name="labeText" type="java.lang.String" value="Taste"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbbTasteActionPerformed"/>
+              </Events>
             </Component>
             <Component class="udpm.fpt.swing.TextField" name="txtOrgin">
               <Properties>

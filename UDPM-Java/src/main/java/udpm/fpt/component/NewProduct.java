@@ -395,6 +395,11 @@ public class NewProduct extends javax.swing.JFrame {
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Detail", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14))); // NOI18N
 
         cbbTaste.setLabeText("Taste");
+        cbbTaste.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbbTasteActionPerformed(evt);
+            }
+        });
 
         txtOrgin.setLabelText("Origin");
 
@@ -593,6 +598,10 @@ public class NewProduct extends javax.swing.JFrame {
     private void btnCancelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCancelMouseClicked
         this.dispose();
     }//GEN-LAST:event_btnCancelMouseClicked
+
+    private void cbbTasteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbTasteActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbbTasteActionPerformed
 
     private void lbproductgalleryMouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_lbproductgalleryMouseClicked
         this.imgName = urlImage(false);
