@@ -26,7 +26,7 @@ public class Header extends javax.swing.JPanel {
         cmdMenu = new udpm.fpt.swing.Button();
 
         cmdMenu.setBackground(new java.awt.Color(250, 250, 250));
-        cmdMenu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/udpm/fpt/icon/menu.png"))); // NOI18N
+        cmdMenu.setIcon(new javax.swing.ImageIcon(Header.class.getResource("/udpm/fpt/icon/menu.png"))); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);

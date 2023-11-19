@@ -37,7 +37,7 @@
         </Property>
         <Property name="borderSize" type="int" value="2"/>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/udpm/fpt/icon/LogoTH.png"/>
+          <Image iconType="3" name="/udpm/icon/LogoTH.png"/>
         </Property>
       </Properties>
 
