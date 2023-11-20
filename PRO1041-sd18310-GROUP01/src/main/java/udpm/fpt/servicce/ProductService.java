@@ -4,7 +4,11 @@ import udpm.fpt.model.Flavor;
 import udpm.fpt.model.ProductInfo;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executors;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import udpm.fpt.repository.IFlavor;
 import udpm.fpt.repository.IProductInfo;
@@ -29,27 +33,28 @@ public class ProductService {
     private final IUnit iUnit = getBean(IUnit.class);
     private final IPackagingSpecification iPackagingSpecification = getBean(IPackagingSpecification.class);
 
+    @Autowired
     public ProductService() {
         this.list = list = new ArrayList<>();
     }
 
-    public List<ProductInfo> getList() {
-        this.list.clear();
-        this.list = r.findAll();
-        return list;
+    public CompletableFuture<List<ProductInfo>> loadAsync() {
+        return CompletableFuture.supplyAsync(() -> {
+            return r.findAll();
+        }, Executors.newCachedThreadPool());
     }
 
-    public List<ProductInfo> getSearch(String search) {
-        this.list.clear();
-        this.list = r.findProductInfo(search);
-        return list;
+    public CompletableFuture<List<ProductInfo>> loadSearch(String search) {
+        return CompletableFuture.supplyAsync(() -> {
+            return r.findProductInfo(search);
+        }, Executors.newCachedThreadPool());
+    }
+    public CompletableFuture<List<ProductInfo>> loadFilter(Integer amount,Date startDate, Date endDate, String taste, String packaging_type, Integer minPrice, Integer maxPrice) {
+        return CompletableFuture.supplyAsync(() -> {
+            return r.findProductInfoFilter (amount, startDate, endDate, taste, packaging_type, minPrice, maxPrice);
+        }, Executors.newCachedThreadPool());
     }
 
-    public List<ProductInfo> getPriceRange(String search, Integer minPrice, Integer maxPrice) {
-        this.list.clear();
-        this.list = r.findProductInfoInPriceRange(search, minPrice, maxPrice);
-        return list;
-    }
 
     public Milk getMilkByID(Long id) {
         return iMilk.findAllById(id);

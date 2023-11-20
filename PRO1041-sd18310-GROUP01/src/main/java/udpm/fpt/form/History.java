@@ -2,6 +2,8 @@ package udpm.fpt.form;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 import udpm.fpt.component.MessagePanel;
 import udpm.fpt.component.ViewDelete;
@@ -39,15 +41,32 @@ public class History extends javax.swing.JPanel {
         }
     }
 
-    private void fillDeleted() {
+    public void fillDeleted() {
+        CompletableFuture<List<ProductInfo>> future = this.list.loadAsync();
+        future.thenAcceptAsync(data -> {
+            SwingUtilities.invokeLater(() -> {
+                updateTable(data);
+            });
+        }).exceptionally(throwable -> {
+            throwable.printStackTrace(System.out);
+            return null;
+        });
+    }
+
+    private void updateTable(List<ProductInfo> data) {
         this.temp.clear();
         tblModel = (DefaultTableModel) tblHistory.getModel();
         tblModel.setRowCount(0);
-        for (ProductInfo prd : this.list.getList()) {
+        for (ProductInfo prd : data) {
             if (prd.getMilk().getIsDelete()) {
-                tblModel.addRow(
-                        new Object[]{prd.getMilk().getId(), prd.getMilk().getProduct_name(), prd.getFlavor().getTaste(),
-                            prd.getMilk().getPrice(), prd.getMilk().getAmount(), prd.getMilk().getProvider()});
+                tblModel.addRow(new Object[]{
+                    prd.getMilk().getId(),
+                    prd.getMilk().getProduct_name(),
+                    prd.getFlavor().getTaste(),
+                    prd.getMilk().getPrice(),
+                    prd.getMilk().getAmount(),
+                    prd.getMilk().getProvider()
+                });
                 this.temp.add(prd);
             }
         }

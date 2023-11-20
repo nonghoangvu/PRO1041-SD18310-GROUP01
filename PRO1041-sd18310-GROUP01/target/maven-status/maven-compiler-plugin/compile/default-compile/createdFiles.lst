@@ -39,7 +39,6 @@ udpm\fpt\swing\TextField$2.class
 udpm\fpt\component\Notification.class
 udpm\fpt\event\TableActionEvent.class
 udpm\fpt\form\ProductManagement$7.class
-udpm\fpt\form\Home$2.class
 udpm\fpt\swing\ModernScrollBarUI$InvisibleScrollBarButton.class
 udpm\fpt\swing\TextField$1.class
 udpm\fpt\swing\table\TableCustomCellRender.class
@@ -57,7 +56,6 @@ udpm\fpt\swing\TextAreaScroll.class
 udpm\fpt\swing\ModernScrollBarUI.class
 udpm\fpt\swing\Spinner.class
 udpm\fpt\form\ProductManagement$5.class
-udpm\fpt\form\Home$1.class
 udpm\fpt\component\NewProduct$1.class
 udpm\fpt\repository\IProductInfo.class
 udpm\fpt\component\UpdateProduct$5.class

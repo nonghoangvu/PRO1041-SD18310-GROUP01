@@ -1,29 +1,18 @@
 package udpm.fpt.form;
 
 import com.raven.datechooser.DateChooser;
-import udpm.fpt.component.NewProduct;
-import udpm.fpt.component.IMG;
+import udpm.fpt.component.*;
 import java.awt.Image;
-import java.text.DecimalFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.text.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.ImageIcon;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
+import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import javax.swing.*;
+import javax.swing.event.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.AbstractDocument;
-import udpm.fpt.component.MessagePanel;
-import udpm.fpt.component.UpdateProduct;
-import udpm.fpt.model.Flavor;
-import udpm.fpt.model.Milk;
-import udpm.fpt.model.PackagingSpecification;
-import udpm.fpt.model.ProductInfo;
+import udpm.fpt.model.*;
 import udpm.fpt.servicce.ProductService;
 import udpm.fpt.swing.NumberOnlyFilter;
 import udpm.fpt.swing.table.TableCustom;
@@ -47,12 +36,12 @@ public class ProductManagement extends javax.swing.JPanel {
     public void initProduct() {
         this.temp = new ArrayList<>();
         TableCustom.apply(jScrollPane1, TableCustom.TableType.MULTI_LINE);
-        dataFlavor();
-        dataPackagingSpecification();
+        loadDataAndFillTable();
+        setComboFlavor();
+        setComboPackagingSpecification();
         setNumberTexfield();
         setProductionDate();
         setExpirationDate();
-        fillTable();
         findProduct();
     }
 
@@ -75,39 +64,12 @@ public class ProductManagement extends javax.swing.JPanel {
 
     private void setNumberTexfield() {
         ((AbstractDocument) txtAmount.getDocument()).setDocumentFilter(new NumberOnlyFilter());
+        ((AbstractDocument) txtFrom.getDocument()).setDocumentFilter(new NumberOnlyFilter());
+        ((AbstractDocument) txtTo.getDocument()).setDocumentFilter(new NumberOnlyFilter());
     }
 
     /*-------------------------------------------Fill Data-------------------------------------------*/
-    private void fillTable() {
-        this.temp.clear();
-        tblModel = (DefaultTableModel) tblProduct.getModel();
-        tblModel.setRowCount(0);
-        for (ProductInfo prd : this.list.getList()) {
-            if (!prd.getMilk().getIsDelete()) {
-                tblModel.addRow(
-                        new Object[]{prd.getMilk().getId(), prd.getMilk().getProduct_name(), prd.getFlavor().getTaste(),
-                            prd.getMilk().getPrice(), prd.getMilk().getAmount(), prd.getMilk().getProvider()});
-                this.temp.add(prd);
-            }
-        }
-
-    }
-
-    private void fillSearch(String search) {
-        this.temp.clear();
-        tblModel = (DefaultTableModel) tblProduct.getModel();
-        tblModel.setRowCount(0);
-        for (ProductInfo prd : this.list.getSearch(search)) {
-            if (!prd.getMilk().getIsDelete()) {
-                tblModel.addRow(
-                        new Object[]{prd.getMilk().getId(), prd.getMilk().getProduct_name(), prd.getFlavor().getTaste(),
-                            prd.getMilk().getPrice(), prd.getMilk().getAmount(), prd.getMilk().getProvider()});
-                this.temp.add(prd);
-            }
-        }
-    }
-
-    private void dataFlavor() {
+    private void setComboFlavor() {
         DefaultComboBoxModel<Flavor> cbbModel = new DefaultComboBoxModel<>();
         cbbTaste.removeAll();
         cbbTaste.setModel((DefaultComboBoxModel) cbbModel);
@@ -115,22 +77,7 @@ public class ProductManagement extends javax.swing.JPanel {
             cbbModel.addElement(flavor);
         }
     }
-
-    private void fillRangePrice(String search, Integer minPrice, Integer maxPrice) {
-        this.temp.clear();
-        tblModel = (DefaultTableModel) tblProduct.getModel();
-        tblModel.setRowCount(0);
-        for (ProductInfo prd : this.list.getPriceRange(search, minPrice, maxPrice)) {
-            if (!prd.getMilk().getIsDelete()) {
-                tblModel.addRow(
-                        new Object[]{prd.getMilk().getId(), prd.getMilk().getProduct_name(), prd.getFlavor().getTaste(),
-                            prd.getMilk().getPrice(), prd.getMilk().getAmount(), prd.getMilk().getProvider()});
-                this.temp.add(prd);
-            }
-        }
-    }
-
-    private void dataPackagingSpecification() {
+    private void setComboPackagingSpecification() {
         DefaultComboBoxModel<PackagingSpecification> cbbModel = new DefaultComboBoxModel<>();
         cbbPackagingSpecification.removeAll();
         cbbPackagingSpecification.setModel((DefaultComboBoxModel) cbbModel);
@@ -139,8 +86,103 @@ public class ProductManagement extends javax.swing.JPanel {
         }
     }
 
+    /*-------------------------------------------Run stream processing-------------------------------------------*/
+    public void loadDataAndFillTable() {
+        CompletableFuture<List<ProductInfo>> future = this.list.loadAsync();
+        future.thenAcceptAsync(data -> {
+            SwingUtilities.invokeLater(() -> {
+                updateTable(data);
+            });
+        }).exceptionally(throwable -> {
+            throwable.printStackTrace(System.out);
+            return null;
+        });
+        clearLabel();
+    }
+
+    private void updateTable(List<ProductInfo> data) {
+        this.temp.clear();
+        tblModel = (DefaultTableModel) tblProduct.getModel();
+        tblModel.setRowCount(0);
+        for (ProductInfo prd : data) {
+            if (!prd.getMilk().getIsDelete()) {
+                tblModel.addRow(new Object[]{
+                    prd.getMilk().getId(),
+                    prd.getMilk().getProduct_name(),
+                    prd.getFlavor().getTaste(),
+                    prd.getMilk().getPrice(),
+                    prd.getMilk().getAmount(),
+                    prd.getMilk().getProvider()
+                });
+                this.temp.add(prd);
+            }
+        }
+    }
+
+    public void loadSearch(String search) {
+        CompletableFuture<List<ProductInfo>> future = this.list.loadSearch(search);
+        future.thenAcceptAsync(data -> {
+            SwingUtilities.invokeLater(() -> {
+                updaSearch(data);
+            });
+        }).exceptionally(throwable -> {
+            throwable.printStackTrace(System.out);
+            return null;
+        });
+    }
+
+    private void updaSearch(List<ProductInfo> data) {
+        this.temp.clear();
+        tblModel = (DefaultTableModel) tblProduct.getModel();
+        tblModel.setRowCount(0);
+        for (ProductInfo prd : data) {
+            if (!prd.getMilk().getIsDelete()) {
+                tblModel.addRow(new Object[]{
+                    prd.getMilk().getId(),
+                    prd.getMilk().getProduct_name(),
+                    prd.getFlavor().getTaste(),
+                    prd.getMilk().getPrice(),
+                    prd.getMilk().getAmount(),
+                    prd.getMilk().getProvider()
+                });
+                this.temp.add(prd);
+            }
+        }
+    }
+
+    public void loadFilters(Integer amount, Date startDate, Date endDate, String taste, String packaging_type, Integer minPrice, Integer maxPrice) {
+        CompletableFuture<List<ProductInfo>> future = this.list.loadFilter(amount, startDate, endDate, taste, packaging_type, minPrice, maxPrice);
+        future.thenAcceptAsync(data -> {
+            SwingUtilities.invokeLater(() -> {
+                updaFilter(data);
+            });
+        }).exceptionally(throwable -> {
+            throwable.printStackTrace(System.out);
+            return null;
+        });
+    }
+
+    private void updaFilter(List<ProductInfo> data) {
+        this.temp.clear();
+        tblModel = (DefaultTableModel) tblProduct.getModel();
+        tblModel.setRowCount(0);
+        for (ProductInfo prd : data) {
+            if (!prd.getMilk().getIsDelete()) {
+                tblModel.addRow(new Object[]{
+                    prd.getMilk().getId(),
+                    prd.getMilk().getProduct_name(),
+                    prd.getFlavor().getTaste(),
+                    prd.getMilk().getPrice(),
+                    prd.getMilk().getAmount(),
+                    prd.getMilk().getProvider()
+                });
+                this.temp.add(prd);
+            }
+        }
+    }
+
     /*-------------------------------------------Data Format-------------------------------------------*/
-    public Date dateFM(String date) {
+    public Date getDateFormatSQL(String date) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         try {
             Date utilDate = dateFormat.parse(date);
@@ -203,6 +245,18 @@ public class ProductManagement extends javax.swing.JPanel {
         tblProduct.clearSelection();
     }
 
+    private void clearCategory() {
+        txtSearch.setText("");
+        txtAmount.setText("0");
+        txtFrom.setText("0");
+        txtTo.setText("0");
+        setProductionDate();
+        setExpirationDate();
+        cbbTaste.setSelectedIndex(0);
+        cbbPackagingSpecification.setSelectedIndex(0);
+        loadDataAndFillTable();
+    }
+
     private void setImange(String url) {
         lbproductgallery.setText(null);
         try {
@@ -222,7 +276,9 @@ public class ProductManagement extends javax.swing.JPanel {
     public void setData(String data) {
         clearLabel();
         lbId.setText(data);
-        fillTable();
+        loadDataAndFillTable();
+        setComboFlavor();
+        setComboPackagingSpecification();
     }
 
     public String getData() {
@@ -236,9 +292,9 @@ public class ProductManagement extends javax.swing.JPanel {
             public void insertUpdate(DocumentEvent e) {
                 String search = txtSearch.getText().trim();
                 if (search.isBlank()) {
-                    fillTable();
+                    loadDataAndFillTable();
                 } else {
-                    fillSearch(search);
+                    loadSearch(search);
                 }
             }
 
@@ -246,9 +302,9 @@ public class ProductManagement extends javax.swing.JPanel {
             public void removeUpdate(DocumentEvent e) {
                 String search = txtSearch.getText().trim();
                 if (search.isBlank()) {
-                    fillTable();
+                    loadDataAndFillTable();
                 } else {
-                    fillSearch(search);
+                    loadSearch(search);
                 }
             }
 
@@ -256,9 +312,9 @@ public class ProductManagement extends javax.swing.JPanel {
             public void changedUpdate(DocumentEvent e) {
                 String search = txtSearch.getText().trim();
                 if (search.isBlank()) {
-                    fillTable();
+                    loadDataAndFillTable();
                 } else {
-                    fillSearch(search);
+                    loadSearch(search);
                 }
             }
         });
@@ -270,7 +326,7 @@ public class ProductManagement extends javax.swing.JPanel {
         m.setIsDelete(true);
         if (this.list.hideRestoreProduct(m)) {
             this.temp.clear();
-            fillTable();
+            loadDataAndFillTable();
         }
     }
 
@@ -287,12 +343,10 @@ public class ProductManagement extends javax.swing.JPanel {
         txtAmount = new udpm.fpt.swing.TextField();
         txtExpirationDate = new udpm.fpt.swing.TextField();
         txtProductionDate = new udpm.fpt.swing.TextField();
-        textField7 = new udpm.fpt.swing.TextField();
         button2 = new udpm.fpt.swing.Button();
         btnApplyFilters = new udpm.fpt.swing.Button();
-        btnClear = new udpm.fpt.swing.Button();
+        btnClearFilter = new udpm.fpt.swing.Button();
         cbbPackagingSpecification = new udpm.fpt.swing.Combobox();
-        jSeparator1 = new javax.swing.JSeparator();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblProduct = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
@@ -356,7 +410,7 @@ public class ProductManagement extends javax.swing.JPanel {
                 .addComponent(txtFrom, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(txtTo, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(32, Short.MAX_VALUE))
         );
 
         jPanel4Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {txtFrom, txtTo});
@@ -377,8 +431,6 @@ public class ProductManagement extends javax.swing.JPanel {
 
         txtProductionDate.setLabelText("Production Date");
 
-        textField7.setLabelText("Find By Barcode");
-
         button2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/udpm/fpt/icon/barcode-scanner.png"))); // NOI18N
 
         btnApplyFilters.setBackground(new java.awt.Color(102, 204, 255));
@@ -392,14 +444,14 @@ public class ProductManagement extends javax.swing.JPanel {
             }
         });
 
-        btnClear.setBackground(new java.awt.Color(255, 102, 102));
-        btnClear.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
-        btnClear.setForeground(new java.awt.Color(255, 255, 255));
-        btnClear.setText("Clear All");
-        btnClear.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnClear.addMouseListener(new java.awt.event.MouseAdapter() {
+        btnClearFilter.setBackground(new java.awt.Color(255, 102, 102));
+        btnClearFilter.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        btnClearFilter.setForeground(new java.awt.Color(255, 255, 255));
+        btnClearFilter.setText("Clear All");
+        btnClearFilter.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnClearFilter.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnClearMouseClicked(evt);
+                btnClearFilterMouseClicked(evt);
             }
         });
 
@@ -409,62 +461,52 @@ public class ProductManagement extends javax.swing.JPanel {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSeparator1)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jPanel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(cbbPackagingSpecification, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(cbbTaste, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtExpirationDate, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtProductionDate, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnApplyFilters, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnClear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnApplyFilters, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnClearFilter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addContainerGap())
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(txtSearch, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addComponent(textField7, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(button2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addComponent(txtAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 11, Short.MAX_VALUE))))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtAmount, javax.swing.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)
+                            .addComponent(txtSearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(button2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(txtProductionDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtExpirationDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cbbTaste, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cbbPackagingSpecification, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(button2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(textField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(button2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(30, 30, 30)
                 .addComponent(txtAmount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(30, 30, 30)
                 .addComponent(txtProductionDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(30, 30, 30)
                 .addComponent(txtExpirationDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(30, 30, 30)
                 .addComponent(cbbTaste, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(30, 30, 30)
                 .addComponent(cbbPackagingSpecification, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(36, 36, 36)
+                .addGap(30, 30, 30)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 89, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnApplyFilters, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(btnClear, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnClearFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(43, 43, 43))
         );
-
-        jPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {button2, textField7});
 
         tblProduct.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -535,78 +577,79 @@ public class ProductManagement extends javax.swing.JPanel {
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Product Info", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14))); // NOI18N
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
         jLabel1.setText("ID: ");
 
-        lbId.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lbId.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
         jLabel3.setText("Product name:");
 
-        lbName.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lbName.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
 
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
         jLabel5.setText("Taste:");
 
-        lbTaste.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lbTaste.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
 
-        jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel7.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
         jLabel7.setText("Price");
 
-        lbPrice.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lbPrice.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
 
-        jLabel9.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel9.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
         jLabel9.setText("Amount:");
 
-        lbAmount.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lbAmount.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
 
-        jLabel11.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel11.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
         jLabel11.setText("Production date:");
 
-        lbProductionDate.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lbProductionDate.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
 
-        jLabel13.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel13.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
         jLabel13.setText("Expiration date:");
 
-        lbExpirationDate.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lbExpirationDate.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
 
-        jLabel15.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel15.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
         jLabel15.setText("Provider:");
 
-        lbProvider.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lbProvider.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
 
-        jLabel17.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel17.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
         jLabel17.setText("Volume:");
 
-        lbVolume.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lbVolume.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
 
-        jLabel19.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel19.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
         jLabel19.setText("Measurement unit:");
 
-        lbMeasurementUnit.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lbMeasurementUnit.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
 
-        jLabel21.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel21.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
         jLabel21.setText("Packaging Specification:");
 
         lbPackagingSpecification.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
-        jLabel23.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel23.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
         jLabel23.setText("Description:");
 
         lbDescrription.setEditable(false);
         lbDescrription.setColumns(20);
+        lbDescrription.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
         lbDescrription.setRows(5);
         jScrollPane2.setViewportView(lbDescrription);
 
-        jLabel24.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel24.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
         jLabel24.setText("Create at:");
 
-        lbCreateAt.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lbCreateAt.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
 
-        jLabel26.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel26.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
         jLabel26.setText("Create by:");
 
-        lbCreateBy.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lbCreateBy.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -836,12 +879,16 @@ public class ProductManagement extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_lbproductgalleryMouseClicked
 
-    private void btnClearMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnClearMouseClicked
-        clearLabel();
-    }//GEN-LAST:event_btnClearMouseClicked
+    private void btnClearFilterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnClearFilterMouseClicked
+        clearCategory();
+    }//GEN-LAST:event_btnClearFilterMouseClicked
 
     private void btnApplyFiltersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnApplyFiltersMouseClicked
-        fillRangePrice(txtSearch.getText(), Integer.valueOf(txtFrom.getText()), Integer.valueOf(txtTo.getText()));
+        Date startDate = getDateFormatSQL(txtProductionDate.getText());
+        Date endDate = getDateFormatSQL(txtExpirationDate.getText());
+        String taste = cbbTaste.getSelectedItem().toString();
+        String packaging_type = cbbPackagingSpecification.getSelectedItem().toString();
+        loadFilters(txtAmount.getText().isBlank() ? null : Integer.valueOf(txtAmount.getText()), startDate, endDate, taste, packaging_type, txtFrom.getText().isBlank() ? null : Integer.valueOf(txtFrom.getText()), txtTo.getText().isBlank() ? null : Integer.valueOf(txtTo.getText()));
     }//GEN-LAST:event_btnApplyFiltersMouseClicked
 
     private void btnNewMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnNewMouseClicked
@@ -879,7 +926,7 @@ public class ProductManagement extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private udpm.fpt.swing.Button btnApplyFilters;
-    private udpm.fpt.swing.Button btnClear;
+    private udpm.fpt.swing.Button btnClearFilter;
     private udpm.fpt.swing.ButtonMessage btnDelete;
     private udpm.fpt.swing.ButtonMessage btnNew;
     private udpm.fpt.swing.ButtonMessage btnUpdate;
@@ -906,7 +953,6 @@ public class ProductManagement extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel lbAmount;
     private javax.swing.JLabel lbCreateAt;
     private javax.swing.JLabel lbCreateBy;
@@ -923,7 +969,6 @@ public class ProductManagement extends javax.swing.JPanel {
     private javax.swing.JLabel lbVolume;
     private javax.swing.JLabel lbproductgallery;
     private javax.swing.JTable tblProduct;
-    private udpm.fpt.swing.TextField textField7;
     private udpm.fpt.swing.TextField txtAmount;
     private udpm.fpt.swing.TextField txtExpirationDate;
     private udpm.fpt.swing.TextField txtFrom;
