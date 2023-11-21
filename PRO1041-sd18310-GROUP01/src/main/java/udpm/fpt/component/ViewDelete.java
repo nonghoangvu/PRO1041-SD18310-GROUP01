@@ -14,9 +14,9 @@ import udpm.fpt.model.ProductInfo;
  * @author NONG HOANG VU
  */
 public class ViewDelete extends javax.swing.JFrame {
-
+    
     private final ProductInfo pi;
-
+    
     public ViewDelete(ProductInfo pi) {
         initComponents();
         this.pi = pi;
@@ -26,26 +26,26 @@ public class ViewDelete extends javax.swing.JFrame {
             public void focusGained(FocusEvent e) {
                 dispose();
             }
-
+            
             @Override
             public void focusLost(FocusEvent e) {
                 dispose();
             }
         });
     }
-
+    
     private String setSelectedIndex(int number) {
         DecimalFormat decimalFormat = new DecimalFormat("#,###");
         return decimalFormat.format(number);
     }
-
+    
     public String removeTimeUsingDateTimeFormatter(String inputDate) {
         DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
         DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         LocalDateTime dateTime = LocalDateTime.parse(inputDate, inputFormatter);
         return dateTime.format(outputFormatter);
     }
-
+    
     private void setLabel() {
         lbId.setText(String.valueOf(this.pi.getMilk().getId()));
         lbName.setText(this.pi.getMilk().getProduct_name());
@@ -60,10 +60,13 @@ public class ViewDelete extends javax.swing.JFrame {
         lbVolume.setText(String.valueOf(this.pi.getVolume()));
         lbMeasurementUnit.setText(this.pi.getUnit().getMeasurement_unit());
         lbPackagingSpecification.setText(this.pi.getPackagingSpecification().getPackaging_type());
+        lbOrigin.setText(this.pi.getOrigin());
+        lbComposition.setText(this.pi.getComposition());
+        lbBrand.setText(this.pi.getBrand());
         lbDescrription.setText(this.pi.getProduct_description());
         setImange(pi.getMilk().getImg());
     }
-
+    
     private void setImange(String url) {
         lbproductgallery.setText(null);
         try {
@@ -79,7 +82,7 @@ public class ViewDelete extends javax.swing.JFrame {
             lbproductgallery.setText("Image not found");
         }
     }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

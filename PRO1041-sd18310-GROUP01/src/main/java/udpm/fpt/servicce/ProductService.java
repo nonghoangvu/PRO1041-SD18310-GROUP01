@@ -26,7 +26,6 @@ import udpm.fpt.repository.IUnit;
  */
 public class ProductService {
 
-    private List<ProductInfo> list;
     private final IProductInfo r = getBean(IProductInfo.class);
     private final IMilk iMilk = getBean(IMilk.class);
     private final IFlavor iFlavor = getBean(IFlavor.class);
@@ -35,7 +34,6 @@ public class ProductService {
 
     @Autowired
     public ProductService() {
-        this.list = list = new ArrayList<>();
     }
 
     public CompletableFuture<List<ProductInfo>> loadAsync() {
