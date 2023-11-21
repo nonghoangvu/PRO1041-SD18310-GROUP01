@@ -2,8 +2,12 @@ package udpm.fpt.component;
 
 import java.awt.event.ActionEvent;
 import java.util.Date;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import udpm.fpt.model.PackagingSpecification;
@@ -22,7 +26,7 @@ public class PackagingSpecificationManagement extends javax.swing.JFrame {
     public PackagingSpecificationManagement() {
         initComponents();
         this.list = new ProductService();
-        dataUnit();
+        loadDataAndFillPackagingSpecification();
         txtPackagingSpecification.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
@@ -56,7 +60,7 @@ public class PackagingSpecificationManagement extends javax.swing.JFrame {
                 Notification n = new Notification(this, Notification.Type.INFO, Notification.Location.DEFAULT_DESKTOP, "DATA IS EMPTY");
                 n.showNotification();
                 return;
-            }else if(txtPackagingSpecification.getText().length() >= 100){
+            } else if (txtPackagingSpecification.getText().length() >= 100) {
                 Notification n = new Notification(this, Notification.Type.INFO, Notification.Location.DEFAULT_DESKTOP, "DATA IS INVALID");
                 n.showNotification();
                 return;
@@ -103,19 +107,37 @@ public class PackagingSpecificationManagement extends javax.swing.JFrame {
     }
 
     private Boolean findPackagingSpecification(String data) {
-        for (PackagingSpecification p : this.list.getPackagingSpecification()) {
-            if (data.equalsIgnoreCase(p.getPackaging_type())) {
-                return true;
+        try {
+            List<PackagingSpecification> specificationsList = this.list.loadPackagingSpecification().get();
+            for (PackagingSpecification specification : specificationsList) {
+                if (data.equalsIgnoreCase(specification.getPackaging_type().trim())) {
+                    return true;
+                }
             }
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace(System.out);
         }
         return false;
     }
 
-    private void dataUnit() {
+    public void loadDataAndFillPackagingSpecification() {
+        CompletableFuture<List<PackagingSpecification>> future = this.list.loadPackagingSpecification();
+        future.thenAcceptAsync(data -> {
+            SwingUtilities.invokeLater(() -> {
+                updatePackagingSpecification(data);
+            });
+        }).exceptionally(throwable -> {
+            throwable.printStackTrace(System.out);
+            return null;
+        });
+    }
+
+    private void updatePackagingSpecification(List<PackagingSpecification> data) {
         DefaultComboBoxModel<PackagingSpecification> cbbModel = new DefaultComboBoxModel<>();
+        cbbPackagingSpecification.removeAll();
         cbbPackagingSpecification.setModel((DefaultComboBoxModel) cbbModel);
-        for (PackagingSpecification p : this.list.getPackagingSpecification()) {
-            cbbModel.addElement(p);
+        for (PackagingSpecification specification : data) {
+            cbbModel.addElement(specification);
         }
     }
 

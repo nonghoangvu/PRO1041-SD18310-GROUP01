@@ -27,7 +27,7 @@ public interface IProductInfo extends JpaRepository<ProductInfo, Integer> {
             + "JOIN FETCH p.flavor f "
             + "JOIN FETCH p.unit u "
             + "JOIN FETCH p.packagingSpecification ps "
-            + "WHERE (:amount IS NULL OR m.amount = :amount) "
+            + "WHERE ((:minAmount IS NULL AND :maxAmount IS NULL) OR (m.amount >= :minAmount AND m.amount <= :maxAmount)) "
             + "AND (:minPrice IS NULL OR m.price >= :minPrice) "
             + "AND (:maxPrice IS NULL OR m.price <= :maxPrice) "
             + "AND (:startDate IS NULL OR m.production_date >= :startDate) "
@@ -35,7 +35,8 @@ public interface IProductInfo extends JpaRepository<ProductInfo, Integer> {
             + "AND (:taste IS NULL OR f.taste = :taste) "
             + "AND (:packaging_type IS NULL OR ps.packaging_type = :packaging_type)")
     List<ProductInfo> findProductInfoFilter(
-            @Param("amount") Integer amount,
+            @Param("minAmount") Integer minAmount,
+            @Param("maxAmount") Integer maxAmount,
             @Param("startDate") Date startDate,
             @Param("endDate") Date endDate,
             @Param("taste") String taste,

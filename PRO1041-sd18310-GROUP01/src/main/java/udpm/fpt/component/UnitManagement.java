@@ -2,10 +2,15 @@ package udpm.fpt.component;
 
 import java.awt.event.ActionEvent;
 import java.util.Date;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import udpm.fpt.model.Flavor;
 import udpm.fpt.model.Unit;
 import udpm.fpt.servicce.ProductService;
 
@@ -22,7 +27,7 @@ public class UnitManagement extends javax.swing.JFrame {
     public UnitManagement() {
         initComponents();
         this.list = new ProductService();
-        dataUnit();
+        loadDataAndFillUnit();
         txtUnit.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
@@ -56,7 +61,7 @@ public class UnitManagement extends javax.swing.JFrame {
                 Notification n = new Notification(this, Notification.Type.INFO, Notification.Location.DEFAULT_DESKTOP, "DATA IS EMPTY");
                 n.showNotification();
                 return;
-            }else if(txtUnit.getText().length() >= 10){
+            } else if (txtUnit.getText().length() >= 10) {
                 Notification n = new Notification(this, Notification.Type.INFO, Notification.Location.DEFAULT_DESKTOP, "DATA IS INVALID");
                 n.showNotification();
                 return;
@@ -103,19 +108,37 @@ public class UnitManagement extends javax.swing.JFrame {
     }
 
     private Boolean findUnit(String data) {
-        for (Unit unit : this.list.getUnit()) {
-            if (data.equalsIgnoreCase(unit.getMeasurement_unit().trim())) {
-                return true;
+        try {
+            List<Unit> units = this.list.loadUnit().get();
+            for (Unit u : units) {
+                if (data.equalsIgnoreCase(u.getMeasurement_unit().trim())) {
+                    return true;
+                }
             }
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace(System.out);
         }
         return false;
     }
 
-    private void dataUnit() {
+    public void loadDataAndFillUnit() {
+        CompletableFuture<List<Unit>> future = this.list.loadUnit();
+        future.thenAcceptAsync(data -> {
+            SwingUtilities.invokeLater(() -> {
+                updateUnit(data);
+            });
+        }).exceptionally(throwable -> {
+            throwable.printStackTrace(System.out);
+            return null;
+        });
+    }
+
+    private void updateUnit(List<Unit> data) {
         DefaultComboBoxModel<Unit> cbbModel = new DefaultComboBoxModel<>();
+        cbbUnit.removeAll();
         cbbUnit.setModel((DefaultComboBoxModel) cbbModel);
-        for (Unit unit : this.list.getUnit()) {
-            cbbModel.addElement(unit);
+        for (Unit u : data) {
+            cbbModel.addElement(u);
         }
     }
 

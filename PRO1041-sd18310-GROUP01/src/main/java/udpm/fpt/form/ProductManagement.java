@@ -37,8 +37,8 @@ public class ProductManagement extends javax.swing.JPanel {
         this.temp = new ArrayList<>();
         TableCustom.apply(jScrollPane1, TableCustom.TableType.MULTI_LINE);
         loadDataAndFillTable();
-        setComboFlavor();
-        setComboPackagingSpecification();
+        loadDataAndFillFlavor();
+        loadDataAndFillPackagingSpecification();
         setNumberTexfield();
         setProductionDate();
         setExpirationDate();
@@ -63,27 +63,9 @@ public class ProductManagement extends javax.swing.JPanel {
     }
 
     private void setNumberTexfield() {
-        ((AbstractDocument) txtAmount.getDocument()).setDocumentFilter(new NumberOnlyFilter());
+        ((AbstractDocument) txtAmountFrom.getDocument()).setDocumentFilter(new NumberOnlyFilter());
         ((AbstractDocument) txtFrom.getDocument()).setDocumentFilter(new NumberOnlyFilter());
         ((AbstractDocument) txtTo.getDocument()).setDocumentFilter(new NumberOnlyFilter());
-    }
-
-    /*-------------------------------------------Fill Data-------------------------------------------*/
-    private void setComboFlavor() {
-        DefaultComboBoxModel<Flavor> cbbModel = new DefaultComboBoxModel<>();
-        cbbTaste.removeAll();
-        cbbTaste.setModel((DefaultComboBoxModel) cbbModel);
-        for (Flavor flavor : this.list.getFlavor()) {
-            cbbModel.addElement(flavor);
-        }
-    }
-    private void setComboPackagingSpecification() {
-        DefaultComboBoxModel<PackagingSpecification> cbbModel = new DefaultComboBoxModel<>();
-        cbbPackagingSpecification.removeAll();
-        cbbPackagingSpecification.setModel((DefaultComboBoxModel) cbbModel);
-        for (PackagingSpecification packagingSpecification : this.list.getPackagingSpecification()) {
-            cbbModel.addElement(packagingSpecification);
-        }
     }
 
     /*-------------------------------------------Run stream processing-------------------------------------------*/
@@ -150,8 +132,8 @@ public class ProductManagement extends javax.swing.JPanel {
         }
     }
 
-    public void loadFilters(Integer amount, Date startDate, Date endDate, String taste, String packaging_type, Integer minPrice, Integer maxPrice) {
-        CompletableFuture<List<ProductInfo>> future = this.list.loadFilter(amount, startDate, endDate, taste, packaging_type, minPrice, maxPrice);
+    public void loadFilters(Integer minAmount, Integer maxAmount, Date startDate, Date endDate, String taste, String packaging_type, Integer minPrice, Integer maxPrice) {
+        CompletableFuture<List<ProductInfo>> future = this.list.loadFilter(minAmount, maxAmount, startDate, endDate, taste, packaging_type, minPrice, maxPrice);
         future.thenAcceptAsync(data -> {
             SwingUtilities.invokeLater(() -> {
                 updaFilter(data);
@@ -178,6 +160,50 @@ public class ProductManagement extends javax.swing.JPanel {
                 });
                 this.temp.add(prd);
             }
+        }
+    }
+
+    public void loadDataAndFillFlavor() {
+        CompletableFuture<List<Flavor>> future = this.list.loadFlavor();
+        future.thenAcceptAsync(data -> {
+            SwingUtilities.invokeLater(() -> {
+                updateFlavor(data);
+            });
+        }).exceptionally(throwable -> {
+            throwable.printStackTrace(System.out);
+            return null;
+        });
+        clearLabel();
+    }
+
+    private void updateFlavor(List<Flavor> data) {
+        DefaultComboBoxModel<Flavor> cbbModel = new DefaultComboBoxModel<>();
+        cbbTaste.removeAll();
+        cbbTaste.setModel((DefaultComboBoxModel) cbbModel);
+        for (Flavor flavor : data) {
+            cbbModel.addElement(flavor);
+        }
+    }
+
+    public void loadDataAndFillPackagingSpecification() {
+        CompletableFuture<List<PackagingSpecification>> future = this.list.loadPackagingSpecification();
+        future.thenAcceptAsync(data -> {
+            SwingUtilities.invokeLater(() -> {
+                updatePackagingSpecification(data);
+            });
+        }).exceptionally(throwable -> {
+            throwable.printStackTrace(System.out);
+            return null;
+        });
+        clearLabel();
+    }
+
+    private void updatePackagingSpecification(List<PackagingSpecification> data) {
+        DefaultComboBoxModel<PackagingSpecification> cbbModel = new DefaultComboBoxModel<>();
+        cbbPackagingSpecification.removeAll();
+        cbbPackagingSpecification.setModel((DefaultComboBoxModel) cbbModel);
+        for (PackagingSpecification specification : data) {
+            cbbModel.addElement(specification);
         }
     }
 
@@ -247,7 +273,8 @@ public class ProductManagement extends javax.swing.JPanel {
 
     private void clearCategory() {
         txtSearch.setText("");
-        txtAmount.setText("0");
+        txtAmountFrom.setText("0");
+        txtAmountTo.setText("0");
         txtFrom.setText("0");
         txtTo.setText("0");
         setProductionDate();
@@ -277,8 +304,8 @@ public class ProductManagement extends javax.swing.JPanel {
         clearLabel();
         lbId.setText(data);
         loadDataAndFillTable();
-        setComboFlavor();
-        setComboPackagingSpecification();
+        loadDataAndFillFlavor();
+        loadDataAndFillPackagingSpecification();
     }
 
     public String getData() {
@@ -340,13 +367,15 @@ public class ProductManagement extends javax.swing.JPanel {
         jPanel4 = new javax.swing.JPanel();
         txtTo = new udpm.fpt.swing.TextField();
         txtFrom = new udpm.fpt.swing.TextField();
-        txtAmount = new udpm.fpt.swing.TextField();
         txtExpirationDate = new udpm.fpt.swing.TextField();
         txtProductionDate = new udpm.fpt.swing.TextField();
         button2 = new udpm.fpt.swing.Button();
         btnApplyFilters = new udpm.fpt.swing.Button();
         btnClearFilter = new udpm.fpt.swing.Button();
         cbbPackagingSpecification = new udpm.fpt.swing.Combobox();
+        jPanel5 = new javax.swing.JPanel();
+        txtAmountFrom = new udpm.fpt.swing.TextField();
+        txtAmountTo = new udpm.fpt.swing.TextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblProduct = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
@@ -425,8 +454,6 @@ public class ProductManagement extends javax.swing.JPanel {
                 .addContainerGap(17, Short.MAX_VALUE))
         );
 
-        txtAmount.setLabelText("Amount");
-
         txtExpirationDate.setLabelText("Expiration Date");
 
         txtProductionDate.setLabelText("Production Date");
@@ -457,6 +484,32 @@ public class ProductManagement extends javax.swing.JPanel {
 
         cbbPackagingSpecification.setLabeText("Packaging Specification");
 
+        jPanel5.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Amount", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12), new java.awt.Color(178, 175, 175))); // NOI18N
+
+        txtAmountFrom.setLabelText("From");
+
+        txtAmountTo.setLabelText("To");
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addComponent(txtAmountFrom, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(txtAmountTo, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtAmountFrom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtAmountTo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(9, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -464,23 +517,23 @@ public class ProductManagement extends javax.swing.JPanel {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnApplyFilters, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnClearFilter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnApplyFilters, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnClearFilter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addContainerGap())
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtAmount, javax.swing.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)
-                            .addComponent(txtSearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(button2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(txtProductionDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtExpirationDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(cbbTaste, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(cbbPackagingSpecification, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(button2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(txtProductionDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(txtExpirationDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(cbbTaste, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(cbbPackagingSpecification, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -490,7 +543,7 @@ public class ProductManagement extends javax.swing.JPanel {
                     .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(button2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(30, 30, 30)
-                .addComponent(txtAmount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(30, 30, 30)
                 .addComponent(txtProductionDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(30, 30, 30)
@@ -501,11 +554,11 @@ public class ProductManagement extends javax.swing.JPanel {
                 .addComponent(cbbPackagingSpecification, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(30, 30, 30)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 67, Short.MAX_VALUE)
                 .addComponent(btnApplyFilters, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnClearFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(43, 43, 43))
+                .addContainerGap())
         );
 
         tblProduct.setModel(new javax.swing.table.DefaultTableModel(
@@ -888,7 +941,7 @@ public class ProductManagement extends javax.swing.JPanel {
         Date endDate = getDateFormatSQL(txtExpirationDate.getText());
         String taste = cbbTaste.getSelectedItem().toString();
         String packaging_type = cbbPackagingSpecification.getSelectedItem().toString();
-        loadFilters(txtAmount.getText().isBlank() ? null : Integer.valueOf(txtAmount.getText()), startDate, endDate, taste, packaging_type, txtFrom.getText().isBlank() ? null : Integer.valueOf(txtFrom.getText()), txtTo.getText().isBlank() ? null : Integer.valueOf(txtTo.getText()));
+        loadFilters(txtAmountFrom.getText().isBlank() ? null : Integer.valueOf(txtAmountFrom.getText()), txtAmountTo.getText().isBlank() ? null : Integer.valueOf(txtAmountTo.getText()), startDate, endDate, taste, packaging_type, txtFrom.getText().isBlank() ? null : Integer.valueOf(txtFrom.getText()), txtTo.getText().isBlank() ? null : Integer.valueOf(txtTo.getText()));
     }//GEN-LAST:event_btnApplyFiltersMouseClicked
 
     private void btnNewMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnNewMouseClicked
@@ -951,6 +1004,7 @@ public class ProductManagement extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lbAmount;
@@ -969,7 +1023,8 @@ public class ProductManagement extends javax.swing.JPanel {
     private javax.swing.JLabel lbVolume;
     private javax.swing.JLabel lbproductgallery;
     private javax.swing.JTable tblProduct;
-    private udpm.fpt.swing.TextField txtAmount;
+    private udpm.fpt.swing.TextField txtAmountFrom;
+    private udpm.fpt.swing.TextField txtAmountTo;
     private udpm.fpt.swing.TextField txtExpirationDate;
     private udpm.fpt.swing.TextField txtFrom;
     private udpm.fpt.swing.TextField txtProductionDate;

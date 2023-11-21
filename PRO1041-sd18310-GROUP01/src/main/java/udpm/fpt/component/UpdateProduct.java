@@ -9,10 +9,13 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import javax.imageio.ImageIO;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.text.AbstractDocument;
 import udpm.fpt.form.ProductManagement;
@@ -129,35 +132,71 @@ public class UpdateProduct extends javax.swing.JFrame {
     }
 
     public void filDataCombo() {
-        dataFlavor();
-        dataUnit();
-        dataPackagingSpecification();
+        loadDataAndFillFlavor();
+        loadDataAndFillUnit();
+        loadDataAndFillPackagingSpecification();
     }
 
-    private void dataFlavor() {
+    public void loadDataAndFillFlavor() {
+        CompletableFuture<List<Flavor>> future = this.list.loadFlavor();
+        future.thenAcceptAsync(data -> {
+            SwingUtilities.invokeLater(() -> {
+                updateFlavor(data);
+            });
+        }).exceptionally(throwable -> {
+            throwable.printStackTrace(System.out);
+            return null;
+        });
+    }
+
+    private void updateFlavor(List<Flavor> data) {
         DefaultComboBoxModel<Flavor> cbbModel = new DefaultComboBoxModel<>();
         cbbTaste.removeAll();
         cbbTaste.setModel((DefaultComboBoxModel) cbbModel);
-        for (Flavor flavor : this.list.getFlavor()) {
+        for (Flavor flavor : data) {
             cbbModel.addElement(flavor);
         }
     }
 
-    private void dataUnit() {
+    public void loadDataAndFillUnit() {
+        CompletableFuture<List<Unit>> future = this.list.loadUnit();
+        future.thenAcceptAsync(data -> {
+            SwingUtilities.invokeLater(() -> {
+                updateUnit(data);
+            });
+        }).exceptionally(throwable -> {
+            throwable.printStackTrace(System.out);
+            return null;
+        });
+    }
+
+    private void updateUnit(List<Unit> data) {
         DefaultComboBoxModel<Unit> cbbModel = new DefaultComboBoxModel<>();
         cbbUnit.removeAll();
         cbbUnit.setModel((DefaultComboBoxModel) cbbModel);
-        for (Unit unit : this.list.getUnit()) {
-            cbbModel.addElement(unit);
+        for (Unit u : data) {
+            cbbModel.addElement(u);
         }
     }
 
-    private void dataPackagingSpecification() {
+    public void loadDataAndFillPackagingSpecification() {
+        CompletableFuture<List<PackagingSpecification>> future = this.list.loadPackagingSpecification();
+        future.thenAcceptAsync(data -> {
+            SwingUtilities.invokeLater(() -> {
+                updatePackagingSpecification(data);
+            });
+        }).exceptionally(throwable -> {
+            throwable.printStackTrace(System.out);
+            return null;
+        });
+    }
+
+    private void updatePackagingSpecification(List<PackagingSpecification> data) {
         DefaultComboBoxModel<PackagingSpecification> cbbModel = new DefaultComboBoxModel<>();
         cbbPackagingSpecification.removeAll();
         cbbPackagingSpecification.setModel((DefaultComboBoxModel) cbbModel);
-        for (PackagingSpecification packagingSpecification : this.list.getPackagingSpecification()) {
-            cbbModel.addElement(packagingSpecification);
+        for (PackagingSpecification specification : data) {
+            cbbModel.addElement(specification);
         }
     }
 
@@ -658,7 +697,7 @@ public class UpdateProduct extends javax.swing.JFrame {
         UnitManagement unitManagement = new UnitManagement();
         unitManagement.setResultCallback((Boolean result) -> {
             if (result) {
-                dataUnit();
+                loadDataAndFillUnit();
             }
         });
         unitManagement.setVisible(true);
@@ -668,7 +707,7 @@ public class UpdateProduct extends javax.swing.JFrame {
         PackagingSpecificationManagement packagingSpecificationManagement = new PackagingSpecificationManagement();
         packagingSpecificationManagement.setResultCallback((Boolean result) -> {
             if (result) {
-                dataPackagingSpecification();
+                loadDataAndFillPackagingSpecification();
             }
         });
         packagingSpecificationManagement.setVisible(true);
@@ -678,7 +717,7 @@ public class UpdateProduct extends javax.swing.JFrame {
         FlavorManagement flavorManagement = new FlavorManagement();
         flavorManagement.setResultCallback((Boolean result) -> {
             if (result) {
-                dataFlavor();
+                loadDataAndFillFlavor();
             }
         });
         flavorManagement.setVisible(true);

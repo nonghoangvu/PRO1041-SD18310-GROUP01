@@ -2,8 +2,12 @@ package udpm.fpt.component;
 
 import java.awt.event.ActionEvent;
 import java.util.Date;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import udpm.fpt.model.Flavor;
@@ -22,7 +26,7 @@ public class FlavorManagement extends javax.swing.JFrame {
     public FlavorManagement() {
         initComponents();
         this.list = new ProductService();
-        dataFlavor();
+        loadDataAndFillFlavor();
         txtFlavor.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
@@ -105,18 +109,36 @@ public class FlavorManagement extends javax.swing.JFrame {
     }
 
     private Boolean findFlavor(String data) {
-        for (Flavor flavor : this.list.getFlavor()) {
-            if (data.equalsIgnoreCase(flavor.getTaste().trim())) {
-                return true;
+        try {
+            List<Flavor> flavorList = this.list.loadFlavor().get();
+            for (Flavor flavor : flavorList) {
+                if (data.equalsIgnoreCase(flavor.getTaste().trim())) {
+                    return true;
+                }
             }
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace(System.out);
         }
         return false;
     }
 
-    private void dataFlavor() {
+    public void loadDataAndFillFlavor() {
+        CompletableFuture<List<Flavor>> future = this.list.loadFlavor();
+        future.thenAcceptAsync(data -> {
+            SwingUtilities.invokeLater(() -> {
+                updateFlavor(data);
+            });
+        }).exceptionally(throwable -> {
+            throwable.printStackTrace(System.out);
+            return null;
+        });
+    }
+
+    private void updateFlavor(List<Flavor> data) {
         DefaultComboBoxModel<Flavor> cbbModel = new DefaultComboBoxModel<>();
+        cbbTaste.removeAll();
         cbbTaste.setModel((DefaultComboBoxModel) cbbModel);
-        for (Flavor flavor : this.list.getFlavor()) {
+        for (Flavor flavor : data) {
             cbbModel.addElement(flavor);
         }
     }

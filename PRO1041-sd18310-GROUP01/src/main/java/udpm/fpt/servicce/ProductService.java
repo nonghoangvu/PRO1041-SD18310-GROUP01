@@ -49,20 +49,21 @@ public class ProductService {
             return r.findProductInfo(search);
         }, Executors.newCachedThreadPool());
     }
-    public CompletableFuture<List<ProductInfo>> loadFilter(Integer amount,Date startDate, Date endDate, String taste, String packaging_type, Integer minPrice, Integer maxPrice) {
+
+    public CompletableFuture<List<ProductInfo>> loadFilter(Integer minAmount, Integer maxAmount, Date startDate, Date endDate, String taste, String packaging_type, Integer minPrice, Integer maxPrice) {
         return CompletableFuture.supplyAsync(() -> {
-            return r.findProductInfoFilter (amount, startDate, endDate, taste, packaging_type, minPrice, maxPrice);
+            return r.findProductInfoFilter(minAmount, maxAmount, startDate, endDate, taste, packaging_type, minPrice, maxPrice);
         }, Executors.newCachedThreadPool());
     }
-
 
     public Milk getMilkByID(Long id) {
         return iMilk.findAllById(id);
     }
 
-    public List<Flavor> getFlavor() {
-        List<Flavor> listFlavor = this.iFlavor.findAll();
-        return listFlavor;
+    public CompletableFuture<List<Flavor>> loadFlavor() {
+        return CompletableFuture.supplyAsync(() -> {
+            return this.iFlavor.findAll();
+        }, Executors.newCachedThreadPool());
     }
 
     public Boolean insertFlavor(Flavor flavor) {
@@ -73,9 +74,10 @@ public class ProductService {
         return this.iFlavor.deleteFlavor(flavor);
     }
 
-    public List<Unit> getUnit() {
-        List<Unit> listUnit = this.iUnit.findAll();
-        return listUnit;
+    public CompletableFuture<List<Unit>> loadUnit() {
+        return CompletableFuture.supplyAsync(() -> {
+            return this.iUnit.findAll();
+        }, Executors.newCachedThreadPool());
     }
 
     public void removeByMeasurement_unit(Unit unit) {
@@ -86,9 +88,10 @@ public class ProductService {
         return this.iUnit.save(unit) != null;
     }
 
-    public List<PackagingSpecification> getPackagingSpecification() {
-        List<PackagingSpecification> listPackagingSpecificationt = this.iPackagingSpecification.findAll();
-        return listPackagingSpecificationt;
+    public CompletableFuture<List<PackagingSpecification>> loadPackagingSpecification() {
+        return CompletableFuture.supplyAsync(() -> {
+            return this.iPackagingSpecification.findAll();
+        }, Executors.newCachedThreadPool());
     }
 
     public Boolean insertPackagingSpecification(PackagingSpecification packagingSpecification) {
