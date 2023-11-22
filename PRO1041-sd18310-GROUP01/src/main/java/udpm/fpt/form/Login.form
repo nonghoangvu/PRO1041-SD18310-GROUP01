@@ -59,7 +59,7 @@
                           <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="1" max="-2" attributes="0">
                               <Group type="102" attributes="0">
-                                  <Component id="jCheckBoxCustom1" min="-2" max="-2" attributes="0"/>
+                                  <Component id="ckbRemember" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace pref="69" max="32767" attributes="0"/>
                                   <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                               </Group>
@@ -91,7 +91,7 @@
                   <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jCheckBoxCustom1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="ckbRemember" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace pref="20" max="32767" attributes="0"/>
                   <Component id="btnLogin" min="-2" max="-2" attributes="0"/>
@@ -162,7 +162,7 @@
             <Property name="text" type="java.lang.String" value="Forgot password?"/>
           </Properties>
         </Component>
-        <Component class="udpm.fpt.swing.JCheckBoxCustom" name="jCheckBoxCustom1">
+        <Component class="udpm.fpt.swing.JCheckBoxCustom" name="ckbRemember">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="33" red="33" type="rgb"/>

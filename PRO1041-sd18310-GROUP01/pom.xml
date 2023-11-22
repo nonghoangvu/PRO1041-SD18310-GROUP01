@@ -58,6 +58,11 @@
             <artifactId>datechooser-swing-1.4.1</artifactId>
             <version>1.4</version>
         </dependency>
+        <dependency>
+            <groupId>org.mindrot</groupId>
+            <artifactId>jbcrypt</artifactId>
+            <version>0.4</version>
+        </dependency>
     </dependencies>
     <name>PRO1041-SD18310-GROUP01</name>
 </project>

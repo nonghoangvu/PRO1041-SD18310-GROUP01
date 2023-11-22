@@ -1,9 +1,12 @@
 package udpm.fpt.form;
 
-import java.awt.Component;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import javax.swing.ImageIcon;
+import udpm.fpt.Utitlity.LoginInfo;
+import udpm.fpt.Utitlity.LoginInfoSerializationUtil;
 import udpm.fpt.component.Notification;
 import udpm.fpt.main.Main;
 import udpm.fpt.servicce.LoginService;
@@ -14,29 +17,63 @@ import udpm.fpt.servicce.LoginService;
  */
 public class Login extends javax.swing.JFrame {
 
-    private LoginService login;
+    private final LoginService login;
 
     public Login() {
         initComponents();
         this.login = new LoginService();
+        this.login.loadAsync();
+        init();
+    }
+
+    private void init() {
         Image icon = new ImageIcon(this.getClass().getResource("/udpm/fpt/icon/rubber-duck.png")).getImage();
         this.setIconImage(icon);
+        isRemember();
+    }
+
+    public String getIPAddress() {
+        try {
+            InetAddress localhost = InetAddress.getLocalHost();
+            return localhost.getHostAddress().trim();
+        } catch (UnknownHostException e) {
+            e.printStackTrace(System.out);
+            return null;
+        }
+    }
+
+    private void isRemember() {
+        LoginInfo cookie = new LoginInfoSerializationUtil().readLoginInfoFromFile();
+        if (cookie != null) {
+            if (cookie.getIpAddress().equals(getIPAddress())) {
+                txtUsername.setText(cookie.getUsername());
+                txtPassword.setText(cookie.getPassword());
+                ckbRemember.setSelected(true);
+            }
+        }
     }
 
     private void getLogin() {
         if (this.login.login(txtUsername.getText(), String.valueOf(txtPassword.getPassword())) != null) {
             new Main(this.login.login(txtUsername.getText(), String.valueOf(txtPassword.getPassword()))).setVisible(true);
+            rememberPassword(ckbRemember.isSelected());
             this.dispose();
         } else {
             Notification notification = new Notification(this, Notification.Type.INFO, Notification.Location.DEFAULT_DESKTOP, "Invalid username or password!");
             notification.showNotification();
         }
     }
-    public void show(Component com) {
-        body.removeAll();
-        body.add(com);
-        body.repaint();
-        body.revalidate();
+
+    private void rememberPassword(Boolean selected) {
+        LoginInfo loginInfo = new LoginInfo();
+        if (selected) {
+            loginInfo.setUsername(txtUsername.getText());
+            loginInfo.setPassword(String.valueOf(txtPassword.getPassword()));
+            loginInfo.setIpAddress(getIPAddress());
+        } else {
+            loginInfo = null;
+        }
+        new LoginInfoSerializationUtil().saveLoginInfoToFile(loginInfo);
     }
 
     @SuppressWarnings("unchecked")
@@ -49,7 +86,7 @@ public class Login extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         btnLogin = new udpm.fpt.swing.Button();
         jLabel1 = new javax.swing.JLabel();
-        jCheckBoxCustom1 = new udpm.fpt.swing.JCheckBoxCustom();
+        ckbRemember = new udpm.fpt.swing.JCheckBoxCustom();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
 
@@ -92,9 +129,9 @@ public class Login extends javax.swing.JFrame {
         jLabel1.setForeground(new java.awt.Color(102, 153, 255));
         jLabel1.setText("Forgot password?");
 
-        jCheckBoxCustom1.setBackground(new java.awt.Color(51, 51, 255));
-        jCheckBoxCustom1.setForeground(new java.awt.Color(127, 127, 127));
-        jCheckBoxCustom1.setText("Remember me");
+        ckbRemember.setBackground(new java.awt.Color(51, 51, 255));
+        ckbRemember.setForeground(new java.awt.Color(127, 127, 127));
+        ckbRemember.setText("Remember me");
 
         jLabel3.setForeground(new java.awt.Color(127, 127, 127));
         jLabel3.setText("Don't have an account?");
@@ -116,7 +153,7 @@ public class Login extends javax.swing.JFrame {
                         .addGap(50, 50, 50)
                         .addGroup(bodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(bodyLayout.createSequentialGroup()
-                                .addComponent(jCheckBoxCustom1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(ckbRemember, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 69, Short.MAX_VALUE)
                                 .addComponent(jLabel1))
                             .addComponent(txtUsername, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -141,7 +178,7 @@ public class Login extends javax.swing.JFrame {
                 .addGap(30, 30, 30)
                 .addGroup(bodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jCheckBoxCustom1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(ckbRemember, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
                 .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(20, 20, 20)
@@ -191,7 +228,7 @@ public class Login extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel body;
     private udpm.fpt.swing.Button btnLogin;
-    private udpm.fpt.swing.JCheckBoxCustom jCheckBoxCustom1;
+    private udpm.fpt.swing.JCheckBoxCustom ckbRemember;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
