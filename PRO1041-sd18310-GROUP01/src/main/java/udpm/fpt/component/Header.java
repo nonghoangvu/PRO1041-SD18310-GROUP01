@@ -16,34 +16,78 @@ public class Header extends javax.swing.JPanel {
     public Header() {
         initComponents();
         setBackground(new Color(250, 250, 250));
+        setOpaque(false);
     }
 
+    public void setUsername(String username){
+        txtUsername.setText(username);
+    }
+    public void setRole(String role){
+        txtRole.setText(role);
+    }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated
-    // Code">//GEN-BEGIN:initComponents
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         cmdMenu = new udpm.fpt.swing.Button();
+        txtUsername = new javax.swing.JLabel();
+        imageAvatar1 = new udpm.fpt.swing.ImageAvatar();
+        txtRole = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
 
         cmdMenu.setBackground(new java.awt.Color(250, 250, 250));
-        cmdMenu.setIcon(new javax.swing.ImageIcon(Header.class.getResource("/udpm/fpt/icon/menu.png"))); // NOI18N
+        cmdMenu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/udpm/fpt/icon/menu.png"))); // NOI18N
+
+        txtUsername.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        txtUsername.setForeground(new java.awt.Color(127, 127, 127));
+        txtUsername.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        txtUsername.setText("Username");
+        txtUsername.setToolTipText("");
+
+        imageAvatar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/udpm/fpt/icon/user.png"))); // NOI18N
+
+        txtRole.setForeground(new java.awt.Color(127, 127, 127));
+        txtRole.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        txtRole.setText("Role");
+        txtRole.setToolTipText("");
+
+        jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(cmdMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 50,
-                                        javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(344, Short.MAX_VALUE)));
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(cmdMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 238, Short.MAX_VALUE)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(5, 5, 5)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(txtUsername)
+                    .addComponent(txtRole))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(imageAvatar1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
         layout.setVerticalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(cmdMenu, javax.swing.GroupLayout.PREFERRED_SIZE,
-                                        javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jSeparator1)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cmdMenu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(txtUsername)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtRole))
+                            .addComponent(imageAvatar1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
     }// </editor-fold>//GEN-END:initComponents
 
     @Override
@@ -85,5 +129,9 @@ public class Header extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private udpm.fpt.swing.Button cmdMenu;
+    private udpm.fpt.swing.ImageAvatar imageAvatar1;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JLabel txtRole;
+    private javax.swing.JLabel txtUsername;
     // End of variables declaration//GEN-END:variables
 }

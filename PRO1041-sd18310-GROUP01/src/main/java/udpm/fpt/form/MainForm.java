@@ -7,11 +7,13 @@ import udpm.fpt.model.User;
 
 public class MainForm extends javax.swing.JPanel {
 
-    public User user = new User(2, "admin", "123", "admin");
+    public User user = new User(3, "NongHoangVu04", "123", "Admin");
 
     public MainForm() {
         initComponents();
         show(new Home());
+        header1.setUsername(this.user.getUsername());
+        header1.setRole(this.user.getRole());
     }
 
     public User getUser() {
@@ -19,7 +21,6 @@ public class MainForm extends javax.swing.JPanel {
     }
 
     @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
