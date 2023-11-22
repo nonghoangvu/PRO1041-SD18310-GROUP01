@@ -125,6 +125,7 @@ udpm\fpt\component\MenuLayout$1.class
 udpm\fpt\component\UpdateProduct$3.class
 udpm\fpt\component\ViewDelete$1.class
 udpm\fpt\main\Main$1.class
+udpm\fpt\form\Login$3.class
 udpm\fpt\Applocation.class
 udpm\fpt\swing\TextArea$1.class
 udpm\fpt\component\ViewDelete.class
@@ -148,6 +149,7 @@ udpm\fpt\swing\TextArea$2.class
 udpm\fpt\swing\table\TableCustom$1.class
 udpm\fpt\component\PackagingSpecificationManagement.class
 udpm\fpt\component\PanelAction$3.class
+udpm\fpt\form\Login$2.class
 udpm\fpt\repository\IUnit.class
 udpm\fpt\event\EventMenuSelected.class
 udpm\fpt\swing\MenuItem.class
