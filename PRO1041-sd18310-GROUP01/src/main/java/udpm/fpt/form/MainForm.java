@@ -7,9 +7,10 @@ import udpm.fpt.model.User;
 
 public class MainForm extends javax.swing.JPanel {
 
-    public User user = new User(3, "NongHoangVu04", "123", "Admin");
+    public User user;
 
-    public MainForm() {
+    public MainForm(User user) {
+        this.user = user;
         initComponents();
         show(new Home());
         header1.setUsername(this.user.getUsername());

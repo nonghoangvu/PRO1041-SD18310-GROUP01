@@ -13,21 +13,23 @@ import org.jdesktop.animation.timing.TimingTarget;
 import org.jdesktop.animation.timing.TimingTargetAdapter;
 import udpm.fpt.form.History;
 import udpm.fpt.form.Home;
+import udpm.fpt.form.Login;
 import udpm.fpt.form.ProductManagement;
 import udpm.fpt.model.User;
 
 public class Main extends javax.swing.JFrame {
 
-    private User user = new MainForm().getUser();
+    private User user;
     private final MigLayout layout;
     private final MainForm main;
     private final MenuLayout menu;
     private final Animator animator;
 
-    public Main() {
+    public Main(User user) {
         initComponents();
         layout = new MigLayout("fill", "0[fill]0", "0[fill]0");
-        main = new MainForm();
+        this.user = user;
+        main = new MainForm(this.user);
         menu = new MenuLayout();
         menu.getMenu().initMoving(Main.this);
         main.initMoving(Main.this);
@@ -97,7 +99,8 @@ public class Main extends javax.swing.JFrame {
                     main.show(new History());
                 }
                 case 6 -> {
-                    System.exit(0);
+                    new Login().setVisible(true);
+                    this.dispose();
                 }
                 default -> {
                     System.out.println("index: " + index);

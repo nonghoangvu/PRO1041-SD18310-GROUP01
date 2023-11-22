@@ -4,7 +4,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
-import udpm.fpt.main.Main;
+import udpm.fpt.form.Login;
 
 /**
  *
@@ -31,6 +31,6 @@ public class Applocation {
 
     public static void main(String[] args) {
         context = createApplicationContext(args);
-        new Main().setVisible(true);
+        new Login().setVisible(true);
     }
 }
