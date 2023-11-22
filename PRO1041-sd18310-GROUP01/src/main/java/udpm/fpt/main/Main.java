@@ -1,16 +1,19 @@
 package udpm.fpt.main;
 
+import java.awt.Image;
 import udpm.fpt.component.MenuLayout;
 import udpm.fpt.form.MainForm;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.ImageIcon;
 import javax.swing.JLayeredPane;
 import javax.swing.SwingUtilities;
 import net.miginfocom.swing.MigLayout;
 import org.jdesktop.animation.timing.Animator;
 import org.jdesktop.animation.timing.TimingTarget;
 import org.jdesktop.animation.timing.TimingTargetAdapter;
+import udpm.fpt.component.Notification;
 import udpm.fpt.form.History;
 import udpm.fpt.form.Home;
 import udpm.fpt.form.Login;
@@ -27,6 +30,8 @@ public class Main extends javax.swing.JFrame {
 
     public Main(User user) {
         initComponents();
+        Image icon = new ImageIcon(this.getClass().getResource("/udpm/fpt/icon/rubber-duck.png")).getImage();
+        this.setIconImage(icon);
         layout = new MigLayout("fill", "0[fill]0", "0[fill]0");
         this.user = user;
         main = new MainForm(this.user);
@@ -93,10 +98,22 @@ public class Main extends javax.swing.JFrame {
                     main.show(new Home());
                 }
                 case 1 -> {
-                    main.show(new ProductManagement(this.user));
+                    if (this.user.getRole().equalsIgnoreCase("Admin")) {
+                        main.show(new ProductManagement(this.user));
+                    } else {
+                        Notification notification = new Notification(this, Notification.Type.WARNING, Notification.Location.TOP_RIGHT, "Only administrators have access");
+                        notification.showNotification();
+                        main.show(new Home());
+                    }
                 }
                 case 2 -> {
-                    main.show(new History());
+                    if (this.user.getRole().equalsIgnoreCase("Admin")) {
+                        main.show(new History());
+                    } else {
+                        Notification notification = new Notification(this, Notification.Type.WARNING, Notification.Location.TOP_RIGHT, "Only administrators have access");
+                        notification.showNotification();
+                        main.show(new Home());
+                    }
                 }
                 case 6 -> {
                     new Login().setVisible(true);
@@ -118,6 +135,7 @@ public class Main extends javax.swing.JFrame {
         mainPanel = new javax.swing.JLayeredPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("TH True Milk");
         setUndecorated(true);
 
         mainPanel.setBackground(new java.awt.Color(250, 250, 250));
