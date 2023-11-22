@@ -2,6 +2,7 @@ package udpm.fpt.form;
 
 import java.awt.Image;
 import javax.swing.ImageIcon;
+import udpm.fpt.component.Notification;
 import udpm.fpt.main.Main;
 import udpm.fpt.servicce.LoginService;
 
@@ -20,12 +21,14 @@ public class Login extends javax.swing.JFrame {
         this.setIconImage(icon);
     }
 
-    private Boolean getLogin() {
+    private void getLogin() {
         if (this.login.login(txtUsername.getText(), String.valueOf(txtPassword.getPassword())) != null) {
             new Main(this.login.login(txtUsername.getText(), String.valueOf(txtPassword.getPassword()))).setVisible(true);
             this.dispose();
+        } else {
+            Notification notification = new Notification(this, Notification.Type.INFO, Notification.Location.DEFAULT_DESKTOP, "Invalid username or password!");
+            notification.showNotification();
         }
-        return null;
     }
 
     @SuppressWarnings("unchecked")
