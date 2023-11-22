@@ -22,6 +22,7 @@ import udpm.fpt.model.Milk;
 import udpm.fpt.model.PackagingSpecification;
 import udpm.fpt.model.ProductInfo;
 import udpm.fpt.model.Unit;
+import udpm.fpt.model.User;
 import udpm.fpt.servicce.ProductService;
 import udpm.fpt.swing.NumberOnlyFilter;
 
@@ -32,12 +33,14 @@ import udpm.fpt.swing.NumberOnlyFilter;
 public class NewProduct extends javax.swing.JFrame {
 
     public ProductManagement perentForm;
+    private User user;
     private final ProductService list;
     private String imgName = null;
 
-    public NewProduct(ProductManagement perentForm) {
+    public NewProduct(ProductManagement perentForm, User user) {
         initComponents();
         this.list = new ProductService();
+        this.user = user;
         textDate();
         this.perentForm = perentForm;
         filDataCombo();
@@ -191,7 +194,7 @@ public class NewProduct extends javax.swing.JFrame {
         pi.setComposition(txtComposition.getText());
         pi.setProduct_description(txtDescription.getText());
         pi.setCreate_at(new Date());
-        pi.setCreate_by("NongHoangVu");
+        pi.setUser(this.user);
         return pi;
     }
 
@@ -647,7 +650,7 @@ public class NewProduct extends javax.swing.JFrame {
     }
 
     private void btnNewUnitActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnNewUnitActionPerformed
-        UnitManagement unitManagement = new UnitManagement();
+        UnitManagement unitManagement = new UnitManagement(this.user);
         unitManagement.setResultCallback((Boolean result) -> {
             if (result) {
                 loadDataAndFillUnit();
@@ -657,7 +660,7 @@ public class NewProduct extends javax.swing.JFrame {
     }
 
     private void btnNewPackagingSpecificationMouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_btnNewPackagingSpecificationMouseClicked
-        PackagingSpecificationManagement packagingSpecificationManagement = new PackagingSpecificationManagement();
+        PackagingSpecificationManagement packagingSpecificationManagement = new PackagingSpecificationManagement(this.user);
         packagingSpecificationManagement.setResultCallback((Boolean result) -> {
             if (result) {
                 loadDataAndFillPackagingSpecification();
@@ -667,7 +670,7 @@ public class NewProduct extends javax.swing.JFrame {
     }
 
     private void btnNewFlavorMouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_btnNewFlavorMouseClicked
-        FlavorManagement flavorManagement = new FlavorManagement();
+        FlavorManagement flavorManagement = new FlavorManagement(this.user);
         flavorManagement.setResultCallback((Boolean result) -> {
             if (result) {
                 loadDataAndFillFlavor();

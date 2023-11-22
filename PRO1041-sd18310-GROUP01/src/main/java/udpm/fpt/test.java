@@ -1,20 +1,39 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package udpm.fpt;
+
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
+import udpm.fpt.repository.IProductInfo;
 
 /**
  *
  * @author NONG HOANG VU
  */
+@SpringBootApplication
 public class test {
 
-    public static void main(String[] args) {
-        test instance = new test();
-//        System.out.println(new javax.swing.ImageIcon(instance.getClass().getResource("/udpm/icon/LogoTH.png")));
-//        System.out.println(new javax.swing.ImageIcon(test.class.getResource("/absolute/path/to/LogoTH.png")));
-        System.out.println(test.class.getResource("/udpm/fpt/icon/LogoTH.png"));
+    private static ApplicationContext context = null;
 
+    public static ApplicationContext getContext() {
+        return context;
+    }
+
+    public static <T extends Object> T getBean(Class<T> requiredType) {
+        return context.getBean(requiredType);
+    }
+
+    private static ConfigurableApplicationContext createApplicationContext(String[] args) {
+        return new SpringApplicationBuilder(test.class)
+                .headless(false)
+                .run(args);
+    }
+
+    public static void main(String[] args) {
+        context = createApplicationContext(args);
+        IProductInfo pi = getBean(IProductInfo.class);
+        pi.findAll().forEach(s -> {
+            System.out.println(s.getUser().getUsername());
+        });
     }
 }

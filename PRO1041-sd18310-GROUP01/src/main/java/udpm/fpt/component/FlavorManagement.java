@@ -11,6 +11,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import udpm.fpt.model.Flavor;
+import udpm.fpt.model.User;
 import udpm.fpt.servicce.ProductService;
 
 /**
@@ -22,10 +23,12 @@ public class FlavorManagement extends javax.swing.JFrame {
     private final ProductService list;
     private Boolean result = true;
     private Consumer<Boolean> resultCallback;
+    private User user;
 
-    public FlavorManagement() {
+    public FlavorManagement(User user) {
         initComponents();
         this.list = new ProductService();
+        this.user = user;
         loadDataAndFillFlavor();
         txtFlavor.getDocument().addDocumentListener(new DocumentListener() {
             @Override
@@ -81,7 +84,7 @@ public class FlavorManagement extends javax.swing.JFrame {
         Flavor flavor = new Flavor();
         flavor.setTaste(txtFlavor.getText().trim());
         flavor.setCreate_at(defaultValue);
-        flavor.setCreate_by("NongHoangVu");
+        flavor.setUser(this.user);
         if (this.list.insertFlavor(flavor)) {
             Notification n = new Notification(this, Notification.Type.SUCCESS, Notification.Location.DEFAULT_DESKTOP, "SUCCESS");
             n.showNotification();

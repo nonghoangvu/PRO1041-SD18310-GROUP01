@@ -11,6 +11,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import udpm.fpt.model.PackagingSpecification;
+import udpm.fpt.model.User;
 import udpm.fpt.servicce.ProductService;
 
 /**
@@ -21,11 +22,13 @@ public class PackagingSpecificationManagement extends javax.swing.JFrame {
 
     private final ProductService list;
     private Boolean result = true;
+    private User user;
     private Consumer<Boolean> resultCallback;
 
-    public PackagingSpecificationManagement() {
+    public PackagingSpecificationManagement(User user) {
         initComponents();
         this.list = new ProductService();
+        this.user = user;
         loadDataAndFillPackagingSpecification();
         txtPackagingSpecification.getDocument().addDocumentListener(new DocumentListener() {
             @Override
@@ -81,7 +84,7 @@ public class PackagingSpecificationManagement extends javax.swing.JFrame {
         PackagingSpecification p = new PackagingSpecification();
         p.setPackaging_type(txtPackagingSpecification.getText().trim());
         p.setCreate_at(defaultValue);
-        p.setCreate_by("NongHoangVu");
+        p.setUser(this.user);
         if (this.list.insertPackagingSpecification(p)) {
             Notification n = new Notification(this, Notification.Type.SUCCESS, Notification.Location.DEFAULT_DESKTOP, "SUCCESS");
             n.showNotification();

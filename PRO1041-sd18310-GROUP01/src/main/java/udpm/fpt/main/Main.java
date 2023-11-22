@@ -14,9 +14,11 @@ import org.jdesktop.animation.timing.TimingTargetAdapter;
 import udpm.fpt.form.History;
 import udpm.fpt.form.Home;
 import udpm.fpt.form.ProductManagement;
+import udpm.fpt.model.User;
 
 public class Main extends javax.swing.JFrame {
 
+    private User user = new MainForm().getUser();
     private final MigLayout layout;
     private final MainForm main;
     private final MenuLayout menu;
@@ -89,7 +91,7 @@ public class Main extends javax.swing.JFrame {
                     main.show(new Home());
                 }
                 case 1 -> {
-                    main.show(new ProductManagement());
+                    main.show(new ProductManagement(this.user));
                 }
                 case 2 -> {
                     main.show(new History());

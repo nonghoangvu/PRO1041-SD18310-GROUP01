@@ -10,8 +10,8 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import udpm.fpt.model.Flavor;
 import udpm.fpt.model.Unit;
+import udpm.fpt.model.User;
 import udpm.fpt.servicce.ProductService;
 
 /**
@@ -21,12 +21,14 @@ import udpm.fpt.servicce.ProductService;
 public class UnitManagement extends javax.swing.JFrame {
 
     private final ProductService list;
+    private User user;
     private Boolean result = true;
     private Consumer<Boolean> resultCallback;
 
-    public UnitManagement() {
+    public UnitManagement(User user) {
         initComponents();
         this.list = new ProductService();
+        this.user = user;
         loadDataAndFillUnit();
         txtUnit.getDocument().addDocumentListener(new DocumentListener() {
             @Override
@@ -82,7 +84,7 @@ public class UnitManagement extends javax.swing.JFrame {
         Unit unit = new Unit();
         unit.setMeasurement_unit(txtUnit.getText().trim());
         unit.setCreate_at(defaultValue);
-        unit.setCreate_by("NongHoangVu");
+        unit.setUser(this.user);
         if (this.list.insertUnit(unit)) {
             Notification n = new Notification(this, Notification.Type.SUCCESS, Notification.Location.DEFAULT_DESKTOP, "SUCCESS");
             n.showNotification();

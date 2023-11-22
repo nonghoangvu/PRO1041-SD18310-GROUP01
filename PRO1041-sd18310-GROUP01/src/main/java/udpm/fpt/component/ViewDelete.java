@@ -56,7 +56,7 @@ public class ViewDelete extends javax.swing.JFrame {
         lbExpirationDate.setText(removeTimeUsingDateTimeFormatter(String.valueOf(this.pi.getMilk().getExpiration_date())));
         lbProvider.setText(this.pi.getMilk().getProvider());
         lbCreateAt.setText(String.valueOf(this.pi.getCreate_at()));
-        lbCreateBy.setText(this.pi.getCreate_by());
+        lbCreateBy.setText(this.pi.getUser().getUsername());
         lbVolume.setText(String.valueOf(this.pi.getVolume()));
         lbMeasurementUnit.setText(this.pi.getUnit().getMeasurement_unit());
         lbPackagingSpecification.setText(this.pi.getPackagingSpecification().getPackaging_type());

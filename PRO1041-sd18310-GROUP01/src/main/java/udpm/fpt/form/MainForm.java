@@ -3,12 +3,19 @@ package udpm.fpt.form;
 import java.awt.Component;
 import java.awt.event.ActionListener;
 import javax.swing.JFrame;
+import udpm.fpt.model.User;
 
 public class MainForm extends javax.swing.JPanel {
 
+    public User user = new User(2, "admin", "123", "admin");
+
     public MainForm() {
         initComponents();
-            show(new Home());
+        show(new Home());
+    }
+
+    public User getUser() {
+        return user;
     }
 
     @SuppressWarnings("unchecked")

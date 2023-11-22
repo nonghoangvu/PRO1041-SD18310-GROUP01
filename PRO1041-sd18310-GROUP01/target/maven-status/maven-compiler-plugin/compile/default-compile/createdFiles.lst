@@ -28,7 +28,6 @@ udpm\fpt\swing\SpinnerUI.class
 udpm\fpt\swing\ScrollBarCustomUI$ScrollButton$1.class
 udpm\fpt\component\Profile.class
 udpm\fpt\form\History$2.class
-udpm\fpt\model\Control.class
 udpm\fpt\component\NewProduct$7.class
 udpm\fpt\swing\table\TableActionCellRender.class
 udpm\fpt\swing\shadow\ShadowRenderer.class
@@ -38,7 +37,6 @@ udpm\fpt\swing\ScrollBar.class
 udpm\fpt\swing\TextField$2.class
 udpm\fpt\component\Notification.class
 udpm\fpt\event\TableActionEvent.class
-udpm\fpt\form\NewJPanel.class
 udpm\fpt\form\ProductManagement$7.class
 udpm\fpt\swing\ModernScrollBarUI$InvisibleScrollBarButton.class
 udpm\fpt\swing\TextField$1.class
@@ -60,6 +58,7 @@ udpm\fpt\form\ProductManagement$5.class
 udpm\fpt\component\NewProduct$1.class
 udpm\fpt\repository\IProductInfo.class
 udpm\fpt\component\UpdateProduct$5.class
+udpm\fpt\model\User.class
 udpm\fpt\repository\IMilk.class
 udpm\fpt\component\PackagingSpecificationManagement$2.class
 udpm\fpt\component\Menu.class
@@ -81,7 +80,6 @@ udpm\fpt\component\Notification$Location.class
 udpm\fpt\component\Notification$1$1.class
 udpm\fpt\swing\ListMenu$2.class
 udpm\fpt\component\Header$1.class
-udpm\fpt\testv2.class
 udpm\fpt\repository\IPackagingSpecification.class
 udpm\fpt\model\ProductInfo.class
 udpm\fpt\component\PanelAction$2.class

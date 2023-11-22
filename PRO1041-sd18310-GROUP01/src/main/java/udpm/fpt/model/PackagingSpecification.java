@@ -5,6 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.util.Date;
 import java.util.Objects;
@@ -28,8 +30,9 @@ public class PackagingSpecification {
     private String packaging_type;
     @Column(name = "create_at")
     private Date create_at;
-    @Column(name = "create_by")
-    private String create_by;
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @Override
     public int hashCode() {

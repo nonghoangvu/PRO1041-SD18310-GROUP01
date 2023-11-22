@@ -26,9 +26,11 @@ public class ProductManagement extends javax.swing.JPanel {
     private DefaultTableModel tblModel;
     private final ProductService list;
     private List<ProductInfo> temp;
+    private User user;
 
-    public ProductManagement() {
+    public ProductManagement(User user) {
         initComponents();
+        this.user = user;
         this.list = new ProductService();
         initProduct();
     }
@@ -244,7 +246,7 @@ public class ProductManagement extends javax.swing.JPanel {
         lbExpirationDate.setText(removeTimeUsingDateTimeFormatter(String.valueOf(pi.getMilk().getExpiration_date())));
         lbProvider.setText(pi.getMilk().getProvider());
         lbCreateAt.setText(String.valueOf(pi.getCreate_at()));
-        lbCreateBy.setText(pi.getCreate_by());
+        lbCreateBy.setText(pi.getUser().getUsername());
         lbVolume.setText(String.valueOf(pi.getVolume()));
         lbMeasurementUnit.setText(pi.getUnit().getMeasurement_unit());
         lbPackagingSpecification.setText(pi.getPackagingSpecification().getPackaging_type());
@@ -945,7 +947,7 @@ public class ProductManagement extends javax.swing.JPanel {
     }//GEN-LAST:event_btnApplyFiltersMouseClicked
 
     private void btnNewMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnNewMouseClicked
-        NewProduct prd = new NewProduct(this);
+        NewProduct prd = new NewProduct(this, this.user);
         prd.setVisible(true);
     }//GEN-LAST:event_btnNewMouseClicked
 
@@ -954,7 +956,7 @@ public class ProductManagement extends javax.swing.JPanel {
             return;
         }
         ProductInfo pi = temp.get(tblProduct.getSelectedRow());
-        UpdateProduct prd = new UpdateProduct(this, pi);
+        UpdateProduct prd = new UpdateProduct(this, pi, pi.getUser(), this.user);
         prd.setVisible(true);
     }//GEN-LAST:event_btnUpdateMouseClicked
 

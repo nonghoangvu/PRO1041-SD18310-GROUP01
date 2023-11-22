@@ -26,30 +26,42 @@ public class ProductInfo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
+
     @OneToOne
     @JoinColumn(name = "milk_id")
     private Milk milk;
+
     @OneToOne
     @JoinColumn(name = "flavor_id")
     private Flavor flavor;
+
     @Column(name = "brand")
     private String brand;
+
     @Column(name = "volume")
     private Double volume;
+
     @OneToOne
     @JoinColumn(name = "unit_id")
     private Unit unit;
+
     @Column(name = "origin")
     private String origin;
+
     @Column(name = "composition")
     private String composition;
+
     @OneToOne
     @JoinColumn(name = "packaging_id")
     private PackagingSpecification packagingSpecification;
+
     @Column(name = "product_description")
     private String product_description;
+
     @Column(name = "create_at")
     private Date create_at;
-    @Column(name = "create_by")
-    private String create_by;
+
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }
