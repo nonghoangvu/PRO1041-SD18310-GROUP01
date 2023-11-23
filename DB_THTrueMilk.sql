@@ -545,10 +545,10 @@ VALUES
 (200, N'Sữa Hạt Điều 1L', 'sua_hat_dieu_1l.jpg', 30000, 95, '2032-09-01', '2032-10-01', 'TH True Milk');
 GO
 INSERT INTO [Users] ([username], [password], [role]) VALUES 
-('Admin', '123', 'Admin'),
-('NongHoangVu04', '123', 'Admin'),
-('Employee001', '123', 'Employee'),
-('convitcute', '123', 'Customer');
+('Admin', '$2a$10$roI7ElW8vMZ/aa/ndvev5ekg.szrhPLnsihszv5fyi1moKL5DNrN2', 'Admin'),
+('NongHoangVu04', '$2a$10$ALO4bzEz7frQ0XHXyU3a/ehNCLg1MC2ROOWQNuoRs7tpNpwsYvVEO', 'Admin'),
+('Employee001', '$2a$10$roI7ElW8vMZ/aa/ndvev5ekg.szrhPLnsihszv5fyi1moKL5DNrN2', 'Employee'),
+('convitcute', '$2a$10$roI7ElW8vMZ/aa/ndvev5ekg.szrhPLnsihszv5fyi1moKL5DNrN2', 'Customer');
 GO
 INSERT INTO [Flavor] ([taste], [user_id])
 VALUES
