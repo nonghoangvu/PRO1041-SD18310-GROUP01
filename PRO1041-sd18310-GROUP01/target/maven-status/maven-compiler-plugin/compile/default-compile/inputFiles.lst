@@ -54,10 +54,12 @@ C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP01\PRO1041-sd18310-GRO
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP01\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\event\TableActionEvent.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP01\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\model\Unit.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP01\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\model\PackagingSpecification.java
+C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP01\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\model\HistoryProduct.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP01\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\component\MenuLayout.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP01\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\swing\table\TableActionCellEditor.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP01\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\component\ViewDelete.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP01\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\swing\table\HoverIndex.java
+C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP01\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\repository\IHistoryProduct.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP01\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\component\WebCamProduct.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP01\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\main\Main.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP01\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\repository\IUnit.java
@@ -66,6 +68,7 @@ C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP01\PRO1041-sd18310-GRO
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP01\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\swing\ScrollBarCustom.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP01\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\Utitlity\BcryptHash.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP01\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\component\IMG.java
+C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP01\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\servicce\HistoryProductService.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP01\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\swing\table\TextAreaCellRenderer.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP01\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\component\FlavorManagement.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP01\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\swing\Spinner.java

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import udpm.fpt.model.Milk;
 
 import udpm.fpt.model.ProductInfo;
 
@@ -43,4 +44,5 @@ public interface IProductInfo extends JpaRepository<ProductInfo, Integer> {
             @Param("packaging_type") String packaging_type,
             @Param("minPrice") Integer minPrice,
             @Param("maxPrice") Integer maxPrice);
+
 }

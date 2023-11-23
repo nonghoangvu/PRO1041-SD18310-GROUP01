@@ -676,7 +676,7 @@ public class UpdateProduct extends javax.swing.JFrame {
         if (!isValidate()) {
             return;
         }
-        if (this.list.updateProduct(getMilk(), getProductInfo())) {
+        if (this.list.updateProduct(getMilk(), getProductInfo(), this.newUser)) {
             Notification n = new Notification(this, Notification.Type.SUCCESS,
                     Notification.Location.DEFAULT_DESKTOP, "SUCCESS");
             n.showNotification();

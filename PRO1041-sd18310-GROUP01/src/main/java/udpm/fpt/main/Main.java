@@ -110,7 +110,7 @@ public class Main extends javax.swing.JFrame {
                 }
                 case 2 -> {
                     if (this.user.getRole().equalsIgnoreCase("Admin")) {
-                        main.show(new History());
+                        main.show(new History(this.user));
                     } else {
                         Notification notification = new Notification(this, Notification.Type.WARNING, Notification.Location.TOP_RIGHT, "Only administrators have access");
                         notification.showNotification();

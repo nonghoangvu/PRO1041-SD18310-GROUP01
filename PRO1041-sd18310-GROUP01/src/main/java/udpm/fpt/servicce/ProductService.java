@@ -8,13 +8,16 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executors;
 import org.springframework.beans.factory.annotation.Autowired;
+import static udpm.fpt.Applocation.getBean;
+import udpm.fpt.model.HistoryProduct;
 
 import udpm.fpt.repository.IFlavor;
 import udpm.fpt.repository.IProductInfo;
-import static udpm.fpt.Applocation.getBean;
 import udpm.fpt.model.Milk;
 import udpm.fpt.model.PackagingSpecification;
 import udpm.fpt.model.Unit;
+import udpm.fpt.model.User;
+import udpm.fpt.repository.IHistoryProduct;
 import udpm.fpt.repository.IMilk;
 import udpm.fpt.repository.IPackagingSpecification;
 import udpm.fpt.repository.IUnit;
@@ -30,6 +33,7 @@ public class ProductService {
     private final IFlavor iFlavor = getBean(IFlavor.class);
     private final IUnit iUnit = getBean(IUnit.class);
     private final IPackagingSpecification iPackagingSpecification = getBean(IPackagingSpecification.class);
+    private final IHistoryProduct iHistoryProduct = getBean(IHistoryProduct.class);
 
     @Autowired
     public ProductService() {
@@ -101,22 +105,53 @@ public class ProductService {
 
     public Boolean inserProduct(Milk m, ProductInfo pi) {
         if (iMilk.findAllById(m.getId()) == null) {
-            return this.iMilk.save(m) != null && r.save(pi) != null;
+            if (this.iMilk.save(m) != null && r.save(pi) != null) {
+                HistoryProduct historyProduct = new HistoryProduct();
+                historyProduct.setDescription("New product has been added with ID " + m.getId());
+                historyProduct.setDatetime(new Date());
+                historyProduct.setUsername(pi.getUser().getUsername());
+                historyProduct.setChangeType("New");
+                return this.iHistoryProduct.save(historyProduct) != null;
+            }
         }
         return false;
     }
 
-    public Boolean updateProduct(Milk m, ProductInfo pi) {
-        return this.iMilk.save(m) != null && r.save(pi) != null;
+    public Boolean updateProduct(Milk m, ProductInfo pi, User user) {
+        if (this.iMilk.save(m) != null && r.save(pi) != null) {
+            HistoryProduct historyProduct = new HistoryProduct();
+            historyProduct.setDescription("ID " + m.getId() + " has been updated");
+            historyProduct.setDatetime(new Date());
+            historyProduct.setUsername(user.getUsername());
+            historyProduct.setChangeType("Update");
+            return this.iHistoryProduct.save(historyProduct) != null;
+        }
+        return false;
     }
 
-    public Boolean hideRestoreProduct(Milk m) {
-        return this.iMilk.save(m) != null;
+    public Boolean hideRestoreProduct(Milk m, User user) {
+        if (this.iMilk.save(m) != null) {
+            HistoryProduct historyProduct = new HistoryProduct();
+            String type = m.getIsDelete() ? "Added to repository" : "Restored";
+            historyProduct.setDescription("ID " + m.getId() + " has been " + type);
+            historyProduct.setDatetime(new Date());
+            historyProduct.setUsername(user.getUsername());
+            historyProduct.setChangeType(type);
+            return this.iHistoryProduct.save(historyProduct) != null;
+        }
+        return false;
     }
 
-    public Boolean deleteProduct(Long idMilk, Integer idProductInfo) {
+    public Boolean deleteProduct(Long idMilk, Integer idProductInfo, Milk milk, User user) {
         Boolean milkDeleted;
         Boolean productInfoDeleted;
+        String message = "ID " + milk.getId() + " has been deleted";
+        HistoryProduct historyProduct = new HistoryProduct();
+        historyProduct.setDescription(message);
+        historyProduct.setDatetime(new Date());
+        historyProduct.setUsername(user.getUsername());
+        historyProduct.setChangeType("Delete");
+        this.iHistoryProduct.save(historyProduct);
         try {
             iMilk.deleteById(idMilk);
             milkDeleted = true;

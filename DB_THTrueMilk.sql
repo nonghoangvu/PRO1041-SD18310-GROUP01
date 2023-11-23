@@ -56,17 +56,16 @@ CREATE TABLE [ProductInfo] (
 )
 CREATE TABLE [HistoryProduct] (
   [id] INT IDENTITY(1,1) PRIMARY KEY,
-  [milk_id] BIGINT,
-  [product_info_id] INT,
-  [status] NVARCHAR(50),
-  [create_at] DATETIME DEFAULT GETDATE(),
-  [user_id] INT
+  [description] NVARCHAR(MAX),
+  [datetime] DATETIME DEFAULT GETDATE(),
+  [username] NVARCHAR(50),
+  [change_type] NVARCHAR(50)
 )
 GO
 CREATE TABLE [Users] (
   [id] INT PRIMARY KEY IDENTITY(1, 1),
   [username] NVARCHAR(50),
-  [password] NVARCHAR(100),
+  [password] NVARCHAR(MAX),
   [role] NVARCHAR(255)
 )
 GO
@@ -274,10 +273,6 @@ GO
 ALTER TABLE [ProductInfo] ADD FOREIGN KEY ([unit_id]) REFERENCES [Unit] ([id])
 GO
 ALTER TABLE [ProductInfo] ADD FOREIGN KEY ([packaging_id]) REFERENCES [PackagingSpecification] ([id])
-GO--
-ALTER TABLE [HistoryProduct] ADD FOREIGN KEY ([product_info_id]) REFERENCES [ProductInfo] ([id])
-GO
-ALTER TABLE [HistoryProduct] ADD FOREIGN KEY ([milk_id]) REFERENCES [Milk] ([id])
 GO
 ALTER TABLE [ProductInfo] ADD FOREIGN KEY ([user_id]) REFERENCES [Users] ([id])
 GO
@@ -286,8 +281,6 @@ GO
 ALTER TABLE [Unit] ADD FOREIGN KEY ([user_id]) REFERENCES [Users] ([id])
 GO
 ALTER TABLE [PackagingSpecification] ADD FOREIGN KEY ([user_id]) REFERENCES [Users] ([id])
-GO
-ALTER TABLE [HistoryProduct] ADD FOREIGN KEY ([user_id]) REFERENCES [Users] ([id])
 GO
 ALTER TABLE [UserDetails] ADD FOREIGN KEY ([user_id]) REFERENCES [Users] ([id])
 GO
@@ -547,8 +540,8 @@ GO
 INSERT INTO [Users] ([username], [password], [role]) VALUES 
 ('Admin', '$2a$10$roI7ElW8vMZ/aa/ndvev5ekg.szrhPLnsihszv5fyi1moKL5DNrN2', 'Admin'),
 ('NongHoangVu04', '$2a$10$ALO4bzEz7frQ0XHXyU3a/ehNCLg1MC2ROOWQNuoRs7tpNpwsYvVEO', 'Admin'),
-('Employee001', '$2a$10$roI7ElW8vMZ/aa/ndvev5ekg.szrhPLnsihszv5fyi1moKL5DNrN2', 'Employee'),
-('convitcute', '$2a$10$roI7ElW8vMZ/aa/ndvev5ekg.szrhPLnsihszv5fyi1moKL5DNrN2', 'Customer');
+('Employee001', '$2a$10$roI7ElW8vMZ/aa/ndvev5ekg.szrhPLnsihszv5fyi1moKL5DNrN2', 'User'),
+('convitcute', '$2a$10$roI7ElW8vMZ/aa/ndvev5ekg.szrhPLnsihszv5fyi1moKL5DNrN2', 'User');
 GO
 INSERT INTO [Flavor] ([taste], [user_id])
 VALUES
@@ -769,3 +762,6 @@ VALUES
 (198, 2, 'TH True Milk', 1.0, 1, N'Việt Nam', N'Thành phần sữa hạt cà phê đậm', 1, N'Mô tả sữa hạt cà phê đậm', 2),
 (199, 3, 'TH True Milk', 0.5, 2, N'Việt Nam', N'Thành phần sữa hạt nha đam', 2, N'Mô tả sữa hạt nha đam', 1),
 (200, 1, 'TH True Milk', 1.0, 1, N'Việt Nam', N'Thành phần sữa hạt mâm xôi', 1, N'Mô tả sữa hạt mâm xôi', 2);
+
+
+

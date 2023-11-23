@@ -353,7 +353,7 @@ public class ProductManagement extends javax.swing.JPanel {
     public void delete() {
         Milk m = this.list.getMilkByID(Long.valueOf(lbId.getText()));
         m.setIsDelete(true);
-        if (this.list.hideRestoreProduct(m)) {
+        if (this.list.hideRestoreProduct(m, this.user)) {
             this.temp.clear();
             loadDataAndFillTable();
         }
@@ -978,7 +978,10 @@ public class ProductManagement extends javax.swing.JPanel {
     }//GEN-LAST:event_btnDeleteMouseClicked
 
     private void tblProductMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblProductMouseClicked
-        setLabel();
+        try {
+            setLabel();
+        } catch (Exception e) {
+        }
     }//GEN-LAST:event_tblProductMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
