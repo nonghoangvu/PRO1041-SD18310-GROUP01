@@ -33,16 +33,6 @@ Requirements for use: __JDK 21__
             <version>1.1</version>
         </dependency>
         <dependency>
-            <groupId>mssql-jdbc-12.2.2.jre12Pro</groupId>
-            <artifactId>mssql-jdbc-12.2.2.jre12Pro</artifactId>
-            <version>1.1</version>
-        </dependency>
-        <dependency>
-            <groupId>TimingFramework-0.55</groupId>
-            <artifactId>TimingFramework-0.55</artifactId>
-            <version>1.1</version>
-        </dependency>
-        <dependency>
             <groupId>org.netbeans.external</groupId>
             <artifactId>AbsoluteLayout</artifactId>
             <version>RELEASE190</version>
@@ -53,21 +43,26 @@ Requirements for use: __JDK 21__
             <version>1.1</version>
         </dependency>
         <dependency>
+            <groupId>TimingFramework-0.55</groupId>
+            <artifactId>TimingFramework-0.55</artifactId>
+            <version>2.0</version>
+        </dependency>
+        <dependency>
             <groupId>datechooser-swing-1.4.1</groupId>
             <artifactId>datechooser-swing-1.4.1</artifactId>
-            <version>1</version>
+            <version>1.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mindrot</groupId>
+            <artifactId>jbcrypt</artifactId>
+            <version>0.4</version>
         </dependency>
     </dependencies>
 ```
-#How to fix this error?
-![](https://raw.githubusercontent.com/vunhph33506/Document/main/Screenshot%202023-11-17%20100721.png)
-- Get all icon data into another file
-  ![](https://raw.githubusercontent.com/vunhph33506/Document/main/Screenshot%202023-11-17%20103549.png)
-- Open the project with VS Code and paste all the icon you just grabbed and saved.
-
+## Login <br>
+![](https://raw.githubusercontent.com/vunhph33506/Document/main/Login.png)
 <br>
-##Illustration
-
+## Illustration <br>
 ![](https://raw.githubusercontent.com/vunhph33506/Document/main/Product.png)
 ![](https://raw.githubusercontent.com/vunhph33506/Document/main/New.png)
 ![](https://raw.githubusercontent.com/vunhph33506/Document/main/NewF.png)
