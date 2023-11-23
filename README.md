@@ -33,16 +33,6 @@ Requirements for use: __JDK 21__
             <version>1.1</version>
         </dependency>
         <dependency>
-            <groupId>mssql-jdbc-12.2.2.jre12Pro</groupId>
-            <artifactId>mssql-jdbc-12.2.2.jre12Pro</artifactId>
-            <version>1.1</version>
-        </dependency>
-        <dependency>
-            <groupId>TimingFramework-0.55</groupId>
-            <artifactId>TimingFramework-0.55</artifactId>
-            <version>1.1</version>
-        </dependency>
-        <dependency>
             <groupId>org.netbeans.external</groupId>
             <artifactId>AbsoluteLayout</artifactId>
             <version>RELEASE190</version>
@@ -53,9 +43,19 @@ Requirements for use: __JDK 21__
             <version>1.1</version>
         </dependency>
         <dependency>
+            <groupId>TimingFramework-0.55</groupId>
+            <artifactId>TimingFramework-0.55</artifactId>
+            <version>2.0</version>
+        </dependency>
+        <dependency>
             <groupId>datechooser-swing-1.4.1</groupId>
             <artifactId>datechooser-swing-1.4.1</artifactId>
-            <version>1</version>
+            <version>1.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mindrot</groupId>
+            <artifactId>jbcrypt</artifactId>
+            <version>0.4</version>
         </dependency>
     </dependencies>
 ```
