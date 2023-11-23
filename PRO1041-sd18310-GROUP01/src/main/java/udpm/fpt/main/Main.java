@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
 import javax.swing.SwingUtilities;
 import net.miginfocom.swing.MigLayout;
@@ -30,6 +31,7 @@ public class Main extends javax.swing.JFrame {
 
     public Main(User user) {
         initComponents();
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         Image icon = new ImageIcon(this.getClass().getResource("/udpm/fpt/icon/rubber-duck.png")).getImage();
         this.setIconImage(icon);
         layout = new MigLayout("fill", "0[fill]0", "0[fill]0");

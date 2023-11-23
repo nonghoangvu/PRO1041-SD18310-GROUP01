@@ -5,6 +5,7 @@ import java.awt.event.KeyEvent;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import javax.swing.ImageIcon;
+import udpm.fpt.Utitlity.BcryptHash;
 import udpm.fpt.Utitlity.LoginInfo;
 import udpm.fpt.Utitlity.LoginInfoSerializationUtil;
 import udpm.fpt.component.Notification;
@@ -18,6 +19,7 @@ import udpm.fpt.servicce.LoginService;
 public class Login extends javax.swing.JFrame {
 
     private final LoginService login;
+    private final BcryptHash bcryptHash = new BcryptHash();
 
     public Login() {
         initComponents();
@@ -27,7 +29,7 @@ public class Login extends javax.swing.JFrame {
     }
 
     private void init() {
-        Image icon = new ImageIcon(this.getClass().getResource("/udpm/fpt/icon/rubber-duck.png")).getImage();
+        Image icon = new ImageIcon(this.getClass().getResource(bcryptHash.decodeBase64("L3VkcG0vZnB0L2ljb24vcnViYmVyLWR1Y2sucG5n"))).getImage();
         this.setIconImage(icon);
         isRemember();
     }
@@ -45,12 +47,24 @@ public class Login extends javax.swing.JFrame {
     private void isRemember() {
         LoginInfo cookie = new LoginInfoSerializationUtil().readLoginInfoFromFile();
         if (cookie != null) {
-            if (cookie.getIpAddress().equals(getIPAddress())) {
+            if (bcryptHash.decodeBase64(cookie.getIpAddress()).equals(getIPAddress())) {
                 txtUsername.setText(cookie.getUsername());
-                txtPassword.setText(cookie.getPassword());
+                txtPassword.setText(bcryptHash.decodeBase64(cookie.getPassword()));
                 ckbRemember.setSelected(true);
             }
         }
+    }
+
+    private void rememberPassword(Boolean selected) {
+        LoginInfo loginInfo = new LoginInfo();
+        if (selected) {
+            loginInfo.setUsername(txtUsername.getText());
+            loginInfo.setPassword(bcryptHash.encodeBase64(String.valueOf(txtPassword.getPassword())));
+            loginInfo.setIpAddress(bcryptHash.encodeBase64(getIPAddress()));
+        } else {
+            loginInfo = null;
+        }
+        new LoginInfoSerializationUtil().saveLoginInfoToFile(loginInfo);
     }
 
     private void getLogin() {
@@ -59,23 +73,10 @@ public class Login extends javax.swing.JFrame {
             rememberPassword(ckbRemember.isSelected());
             this.dispose();
         } else {
-            Notification notification = new Notification(this, Notification.Type.INFO, Notification.Location.DEFAULT_DESKTOP, "Invalid username or password!");
+            Notification notification = new Notification(this, Notification.Type.INFO, Notification.Location.DEFAULT_DESKTOP, bcryptHash.decodeBase64("SW52YWxpZCB1c2VybmFtZSBvciBwYXNzd29yZCE="));
             notification.showNotification();
         }
     }
-
-    private void rememberPassword(Boolean selected) {
-        LoginInfo loginInfo = new LoginInfo();
-        if (selected) {
-            loginInfo.setUsername(txtUsername.getText());
-            loginInfo.setPassword(String.valueOf(txtPassword.getPassword()));
-            loginInfo.setIpAddress(getIPAddress());
-        } else {
-            loginInfo = null;
-        }
-        new LoginInfoSerializationUtil().saveLoginInfoToFile(loginInfo);
-    }
-
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
