@@ -62,7 +62,7 @@ Requirements for use: __JDK 21__
 #How to fix this error?
 ![](https://raw.githubusercontent.com/vunhph33506/Document/main/Screenshot%202023-11-17%20100721.png)
 - Get all icon data into another file
-  ![](https://raw.githubusercontent.com/vunhph33506/Document/main/Screenshot%202023-11-17%20103549.png)
+  ![](https://raw.githubusercontent.com/vunhph33506/Document/main/Login.png)
 - Open the project with VS Code and paste all the icon you just grabbed and saved.
 
 <br>
