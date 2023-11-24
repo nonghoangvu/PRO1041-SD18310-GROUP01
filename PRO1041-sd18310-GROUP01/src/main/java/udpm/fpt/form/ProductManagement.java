@@ -26,7 +26,7 @@ public class ProductManagement extends javax.swing.JPanel {
     private DefaultTableModel tblModel;
     private final ProductService list;
     private List<ProductInfo> temp;
-    private User user;
+    private final User user;
 
     public ProductManagement(User user) {
         initComponents();
