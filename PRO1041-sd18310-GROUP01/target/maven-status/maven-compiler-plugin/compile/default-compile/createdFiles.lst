@@ -4,6 +4,7 @@ udpm\fpt\component\NewProduct$8.class
 udpm\fpt\swing\Combobox$ComboUI$2.class
 udpm\fpt\form\MainForm.class
 udpm\fpt\component\UnitManagement$1.class
+udpm\fpt\form\History$3.class
 udpm\fpt\form\ProductManagement$6.class
 udpm\fpt\swing\table\TableCustom$TableType.class
 udpm\fpt\repository\IHistoryProduct.class

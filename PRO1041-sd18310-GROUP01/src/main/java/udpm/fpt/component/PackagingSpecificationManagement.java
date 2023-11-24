@@ -85,7 +85,7 @@ public class PackagingSpecificationManagement extends javax.swing.JFrame {
         p.setPackaging_type(txtPackagingSpecification.getText().trim());
         p.setCreate_at(defaultValue);
         p.setUser(this.user);
-        if (this.list.insertPackagingSpecification(p)) {
+        if (this.list.insertPackagingSpecification(p, this.user)) {
             Notification n = new Notification(this, Notification.Type.SUCCESS, Notification.Location.DEFAULT_DESKTOP, "SUCCESS");
             n.showNotification();
         } else {
@@ -98,7 +98,7 @@ public class PackagingSpecificationManagement extends javax.swing.JFrame {
     private void RemovePackagingSpecification() {
         try {
             PackagingSpecification p = (PackagingSpecification) cbbPackagingSpecification.getSelectedItem();
-            this.list.removePackagingSpecification(p);
+            this.list.removePackagingSpecification(p, this.user);
             Notification n = new Notification(this, Notification.Type.SUCCESS, Notification.Location.DEFAULT_DESKTOP, "SUCCESS");
             n.showNotification();
             closeForm();

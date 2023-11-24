@@ -764,4 +764,4 @@ VALUES
 (200, 1, 'TH True Milk', 1.0, 1, N'Việt Nam', N'Thành phần sữa hạt mâm xôi', 1, N'Mô tả sữa hạt mâm xôi', 2);
 
 
-
+SELECT * FROM MILK INNER JOIN PRODUCTINFO ON MILK.ID = PRODUCTINFO.MILK_ID

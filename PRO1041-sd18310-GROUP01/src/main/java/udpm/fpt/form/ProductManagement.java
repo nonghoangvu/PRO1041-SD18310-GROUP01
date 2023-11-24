@@ -363,6 +363,52 @@ public class ProductManagement extends javax.swing.JPanel {
         }
     }
 
+    /*-------------------------------------------Validate-------------------------------------------*/
+    private Boolean isDateValidNowDate(Date a, Date currentDate) {
+        return a.compareTo(currentDate) <= 0;
+    }
+
+    private Boolean isDateValid(Date a, Date b) {
+        Date currentDate = new Date();
+        if (isDateValidNowDate(a, currentDate)) {
+            return a.compareTo(b) > 0;
+        }
+        return true;
+    }
+
+    private Boolean validateCatelogy() {
+        if (!txtAmountFrom.getText().isBlank() || !txtAmountTo.getText().isBlank()) {
+            if (txtAmountFrom.getText().isBlank()) {
+                this.main.notificationShowWARNING("Amount from is empty");
+                return true;
+            } else if (txtAmountTo.getText().isBlank()) {
+                this.main.notificationShowWARNING("Amount to is empty");
+                return true;
+            } else if (Integer.parseInt(txtAmountTo.getText()) <= Integer.parseInt(txtAmountFrom.getText())) {
+                this.main.notificationShowWARNING("Invalid maximum quantity");
+                return true;
+            }
+        } else if (txtProductionDate.getText().equalsIgnoreCase(txtExpirationDate.getText())) {
+            this.main.notificationShowWARNING("Invalid date");
+            return true;
+        } else if (isDateValid(getDateFormatSQL(txtProductionDate.getText()), getDateFormatSQL(txtExpirationDate.getText()))) {
+            this.main.notificationShowWARNING("Invalid date");
+            return true;
+        } else if (!txtFrom.getText().isBlank() || !txtTo.getText().isBlank()) {
+            if (txtFrom.getText().isBlank()) {
+                this.main.notificationShowWARNING("Price from is empty");
+                return true;
+            } else if (txtTo.getText().isBlank()) {
+                this.main.notificationShowWARNING("Price to is empty");
+                return true;
+            } else if (Integer.parseInt(txtFrom.getText()) <= Integer.parseInt(txtTo.getText())) {
+                this.main.notificationShowWARNING("Invalid maximum price");
+                return true;
+            }
+        }
+        return false;
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -626,6 +672,7 @@ public class ProductManagement extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        tblProduct.setSelectionBackground(new java.awt.Color(0, 51, 255));
         tblProduct.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblProductMouseClicked(evt);
@@ -945,6 +992,9 @@ public class ProductManagement extends javax.swing.JPanel {
     }//GEN-LAST:event_btnClearFilterMouseClicked
 
     private void btnApplyFiltersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnApplyFiltersMouseClicked
+        if (validateCatelogy()) {
+            return;
+        }
         Date startDate = getDateFormatSQL(txtProductionDate.getText());
         Date endDate = getDateFormatSQL(txtExpirationDate.getText());
         String taste = cbbTaste.getSelectedItem().toString();

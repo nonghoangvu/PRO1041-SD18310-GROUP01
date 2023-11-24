@@ -12,13 +12,24 @@ import udpm.fpt.repository.IHistoryProduct;
  * @author NONG HOANG VU
  */
 public class HistoryProductService {
-    private final IHistoryProduct iProductInfo = getBean(IHistoryProduct.class);
+
+    private final IHistoryProduct iHistoryProduct = getBean(IHistoryProduct.class);
 
     public HistoryProductService() {
     }
+
     public CompletableFuture<List<HistoryProduct>> loadHistory() {
         return CompletableFuture.supplyAsync(() -> {
-            return iProductInfo.findAll();
+            return iHistoryProduct.findAll();
         }, Executors.newCachedThreadPool());
+    }
+
+    public Boolean Refresh() {
+        try {
+            iHistoryProduct.deleteAll();
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 }

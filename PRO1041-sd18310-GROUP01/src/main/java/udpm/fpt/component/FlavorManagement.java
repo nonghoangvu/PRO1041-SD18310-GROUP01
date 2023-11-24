@@ -85,7 +85,7 @@ public class FlavorManagement extends javax.swing.JFrame {
         flavor.setTaste(txtFlavor.getText().trim());
         flavor.setCreate_at(defaultValue);
         flavor.setUser(this.user);
-        if (this.list.insertFlavor(flavor)) {
+        if (this.list.insertFlavor(flavor, this.user)) {
             Notification n = new Notification(this, Notification.Type.SUCCESS, Notification.Location.DEFAULT_DESKTOP, "SUCCESS");
             n.showNotification();
         } else {
@@ -97,7 +97,7 @@ public class FlavorManagement extends javax.swing.JFrame {
 
     private void RemoveFlavor() {
         try {
-            if (this.list.removeByTaste(txtFlavor.getText())) {
+            if (this.list.removeByTaste(txtFlavor.getText(), this.user)) {
                 Notification n = new Notification(this, Notification.Type.SUCCESS, Notification.Location.DEFAULT_DESKTOP, "SUCCESS");
                 n.showNotification();
                 closeForm();

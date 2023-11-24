@@ -67,12 +67,28 @@ public class ProductService {
         }, Executors.newCachedThreadPool());
     }
 
-    public Boolean insertFlavor(Flavor flavor) {
-        return this.iFlavor.save(flavor) != null;
+    public Boolean insertFlavor(Flavor flavor, User user) {
+        if (this.iFlavor.save(flavor) != null) {
+            HistoryProduct historyProduct = new HistoryProduct();
+            historyProduct.setDescription("A new flavor " + flavor.getTaste().trim() + " has been added");
+            historyProduct.setDatetime(new Date());
+            historyProduct.setUsername(user.getUsername());
+            historyProduct.setChangeType("New");
+            return this.iHistoryProduct.save(historyProduct) != null;
+        }
+        return false;
     }
 
-    public Boolean removeByTaste(String flavor) {
-        return this.iFlavor.deleteFlavor(flavor);
+    public Boolean removeByTaste(String flavor, User user) {
+        if (this.iFlavor.deleteFlavor(flavor)) {
+            HistoryProduct historyProduct = new HistoryProduct();
+            historyProduct.setDescription("The " + flavor.trim() + " flavor has been removed");
+            historyProduct.setDatetime(new Date());
+            historyProduct.setUsername(user.getUsername());
+            historyProduct.setChangeType("Delete");
+            return this.iHistoryProduct.save(historyProduct) != null;
+        }
+        return false;
     }
 
     public CompletableFuture<List<Unit>> loadUnit() {
@@ -81,12 +97,26 @@ public class ProductService {
         }, Executors.newCachedThreadPool());
     }
 
-    public void removeByMeasurement_unit(Unit unit) {
+    public Boolean removeByMeasurement_unit(Unit unit, User user) {
         this.iUnit.deleteById(unit.getId());
+        HistoryProduct historyProduct = new HistoryProduct();
+        historyProduct.setDescription("The " + unit.getMeasurement_unit().trim() + " measurement uni has been removed");
+        historyProduct.setDatetime(new Date());
+        historyProduct.setUsername(user.getUsername());
+        historyProduct.setChangeType("Delete");
+        return this.iHistoryProduct.save(historyProduct) != null;
     }
 
-    public Boolean insertUnit(Unit unit) {
-        return this.iUnit.save(unit) != null;
+    public Boolean insertUnit(Unit unit, User user) {
+        if (this.iUnit.save(unit) != null) {
+            HistoryProduct historyProduct = new HistoryProduct();
+            historyProduct.setDescription("A new unit " + unit.getMeasurement_unit().trim() + " has been added");
+            historyProduct.setDatetime(new Date());
+            historyProduct.setUsername(user.getUsername());
+            historyProduct.setChangeType("New");
+            return this.iHistoryProduct.save(historyProduct) != null;
+        }
+        return false;
     }
 
     public CompletableFuture<List<PackagingSpecification>> loadPackagingSpecification() {
@@ -95,12 +125,26 @@ public class ProductService {
         }, Executors.newCachedThreadPool());
     }
 
-    public Boolean insertPackagingSpecification(PackagingSpecification packagingSpecification) {
-        return this.iPackagingSpecification.save(packagingSpecification) != null;
+    public Boolean insertPackagingSpecification(PackagingSpecification packagingSpecification, User user) {
+        if (this.iPackagingSpecification.save(packagingSpecification) != null) {
+            HistoryProduct historyProduct = new HistoryProduct();
+            historyProduct.setDescription("A packaging type " + packagingSpecification.getPackaging_type().trim() + " has been added");
+            historyProduct.setDatetime(new Date());
+            historyProduct.setUsername(user.getUsername());
+            historyProduct.setChangeType("New");
+            return this.iHistoryProduct.save(historyProduct) != null;
+        }
+        return false;
     }
 
-    public void removePackagingSpecification(PackagingSpecification packagingSpecification) {
+    public Boolean removePackagingSpecification(PackagingSpecification packagingSpecification, User user) {
         this.iPackagingSpecification.deleteById(packagingSpecification.getId());
+        HistoryProduct historyProduct = new HistoryProduct();
+        historyProduct.setDescription("The " + packagingSpecification.getPackaging_type().trim() + " packaging type has been removed");
+        historyProduct.setDatetime(new Date());
+        historyProduct.setUsername(user.getUsername());
+        historyProduct.setChangeType("Delete");
+        return this.iHistoryProduct.save(historyProduct) != null;
     }
 
     public Boolean inserProduct(Milk m, ProductInfo pi) {

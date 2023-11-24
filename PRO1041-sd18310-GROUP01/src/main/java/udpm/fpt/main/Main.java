@@ -114,7 +114,7 @@ public class Main extends javax.swing.JFrame {
                 }
                 case 2 -> {
                     if (ADMIN_ROLE.equalsIgnoreCase(this.user.getRole())) {
-                        main.show(new History(this.user));
+                        main.show(new History(this.user, this));
                     } else {
                         showAccessWarning();
                     }
@@ -200,6 +200,7 @@ public class Main extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("TH True Milk");
         setUndecorated(true);
+        setResizable(false);
 
         mainPanel.setBackground(new java.awt.Color(250, 250, 250));
         mainPanel.setOpaque(true);

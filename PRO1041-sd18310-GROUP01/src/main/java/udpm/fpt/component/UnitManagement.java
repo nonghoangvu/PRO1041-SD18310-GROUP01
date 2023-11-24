@@ -85,7 +85,7 @@ public class UnitManagement extends javax.swing.JFrame {
         unit.setMeasurement_unit(txtUnit.getText().trim());
         unit.setCreate_at(defaultValue);
         unit.setUser(this.user);
-        if (this.list.insertUnit(unit)) {
+        if (this.list.insertUnit(unit, this.user)) {
             Notification n = new Notification(this, Notification.Type.SUCCESS, Notification.Location.DEFAULT_DESKTOP, "SUCCESS");
             n.showNotification();
         } else {
@@ -98,7 +98,7 @@ public class UnitManagement extends javax.swing.JFrame {
     private void RemoveUnit() {
         try {
             Unit u = (Unit) cbbUnit.getSelectedItem();
-            this.list.removeByMeasurement_unit(u);
+            this.list.removeByMeasurement_unit(u, this.user);
             Notification n = new Notification(this, Notification.Type.SUCCESS, Notification.Location.DEFAULT_DESKTOP, "SUCCESS");
             n.showNotification();
             closeForm();
