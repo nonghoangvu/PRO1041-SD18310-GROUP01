@@ -1,6 +1,6 @@
 package udpm.fpt;
 
-import java.util.Date;
+import udpm.fpt.Utitlity.BcryptHash;
 
 /**
  *
@@ -8,7 +8,6 @@ import java.util.Date;
  */
 public class test {
     public static void main(String[] args) {
-        Date d = new Date();
-        System.out.println(d);
+        System.out.println(new BcryptHash().encodeBase64("Only administrators have access"));
     }
 }

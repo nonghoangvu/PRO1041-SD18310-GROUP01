@@ -6,6 +6,9 @@ import udpm.fpt.form.MainForm;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
@@ -14,24 +17,27 @@ import net.miginfocom.swing.MigLayout;
 import org.jdesktop.animation.timing.Animator;
 import org.jdesktop.animation.timing.TimingTarget;
 import org.jdesktop.animation.timing.TimingTargetAdapter;
+import udpm.fpt.Utitlity.BcryptHash;
 import udpm.fpt.component.Notification;
 import udpm.fpt.form.History;
 import udpm.fpt.form.Home;
 import udpm.fpt.form.Login;
 import udpm.fpt.form.ProductManagement;
+import udpm.fpt.form.Setting;
 import udpm.fpt.model.User;
 
 public class Main extends javax.swing.JFrame {
-
+    
     private User user;
+    public final String ADMIN_ROLE = "Admin";
     private final MigLayout layout;
     private final MainForm main;
     private final MenuLayout menu;
     private final Animator animator;
-
+    
     public Main(User user) {
         initComponents();
-        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        openDefault();
         Image icon = new ImageIcon(this.getClass().getResource("/udpm/fpt/icon/rubber-duck.png")).getImage();
         this.setIconImage(icon);
         layout = new MigLayout("fill", "0[fill]0", "0[fill]0");
@@ -63,7 +69,7 @@ public class Main extends javax.swing.JFrame {
                 menu.setAlpha(alpha);
                 mainPanel.revalidate();
             }
-
+            
             @Override
             public void end() {
                 menu.setShow(!menu.isShow());
@@ -71,7 +77,7 @@ public class Main extends javax.swing.JFrame {
                     menu.setVisible(false);
                 }
             }
-
+            
         };
         animator = new Animator(200, target);
         menu.addMouseListener(new MouseAdapter() {
@@ -100,24 +106,23 @@ public class Main extends javax.swing.JFrame {
                     main.show(new Home());
                 }
                 case 1 -> {
-                    if (this.user.getRole().equalsIgnoreCase("Admin")) {
-                        main.show(new ProductManagement(this.user));
+                    if (ADMIN_ROLE.equalsIgnoreCase(this.user.getRole())) {
+                        main.show(new ProductManagement(this.user, this));
                     } else {
-                        Notification notification = new Notification(this, Notification.Type.WARNING, Notification.Location.TOP_RIGHT, "Only administrators have access");
-                        notification.showNotification();
-                        main.show(new Home());
+                        showAccessWarning();
                     }
                 }
                 case 2 -> {
-                    if (this.user.getRole().equalsIgnoreCase("Admin")) {
+                    if (ADMIN_ROLE.equalsIgnoreCase(this.user.getRole())) {
                         main.show(new History(this.user));
                     } else {
-                        Notification notification = new Notification(this, Notification.Type.WARNING, Notification.Location.TOP_RIGHT, "Only administrators have access");
-                        notification.showNotification();
-                        main.show(new Home());
+                        showAccessWarning();
                     }
                 }
                 case 6 -> {
+                    main.show(new Setting(this.user, this));
+                }
+                case 7 -> {
                     new Login().setVisible(true);
                     this.dispose();
                 }
@@ -127,7 +132,63 @@ public class Main extends javax.swing.JFrame {
             }
         });
     }
-
+    
+    private void showAccessWarning() {
+        Notification notification = new Notification(this, Notification.Type.WARNING, Notification.Location.TOP_RIGHT, new BcryptHash().decodeBase64("T25seSBhZG1pbmlzdHJhdG9ycyBoYXZlIGFjY2Vzcw=="));
+        notification.showNotification();
+        main.show(new Home());
+    }
+    
+    public enum SizeOption {
+        FULL_SIZE, DEFAULT_SIZE
+    }
+    
+    public void settingSize(SizeOption setSize) {
+        if (null != setSize) {
+            switch (setSize) {
+                case FULL_SIZE ->
+                    this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                case DEFAULT_SIZE -> {
+                    this.setSize(1500, 850);
+                    this.setLocationRelativeTo(null);
+                    this.pack();
+                }
+                default -> {
+                }
+            }
+        }
+    }
+    
+    public String readFile() {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("Setting.ser"))) {
+            return (String) ois.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            return null;
+        }
+    }
+    
+    private void openDefault() {
+        if (readFile() == null) {
+            settingSize(SizeOption.DEFAULT_SIZE);
+        } else if (readFile().equalsIgnoreCase("Default")) {
+            settingSize(SizeOption.DEFAULT_SIZE);
+        } else {
+            settingSize(SizeOption.FULL_SIZE);
+        }
+    }
+    
+    public void notificationShowWARNING(String message) {
+        new Notification(this, Notification.Type.WARNING, Notification.Location.TOP_RIGHT, message).showNotification();
+    }
+    
+    public void notificationShowINFO(String message) {
+        new Notification(this, Notification.Type.INFO, Notification.Location.TOP_RIGHT, message).showNotification();
+    }
+    
+    public void notificationShowSUCCESS(String message) {
+        new Notification(this, Notification.Type.SUCCESS, Notification.Location.TOP_RIGHT, message).showNotification();
+    }
+    
     @SuppressWarnings("unchecked")
 
     // <editor-fold defaultstate="collapsed" desc="Generated

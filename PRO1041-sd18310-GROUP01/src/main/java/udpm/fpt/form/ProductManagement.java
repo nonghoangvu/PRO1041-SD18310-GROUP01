@@ -12,6 +12,7 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.AbstractDocument;
+import udpm.fpt.main.Main;
 import udpm.fpt.model.*;
 import udpm.fpt.servicce.ProductService;
 import udpm.fpt.swing.NumberOnlyFilter;
@@ -27,11 +28,13 @@ public class ProductManagement extends javax.swing.JPanel {
     private final ProductService list;
     private List<ProductInfo> temp;
     private final User user;
+    private final Main main;
 
-    public ProductManagement(User user) {
+    public ProductManagement(User user, Main main) {
         initComponents();
         this.user = user;
         this.list = new ProductService();
+        this.main = main;
         initProduct();
     }
 
@@ -356,6 +359,7 @@ public class ProductManagement extends javax.swing.JPanel {
         if (this.list.hideRestoreProduct(m, this.user)) {
             this.temp.clear();
             loadDataAndFillTable();
+            this.main.notificationShowSUCCESS("Moved to the storage");
         }
     }
 
@@ -1038,5 +1042,7 @@ public class ProductManagement extends javax.swing.JPanel {
     private udpm.fpt.swing.TextField txtSearch;
     private udpm.fpt.swing.TextField txtTo;
     // End of variables declaration//GEN-END:variables
-
+public static enum Type {
+        SUCCESS, INFO, WARNING
+    }
 }

@@ -12,6 +12,7 @@ udpm\fpt\swing\ScrollBarCustomUI.class
 udpm\fpt\swing\table\ActionButton.class
 udpm\fpt\swing\Combobox$1.class
 udpm\fpt\component\FlavorManagement.class
+udpm\fpt\form\Setting.class
 udpm\fpt\swing\table\TableActionCellEditor.class
 udpm\fpt\component\Header.class
 udpm\fpt\component\UpdateProduct$2.class
@@ -54,6 +55,7 @@ udpm\fpt\component\Header$2.class
 udpm\fpt\form\ProductManagement$2.class
 udpm\fpt\component\NewProduct$4.class
 udpm\fpt\swing\TextAreaScroll.class
+udpm\fpt\main\Main$SizeOption.class
 udpm\fpt\swing\ModernScrollBarUI.class
 udpm\fpt\swing\Spinner.class
 udpm\fpt\form\ProductManagement$5.class
@@ -134,6 +136,7 @@ udpm\fpt\swing\table\HoverIndex.class
 udpm\fpt\component\MenuLayout$1.class
 udpm\fpt\component\UpdateProduct$3.class
 udpm\fpt\component\ViewDelete$1.class
+udpm\fpt\form\ProductManagement$Type.class
 udpm\fpt\main\Main$1.class
 udpm\fpt\form\Login$3.class
 udpm\fpt\Applocation.class
