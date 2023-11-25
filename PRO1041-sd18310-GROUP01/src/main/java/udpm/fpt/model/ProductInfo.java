@@ -20,6 +20,7 @@ import lombok.Setter;
 @Table(name = "ProductInfo")
 @Getter
 @Setter
+
 public class ProductInfo {
 
     @Id

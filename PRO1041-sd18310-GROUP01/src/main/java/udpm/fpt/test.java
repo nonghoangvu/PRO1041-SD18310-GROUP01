@@ -5,7 +5,11 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import udpm.fpt.Utitlity.BcryptHash;
+import udpm.fpt.model.Salary;
+import udpm.fpt.model.User;
+import udpm.fpt.model.UserDetails;
 import udpm.fpt.repository.IUser;
+import udpm.fpt.repository.IUserDetails;
 
 /**
  *
@@ -32,8 +36,23 @@ public class test {
 
     public static void main(String[] args) {
         context = createApplicationContext(args);
+        IUserDetails iuserDeatails = getBean(IUserDetails.class);
         IUser iuser = getBean(IUser.class);
-        iuser.findAll().forEach(per -> System.out.printf("%d  -  %s",per.getId(), per.getUsername()));
 
+        
+        User user = new User();
+        user.setId(7);
+        user.setPassword("1234");
+        user.setUsername("binhquocdeptrai");
+        user.setRole("admin");
+        iuser.save(user);
+        
+        UserDetails userDetails = new UserDetails();
+        userDetails.setId(7);
+        userDetails.setUser(user);
+        userDetails.setSalary(new Salary(2, "Monthly salary", 10000000));
+        userDetails.setFullname("Meoemeoemeoemeo");
+        iuserDeatails.save(userDetails);
+        
     }
 }

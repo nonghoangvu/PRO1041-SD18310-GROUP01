@@ -1,5 +1,6 @@
 udpm\fpt\main\Main.class
 udpm\fpt\swing\PasswordField$1.class
+udpm\fpt\servicce\UserService.class
 udpm\fpt\component\NewProduct$8.class
 udpm\fpt\swing\Combobox$ComboUI$2.class
 udpm\fpt\form\MainForm.class
@@ -23,6 +24,7 @@ udpm\fpt\model\PackagingSpecification.class
 udpm\fpt\swing\SpinnerUI$ArrowButton.class
 udpm\fpt\swing\Combobox.class
 udpm\fpt\component\PanelAction.class
+udpm\fpt\model\Salary.class
 udpm\fpt\swing\ImageAvatar.class
 udpm\fpt\component\UpdateProduct.class
 udpm\fpt\config\DbMetadata.class
@@ -99,6 +101,7 @@ udpm\fpt\swing\TextArea.class
 udpm\fpt\swing\Combobox$ComboUI$5.class
 udpm\fpt\form\ProductManagement$3.class
 udpm\fpt\swing\table\ActionButton$1.class
+udpm\fpt\model\UserDetails.class
 udpm\fpt\component\NewProduct$5.class
 udpm\fpt\swing\ScrollBarCustom.class
 udpm\fpt\swing\PasswordField$4.class
@@ -117,6 +120,7 @@ udpm\fpt\test.class
 udpm\fpt\swing\table\TableCustom$3.class
 udpm\fpt\repository\IFlavor.class
 udpm\fpt\swing\ScrollBarCustomUI$1.class
+udpm\fpt\main\Main$3.class
 udpm\fpt\component\Notification$2.class
 udpm\fpt\form\ProductManagement$8.class
 udpm\fpt\Utitlity\LoginInfo.class
@@ -147,7 +151,9 @@ udpm\fpt\model\HistoryProduct.class
 udpm\fpt\swing\Combobox$ComboUI$1.class
 udpm\fpt\component\Menu$1.class
 udpm\fpt\component\MenuLayout.class
+udpm\fpt\form\UserForm.class
 udpm\fpt\swing\Button.class
+udpm\fpt\repository\IUserDetails.class
 udpm\fpt\swing\ButtonMessage$1.class
 udpm\fpt\component\PanelAction$1.class
 udpm\fpt\swing\Combobox$ComboUI$4.class

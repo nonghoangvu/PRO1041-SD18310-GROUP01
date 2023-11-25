@@ -24,6 +24,7 @@ import udpm.fpt.form.Home;
 import udpm.fpt.form.Login;
 import udpm.fpt.form.ProductManagement;
 import udpm.fpt.form.Setting;
+import udpm.fpt.form.UserForm;
 import udpm.fpt.model.User;
 
 public class Main extends javax.swing.JFrame {
@@ -115,6 +116,13 @@ public class Main extends javax.swing.JFrame {
                 case 2 -> {
                     if (ADMIN_ROLE.equalsIgnoreCase(this.user.getRole())) {
                         main.show(new History(this.user, this));
+                    } else {
+                        showAccessWarning();
+                    }
+                }
+                case 3 -> {
+                    if (ADMIN_ROLE.equalsIgnoreCase(this.user.getRole())) {
+                        main.show(new UserForm(this.user, this));
                     } else {
                         showAccessWarning();
                     }
