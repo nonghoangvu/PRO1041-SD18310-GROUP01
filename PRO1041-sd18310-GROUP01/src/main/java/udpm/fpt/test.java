@@ -32,7 +32,8 @@ public class test {
 
     public static void main(String[] args) {
         context = createApplicationContext(args);
-        IUser r = getBean(IUser.class);
-        r.findAll().forEach(s -> System.out.printf("Username: %s\nPassword: %s", s.getUsername(), s.getPassword()));
+        IUser iuser = getBean(IUser.class);
+        iuser.findAll().forEach(per -> System.out.printf("%d  -  %s",per.getId(), per.getUsername()));
+
     }
 }
