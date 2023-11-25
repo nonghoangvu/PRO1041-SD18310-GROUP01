@@ -1,13 +1,35 @@
 package udpm.fpt;
 
-import udpm.fpt.Utitlity.BcryptHash;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
 
 /**
  *
  * @author NONG HOANG VU
  */
+@SpringBootApplication
 public class test {
+
+    private static ApplicationContext context = null;
+
+    public static ApplicationContext getContext() {
+        return context;
+    }
+
+    public static <T extends Object> T getBean(Class<T> requiredType) {
+        return context.getBean(requiredType);
+    }
+
+    private static ConfigurableApplicationContext createApplicationContext(String[] args) {
+        return new SpringApplicationBuilder(test.class)
+                .headless(false)
+                .run(args);
+    }
+
     public static void main(String[] args) {
-        System.out.println(new BcryptHash().encodeBase64("Only administrators have access"));
+        context = createApplicationContext(args);
+        System.out.println("Spring JPA Demo");
     }
 }
