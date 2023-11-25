@@ -147,7 +147,7 @@ public class ProductService {
         return this.iHistoryProduct.save(historyProduct) != null;
     }
 
-    public Boolean inserProduct(Milk m, ProductInfo pi) {
+    public Boolean insertProduct(Milk m, ProductInfo pi) {
         if (iMilk.findAllById(m.getId()) == null) {
             if (this.iMilk.save(m) != null && r.save(pi) != null) {
                 HistoryProduct historyProduct = new HistoryProduct();

@@ -128,7 +128,7 @@ public class History extends javax.swing.JPanel {
         tblModel.addColumn("Name");
         tblModel.addColumn("Taste");
         tblModel.addColumn("Price");
-        tblModel.addColumn("Amout");
+        tblModel.addColumn("Amount");
         tblModel.addColumn("Provider");
         tblModel.addColumn("Action");
         tblModel.setRowCount(0);
