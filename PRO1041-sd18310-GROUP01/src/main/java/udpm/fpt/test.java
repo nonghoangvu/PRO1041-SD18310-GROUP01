@@ -4,6 +4,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
+import udpm.fpt.Utitlity.BcryptHash;
+import udpm.fpt.repository.IUser;
 
 /**
  *
@@ -30,6 +32,7 @@ public class test {
 
     public static void main(String[] args) {
         context = createApplicationContext(args);
-        System.out.println("Spring JPA Demo");
+        IUser r = getBean(IUser.class);
+        r.findAll().forEach(s -> System.out.printf("Username: %s\nPassword: %s", s.getUsername(), s.getPassword()));
     }
 }

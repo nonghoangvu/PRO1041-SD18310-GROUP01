@@ -33,7 +33,7 @@ import udpm.fpt.swing.NumberOnlyFilter;
 public class NewProduct extends javax.swing.JFrame {
 
     public ProductManagement perentForm;
-    private User user;
+    private final User user;
     private final ProductService list;
     private String imgName = null;
 
