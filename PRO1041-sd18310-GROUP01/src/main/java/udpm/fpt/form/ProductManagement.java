@@ -2,6 +2,7 @@ package udpm.fpt.form;
 
 import com.raven.datechooser.DateChooser;
 import udpm.fpt.component.*;
+
 import java.awt.Image;
 import java.text.*;
 import java.time.LocalDateTime;
@@ -12,6 +13,7 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.AbstractDocument;
+
 import udpm.fpt.main.Main;
 import udpm.fpt.model.*;
 import udpm.fpt.servicce.ProductService;
@@ -19,7 +21,6 @@ import udpm.fpt.swing.NumberOnlyFilter;
 import udpm.fpt.swing.table.TableCustom;
 
 /**
- *
  * @author NONG HOANG VU
  */
 public class ProductManagement extends javax.swing.JPanel {
@@ -94,12 +95,12 @@ public class ProductManagement extends javax.swing.JPanel {
         for (ProductInfo prd : data) {
             if (!prd.getMilk().getIsDelete()) {
                 tblModel.addRow(new Object[]{
-                    prd.getMilk().getId(),
-                    prd.getMilk().getProduct_name(),
-                    prd.getFlavor().getTaste(),
-                    prd.getMilk().getPrice(),
-                    prd.getMilk().getAmount(),
-                    prd.getMilk().getProvider()
+                        prd.getMilk().getId(),
+                        prd.getMilk().getProduct_name(),
+                        prd.getFlavor().getTaste(),
+                        prd.getMilk().getPrice(),
+                        prd.getMilk().getAmount(),
+                        prd.getMilk().getProvider()
                 });
                 this.temp.add(prd);
             }
@@ -125,12 +126,12 @@ public class ProductManagement extends javax.swing.JPanel {
         for (ProductInfo prd : data) {
             if (!prd.getMilk().getIsDelete()) {
                 tblModel.addRow(new Object[]{
-                    prd.getMilk().getId(),
-                    prd.getMilk().getProduct_name(),
-                    prd.getFlavor().getTaste(),
-                    prd.getMilk().getPrice(),
-                    prd.getMilk().getAmount(),
-                    prd.getMilk().getProvider()
+                        prd.getMilk().getId(),
+                        prd.getMilk().getProduct_name(),
+                        prd.getFlavor().getTaste(),
+                        prd.getMilk().getPrice(),
+                        prd.getMilk().getAmount(),
+                        prd.getMilk().getProvider()
                 });
                 this.temp.add(prd);
             }
@@ -156,12 +157,12 @@ public class ProductManagement extends javax.swing.JPanel {
         for (ProductInfo prd : data) {
             if (!prd.getMilk().getIsDelete()) {
                 tblModel.addRow(new Object[]{
-                    prd.getMilk().getId(),
-                    prd.getMilk().getProduct_name(),
-                    prd.getFlavor().getTaste(),
-                    prd.getMilk().getPrice(),
-                    prd.getMilk().getAmount(),
-                    prd.getMilk().getProvider()
+                        prd.getMilk().getId(),
+                        prd.getMilk().getProduct_name(),
+                        prd.getFlavor().getTaste(),
+                        prd.getMilk().getPrice(),
+                        prd.getMilk().getAmount(),
+                        prd.getMilk().getProvider()
                 });
                 this.temp.add(prd);
             }
@@ -511,6 +512,11 @@ public class ProductManagement extends javax.swing.JPanel {
         txtProductionDate.setLabelText("Production Date");
 
         button2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/udpm/fpt/icon/barcode-scanner.png"))); // NOI18N
+        button2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                button2ActionPerformed(evt);
+            }
+        });
 
         btnApplyFilters.setBackground(new java.awt.Color(102, 204, 255));
         btnApplyFilters.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
@@ -978,6 +984,7 @@ public class ProductManagement extends javax.swing.JPanel {
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
+
     private void lbproductgalleryMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbproductgalleryMouseClicked
         if (lbproductgallery.getIcon() == null) {
             new IMG("ImageNull.png").setVisible(true);
@@ -1038,6 +1045,20 @@ public class ProductManagement extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_tblProductMouseClicked
 
+    public void setId(String id) {
+        txtSearch.setText(id);
+//        findProduct();
+    }
+
+    public String getId() {
+        return txtSearch.getText();
+    }
+
+    private void button2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button2ActionPerformed
+        SearchBarcode searchBarcode = new SearchBarcode(this);
+        searchBarcode.setVisible(true);
+    }//GEN-LAST:event_button2ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private udpm.fpt.swing.Button btnApplyFilters;
     private udpm.fpt.swing.Button btnClearFilter;
@@ -1092,7 +1113,7 @@ public class ProductManagement extends javax.swing.JPanel {
     private udpm.fpt.swing.TextField txtSearch;
     private udpm.fpt.swing.TextField txtTo;
     // End of variables declaration//GEN-END:variables
-public static enum Type {
+    public static enum Type {
         SUCCESS, INFO, WARNING
     }
 }

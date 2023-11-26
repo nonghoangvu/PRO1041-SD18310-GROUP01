@@ -20,7 +20,7 @@ public interface IProductInfo extends JpaRepository<ProductInfo, Integer> {
             + "JOIN FETCH p.flavor f "
             + "JOIN FETCH p.unit u "
             + "JOIN FETCH p.packagingSpecification ps "
-            + "WHERE m.product_name LIKE %:search% OR f.taste LIKE %:search% OR m.id LIKE %:search%")
+            + "WHERE m.product_name LIKE %:search% OR f.taste LIKE %:search% OR m.id LIKE %:search% OR p.id LIKE %:search%")
     List<ProductInfo> findProductInfo(@Param("search") String search);
 
     @Query("SELECT p FROM ProductInfo p "
