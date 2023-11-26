@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executors;
 import org.springframework.beans.factory.annotation.Autowired;
-import static udpm.fpt.Applocation.getBean;
+import static udpm.fpt.Application.getBean;
 import udpm.fpt.model.HistoryProduct;
 
 import udpm.fpt.repository.IFlavor;

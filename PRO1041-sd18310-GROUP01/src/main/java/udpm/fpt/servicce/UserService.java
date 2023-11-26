@@ -7,8 +7,8 @@ package udpm.fpt.servicce;
 import java.util.List;
 import lombok.NoArgsConstructor;
 import udpm.fpt.model.UserDetails;
-import static udpm.fpt.Applocation.getBean;
-import udpm.fpt.repository.IUser;
+import static udpm.fpt.Application.getBean;
+
 import udpm.fpt.repository.IUserDetails;
 /**
  *
