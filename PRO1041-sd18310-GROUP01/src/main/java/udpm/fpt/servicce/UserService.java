@@ -5,20 +5,30 @@
 package udpm.fpt.servicce;
 
 import java.util.List;
+
 import lombok.NoArgsConstructor;
 import udpm.fpt.model.UserDetails;
+
 import static udpm.fpt.Application.getBean;
 
 import udpm.fpt.repository.IUserDetails;
+
 /**
- *
  * @author Administrator
  */
 @NoArgsConstructor
 public class UserService {
-       private final IUserDetails iUserDetails = getBean(IUserDetails.class);
-       
-       public List<UserDetails> getList() {
-           return iUserDetails.findAll();
-       }
+    private final IUserDetails iUserDetails = getBean(IUserDetails.class);
+
+    public List<UserDetails> getList() {
+        return iUserDetails.findAll();
+    }
+
+    public String getAvatar(String username) {
+        try {
+            return this.iUserDetails.findByUser_Username(username).getPhoto();
+        } catch (Exception exception) {
+            return null;
+        }
+    }
 }
