@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executors;
-import static udpm.fpt.Applocation.getBean;
+import static udpm.fpt.Application.getBean;
 import udpm.fpt.Utitlity.BcryptHash;
 import udpm.fpt.model.User;
 import udpm.fpt.repository.IUser;

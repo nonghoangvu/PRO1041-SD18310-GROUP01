@@ -5,10 +5,10 @@
 package udpm.fpt.form;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
+import udpm.fpt.component.AddNewUser;
 import udpm.fpt.main.Main;
 import udpm.fpt.model.User;
 import udpm.fpt.model.UserDetails;
@@ -24,9 +24,11 @@ public class UserForm extends javax.swing.JPanel {
 
     UserService userService = new UserService();
     DefaultTableModel tblModel = new DefaultTableModel();
-
+    private final Main main;
+    
     public UserForm(User user, Main main) {
         initComponents();
+        this.main = main;
         TableCustom.apply(jScrollPane1, TableCustom.TableType.MULTI_LINE);
         initTable();
         loadDataToTable();
@@ -125,7 +127,7 @@ public class UserForm extends javax.swing.JPanel {
         jScrollPane3 = new javax.swing.JScrollPane();
         lblAddress = new javax.swing.JTextArea();
         lblCreateDate = new javax.swing.JLabel();
-        button1 = new udpm.fpt.swing.Button();
+        btnAdd = new udpm.fpt.swing.Button();
         button2 = new udpm.fpt.swing.Button();
         button3 = new udpm.fpt.swing.Button();
 
@@ -230,7 +232,12 @@ public class UserForm extends javax.swing.JPanel {
 
         lblCreateDate.setText("jLabel26");
 
-        button1.setText("button1");
+        btnAdd.setText("Add new employee");
+        btnAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddActionPerformed(evt);
+            }
+        });
 
         button2.setText("button1");
 
@@ -304,7 +311,7 @@ public class UserForm extends javax.swing.JPanel {
                                 .addGap(0, 0, Short.MAX_VALUE)))
                         .addGap(23, 23, 23))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(button3, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -377,7 +384,7 @@ public class UserForm extends javax.swing.JPanel {
                     .addComponent(lblCreateDate))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(button2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(button3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -411,9 +418,14 @@ public class UserForm extends javax.swing.JPanel {
         fillDataFromTable();
     }//GEN-LAST:event_tblUserMouseClicked
 
+    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+        // TODO add your handling code here:
+        new AddNewUser(main).setVisible(true);
+    }//GEN-LAST:event_btnAddActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private udpm.fpt.swing.Button button1;
+    private udpm.fpt.swing.Button btnAdd;
     private udpm.fpt.swing.Button button2;
     private udpm.fpt.swing.Button button3;
     private udpm.fpt.swing.ImageAvatar imageAvatarLabel;

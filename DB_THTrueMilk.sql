@@ -4,7 +4,7 @@ Pasword: 123
 server: localhost
 Port: 1433
 */
-CREATE DATABASE THTrueMilk
+/*CREATE DATABASE THTrueMilk
 GO
 USE THTrueMilk
 GO
@@ -765,3 +765,13 @@ VALUES
 
 
 SELECT * FROM MILK INNER JOIN PRODUCTINFO ON MILK.ID = PRODUCTINFO.MILK_ID
+*/
+SELECT * FROM Salary
+
+ALTER TABLE Salary
+ALTER COLUMN [status] nvarchar(10)
+GO
+
+UPDATE Salary
+SET [status] = N'Active'
+WHERE id = 1 or id = 2

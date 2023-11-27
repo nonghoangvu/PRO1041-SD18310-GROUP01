@@ -11,7 +11,7 @@ import udpm.fpt.form.Login;
  * @author NONG HOANG VU
  */
 @SpringBootApplication
-public class Applocation {
+public class Application {
 
     private static ApplicationContext context = null;
 
@@ -24,7 +24,7 @@ public class Applocation {
     }
 
     private static ConfigurableApplicationContext createApplicationContext(String[] args) {
-        return new SpringApplicationBuilder(Applocation.class)
+        return new SpringApplicationBuilder(Application.class)
                 .headless(false)
                 .run(args);
     }

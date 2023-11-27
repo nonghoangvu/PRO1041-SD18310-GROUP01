@@ -164,7 +164,7 @@
                           <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
-                          <Component id="button1" min="-2" pref="130" max="-2" attributes="0"/>
+                          <Component id="btnAdd" min="-2" pref="130" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="button3" min="-2" pref="130" max="-2" attributes="0"/>
@@ -251,7 +251,7 @@
                   </Group>
                   <EmptySpace pref="43" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="button1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="btnAdd" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="button2" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -485,10 +485,13 @@
             <Property name="text" type="java.lang.String" value="jLabel26"/>
           </Properties>
         </Component>
-        <Component class="udpm.fpt.swing.Button" name="button1">
+        <Component class="udpm.fpt.swing.Button" name="btnAdd">
           <Properties>
-            <Property name="text" type="java.lang.String" value="button1"/>
+            <Property name="text" type="java.lang.String" value="Add new employee"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAddActionPerformed"/>
+          </Events>
         </Component>
         <Component class="udpm.fpt.swing.Button" name="button2">
           <Properties>

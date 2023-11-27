@@ -7,7 +7,7 @@ public final class DbMetadata {
     private static final String PORT = "1433";
     private static final String DATABASE_NAME = "THTrueMilk";
     private static final boolean USING_SSL = true;
-    private static String CONNECT_STRING;
+    private static final String CONNECT_STRING;
 
     static {
         StringBuilder connectStringBuilder = new StringBuilder();

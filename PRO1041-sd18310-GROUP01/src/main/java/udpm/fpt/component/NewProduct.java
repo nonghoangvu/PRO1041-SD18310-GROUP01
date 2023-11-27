@@ -625,7 +625,7 @@ public class NewProduct extends javax.swing.JFrame {
         if (!isValidate()) {
             return;
         }
-        if (this.list.inserProduct(getMilk(), getProductInfo())) {
+        if (this.list.insertProduct(getMilk(), getProductInfo())) {
             Notification n = new Notification(this, Notification.Type.SUCCESS, Notification.Location.DEFAULT_DESKTOP, "SUCCESS");
             n.showNotification();
             String data = txtId.getText();

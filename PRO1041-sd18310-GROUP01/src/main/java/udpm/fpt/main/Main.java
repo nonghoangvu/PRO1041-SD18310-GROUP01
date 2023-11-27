@@ -9,6 +9,7 @@ import java.awt.event.MouseEvent;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.util.Objects;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
@@ -39,7 +40,7 @@ public class Main extends javax.swing.JFrame {
     public Main(User user) {
         initComponents();
         openDefault();
-        Image icon = new ImageIcon(this.getClass().getResource("/udpm/fpt/icon/rubber-duck.png")).getImage();
+        Image icon = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("/udpm/fpt/icon/cow.png"))).getImage();
         this.setIconImage(icon);
         layout = new MigLayout("fill", "0[fill]0", "0[fill]0");
         this.user = user;

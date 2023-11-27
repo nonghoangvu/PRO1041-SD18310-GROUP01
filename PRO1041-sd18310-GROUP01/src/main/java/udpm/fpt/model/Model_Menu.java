@@ -2,6 +2,7 @@ package udpm.fpt.model;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import java.util.Objects;
 
 public class Model_Menu {
 
@@ -43,7 +44,7 @@ public class Model_Menu {
     private MenuType type;
 
     public Icon toIcon() {
-        return new ImageIcon(getClass().getResource("/udpm/fpt/icon/" + icon));
+        return new ImageIcon(Objects.requireNonNull(getClass().getResource("/udpm/fpt/icon/" + icon)));
     }
 
     public static enum MenuType {

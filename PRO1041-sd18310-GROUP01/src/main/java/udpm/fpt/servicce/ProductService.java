@@ -3,12 +3,13 @@ package udpm.fpt.servicce;
 import udpm.fpt.model.Flavor;
 import udpm.fpt.model.ProductInfo;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executors;
 import org.springframework.beans.factory.annotation.Autowired;
-import static udpm.fpt.Applocation.getBean;
+import static udpm.fpt.Application.getBean;
 import udpm.fpt.model.HistoryProduct;
 
 import udpm.fpt.repository.IFlavor;
@@ -35,13 +36,14 @@ public class ProductService {
     private final IPackagingSpecification iPackagingSpecification = getBean(IPackagingSpecification.class);
     private final IHistoryProduct iHistoryProduct = getBean(IHistoryProduct.class);
 
+    private final HistoryProductService historyProduct = new HistoryProductService();
     @Autowired
     public ProductService() {
     }
 
     public CompletableFuture<List<ProductInfo>> loadAsync() {
         return CompletableFuture.supplyAsync(() -> {
-            return r.findAll();
+            return Collections.unmodifiableList(r.findAll());
         }, Executors.newCachedThreadPool());
     }
 
@@ -63,30 +65,21 @@ public class ProductService {
 
     public CompletableFuture<List<Flavor>> loadFlavor() {
         return CompletableFuture.supplyAsync(() -> {
-            return this.iFlavor.findAll();
+            List<Flavor> all = this.iFlavor.findAll();
+            return all;
         }, Executors.newCachedThreadPool());
     }
 
     public Boolean insertFlavor(Flavor flavor, User user) {
         if (this.iFlavor.save(flavor) != null) {
-            HistoryProduct historyProduct = new HistoryProduct();
-            historyProduct.setDescription("A new flavor " + flavor.getTaste().trim() + " has been added");
-            historyProduct.setDatetime(new Date());
-            historyProduct.setUsername(user.getUsername());
-            historyProduct.setChangeType("New");
-            return this.iHistoryProduct.save(historyProduct) != null;
+            return this.historyProduct.trackHistory("A new flavor " + flavor.getTaste().trim() + " has been added", user.getUsername(), HistoryProductService.ChangeType.NEW);
         }
         return false;
     }
 
     public Boolean removeByTaste(String flavor, User user) {
         if (this.iFlavor.deleteFlavor(flavor)) {
-            HistoryProduct historyProduct = new HistoryProduct();
-            historyProduct.setDescription("The " + flavor.trim() + " flavor has been removed");
-            historyProduct.setDatetime(new Date());
-            historyProduct.setUsername(user.getUsername());
-            historyProduct.setChangeType("Delete");
-            return this.iHistoryProduct.save(historyProduct) != null;
+            return this.historyProduct.trackHistory("The " + flavor.trim() + " flavor has been removed", user.getUsername(), HistoryProductService.ChangeType.REMOVE);
         }
         return false;
     }
@@ -99,22 +92,12 @@ public class ProductService {
 
     public Boolean removeByMeasurement_unit(Unit unit, User user) {
         this.iUnit.deleteById(unit.getId());
-        HistoryProduct historyProduct = new HistoryProduct();
-        historyProduct.setDescription("The " + unit.getMeasurement_unit().trim() + " measurement uni has been removed");
-        historyProduct.setDatetime(new Date());
-        historyProduct.setUsername(user.getUsername());
-        historyProduct.setChangeType("Delete");
-        return this.iHistoryProduct.save(historyProduct) != null;
+        return this.historyProduct.trackHistory("The " + unit.getMeasurement_unit().trim() + " measurement uni has been removed", user.getUsername(), HistoryProductService.ChangeType.REMOVE);
     }
 
     public Boolean insertUnit(Unit unit, User user) {
         if (this.iUnit.save(unit) != null) {
-            HistoryProduct historyProduct = new HistoryProduct();
-            historyProduct.setDescription("A new unit " + unit.getMeasurement_unit().trim() + " has been added");
-            historyProduct.setDatetime(new Date());
-            historyProduct.setUsername(user.getUsername());
-            historyProduct.setChangeType("New");
-            return this.iHistoryProduct.save(historyProduct) != null;
+            return this.historyProduct.trackHistory("A new unit " + unit.getMeasurement_unit().trim() + " has been added", user.getUsername(), HistoryProductService.ChangeType.NEW);
         }
         return false;
     }
@@ -127,35 +110,20 @@ public class ProductService {
 
     public Boolean insertPackagingSpecification(PackagingSpecification packagingSpecification, User user) {
         if (this.iPackagingSpecification.save(packagingSpecification) != null) {
-            HistoryProduct historyProduct = new HistoryProduct();
-            historyProduct.setDescription("A packaging type " + packagingSpecification.getPackaging_type().trim() + " has been added");
-            historyProduct.setDatetime(new Date());
-            historyProduct.setUsername(user.getUsername());
-            historyProduct.setChangeType("New");
-            return this.iHistoryProduct.save(historyProduct) != null;
+            return this.historyProduct.trackHistory("A packaging type " + packagingSpecification.getPackaging_type().trim() + " has been added", user.getUsername(), HistoryProductService.ChangeType.NEW);
         }
         return false;
     }
 
     public Boolean removePackagingSpecification(PackagingSpecification packagingSpecification, User user) {
         this.iPackagingSpecification.deleteById(packagingSpecification.getId());
-        HistoryProduct historyProduct = new HistoryProduct();
-        historyProduct.setDescription("The " + packagingSpecification.getPackaging_type().trim() + " packaging type has been removed");
-        historyProduct.setDatetime(new Date());
-        historyProduct.setUsername(user.getUsername());
-        historyProduct.setChangeType("Delete");
-        return this.iHistoryProduct.save(historyProduct) != null;
+        return this.historyProduct.trackHistory("The " + packagingSpecification.getPackaging_type().trim() + " packaging type has been removed", user.getUsername(), HistoryProductService.ChangeType.REMOVE);
     }
 
-    public Boolean inserProduct(Milk m, ProductInfo pi) {
+    public Boolean insertProduct(Milk m, ProductInfo pi) {
         if (iMilk.findAllById(m.getId()) == null) {
             if (this.iMilk.save(m) != null && r.save(pi) != null) {
-                HistoryProduct historyProduct = new HistoryProduct();
-                historyProduct.setDescription("New product has been added with ID " + m.getId());
-                historyProduct.setDatetime(new Date());
-                historyProduct.setUsername(pi.getUser().getUsername());
-                historyProduct.setChangeType("New");
-                return this.iHistoryProduct.save(historyProduct) != null;
+                return this.historyProduct.trackHistory("New product has been added with ID " + m.getId(), pi.getUser().getUsername(), HistoryProductService.ChangeType.NEW);
             }
         }
         return false;
@@ -163,12 +131,7 @@ public class ProductService {
 
     public Boolean updateProduct(Milk m, ProductInfo pi, User user) {
         if (this.iMilk.save(m) != null && r.save(pi) != null) {
-            HistoryProduct historyProduct = new HistoryProduct();
-            historyProduct.setDescription("ID " + m.getId() + " has been updated");
-            historyProduct.setDatetime(new Date());
-            historyProduct.setUsername(user.getUsername());
-            historyProduct.setChangeType("Update");
-            return this.iHistoryProduct.save(historyProduct) != null;
+            return this.historyProduct.trackHistory("ID " + m.getId() + " has been updated", user.getUsername(), HistoryProductService.ChangeType.UPDATE);
         }
         return false;
     }

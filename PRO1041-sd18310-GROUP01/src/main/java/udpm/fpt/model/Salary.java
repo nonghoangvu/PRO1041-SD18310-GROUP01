@@ -32,4 +32,12 @@ public class Salary {
     @Column(name = "salary_mount")
     private Integer salaryAmount;
     
+    @Column(name = "status")
+    private String status;
+
+    @Override
+    public String toString() {
+        return salaryType + ": " + salaryAmount + "d";
+    }
+
 }
