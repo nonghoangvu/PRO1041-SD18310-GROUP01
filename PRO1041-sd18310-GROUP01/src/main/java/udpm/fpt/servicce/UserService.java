@@ -5,20 +5,24 @@
 package udpm.fpt.servicce;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.NoArgsConstructor;
 import udpm.fpt.model.UserDetails;
 import static udpm.fpt.Applocation.getBean;
-import udpm.fpt.repository.IUser;
 import udpm.fpt.repository.IUserDetails;
+
 /**
  *
  * @author Administrator
  */
 @NoArgsConstructor
 public class UserService {
-       private final IUserDetails iUserDetails = getBean(IUserDetails.class);
-       
-       public List<UserDetails> getList() {
-           return iUserDetails.findAll();
-       }
+
+    private final IUserDetails iUserDetails = getBean(IUserDetails.class);
+
+    public List<UserDetails> getList() {
+        return iUserDetails.findAll().stream()
+                .filter(user -> user.getStatus().equalsIgnoreCase("active"))
+                .collect(Collectors.toList());
+    }
 }

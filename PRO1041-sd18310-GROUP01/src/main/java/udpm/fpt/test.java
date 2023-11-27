@@ -1,5 +1,8 @@
 package udpm.fpt;
 
+import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
@@ -36,23 +39,13 @@ public class test {
 
     public static void main(String[] args) {
         context = createApplicationContext(args);
-        IUserDetails iuserDeatails = getBean(IUserDetails.class);
+        IUserDetails iuserDetails = getBean(IUserDetails.class);
         IUser iuser = getBean(IUser.class);
 
-        
-        User user = new User();
-        user.setId(7);
-        user.setPassword("1234");
-        user.setUsername("binhquocdeptrai");
-        user.setRole("admin");
-        iuser.save(user);
-        
-        UserDetails userDetails = new UserDetails();
-        userDetails.setId(7);
-        userDetails.setUser(user);
-        userDetails.setSalary(new Salary(2, "Monthly salary", 10000000));
-        userDetails.setFullname("Meoemeoemeoemeo");
-        iuserDeatails.save(userDetails);
-        
+        List<UserDetails> list = iuserDetails.findAll().stream()
+                .filter(user -> user.getSalary().getId() == 1)
+                .collect(Collectors.toList());
+        list.forEach(s -> System.out.println(s.getFullname()));
+
     }
 }
