@@ -20,6 +20,7 @@ import org.jdesktop.animation.timing.TimingTarget;
 import org.jdesktop.animation.timing.TimingTargetAdapter;
 import udpm.fpt.Utitlity.BcryptHash;
 import udpm.fpt.component.Notification;
+import udpm.fpt.form.DeliveryNoteFrom;
 import udpm.fpt.form.History;
 import udpm.fpt.form.Home;
 import udpm.fpt.form.Login;
@@ -130,6 +131,9 @@ public class Main extends javax.swing.JFrame {
                 }
                 case 6 -> {
                     main.show(new Setting(this.user, this));
+                }
+                case 7 ->{
+                    main.show(new DeliveryNoteFrom(this.user));
                 }
                 case 8 -> {
                     new Login().setVisible(true);
