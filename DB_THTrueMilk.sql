@@ -358,16 +358,16 @@ ALTER TABLE [SaleMilk]
     ADD FOREIGN KEY ([milk_id]) REFERENCES [Milk] ([id])
 GO
 ALTER TABLE [SaleMilk]
-    ADD FOREIGN KEY ([staff_id]) REFERENCES [UserDetails] ([id])
+    ADD FOREIGN KEY ([staff_id]) REFERENCES [Users] ([id])
 GO
 ALTER TABLE [BillDetails]
-    ADD FOREIGN KEY ([staff_id]) REFERENCES [UserDetails] ([id])
+    ADD FOREIGN KEY ([staff_id]) REFERENCES [Users] ([id])
 GO
 ALTER TABLE [HistoryBill]
-    ADD FOREIGN KEY ([staff_id]) REFERENCES [UserDetails] ([id])
+    ADD FOREIGN KEY ([staff_id]) REFERENCES [Users] ([id])
 GO
 ALTER TABLE [HistoryBill]
-    ADD FOREIGN KEY ([customer_id]) REFERENCES [UserDetails] ([id])
+    ADD FOREIGN KEY ([customer_id]) REFERENCES [Users] ([id])
 GO
 ALTER TABLE [HistoryBill]
     ADD FOREIGN KEY ([milk_id]) REFERENCES [Milk] ([id])
@@ -484,6 +484,12 @@ VALUES
     (76543212, 1, 'TH True Milk', 0.5, 2, N'Việt Nam', N'Thành phần sữa hạt nho', 2, N'Mô tả sữa hạt nho', 1),
     (52525366, 2, 'TH True Milk', 0.5, 2, N'Việt Nam', N'Thành phần sữa hạt việt quất', 2, N'Mô tả sữa hạt việt quất', 1);
 
+INSERT INTO SaleMilk (id, sale_event, percent_decrease, start_day, end_day, milk_id, staff_id) VALUES (1, 'SALE 28-11-2023', 30, GETDATE(), '2023-12-01', 98765432, 1)
+INSERT INTO SaleMilk (id, sale_event, percent_decrease, start_day, end_day, milk_id, staff_id) VALUES (2, 'SALE 28-11-2023', 70, GETDATE(), '2023-12-01', 87654321, 1)
 
+UPDATE SaleMilk SET end_day = '2023-12-01' WHERE id = 1
+UPDATE SaleMilk SET percent_decrease = 10 WHERE id = 2
 
+SELECT * FROM SaleMilk
+SELECT * FROM Users
 SELECT * FROM MILK INNER JOIN PRODUCTINFO ON MILK.ID = PRODUCTINFO.MILK_ID

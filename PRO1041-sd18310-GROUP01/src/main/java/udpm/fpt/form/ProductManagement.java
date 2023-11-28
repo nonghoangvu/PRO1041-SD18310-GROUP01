@@ -54,6 +54,15 @@ public class ProductManagement extends javax.swing.JPanel {
         findProduct();
     }
 
+    private Integer priceUpdate(Long id, Integer price) {
+        for (SaleMilk sm : this.list.getPercentSale()) {
+            if (Objects.equals(id, sm.getMilk().getId())) {
+                return new DiscountCalculator().calculateDiscountedPrice(price, sm.getPercent_decrease());
+            }
+        }
+        return price;
+    }
+
     /*-------------------------------------------Format Textfield-------------------------------------------*/
     private void setSize() {
         tblProduct.getColumnModel().getColumn(0).setPreferredWidth(20);
@@ -106,18 +115,16 @@ public class ProductManagement extends javax.swing.JPanel {
         tblModel = (DefaultTableModel) tblProduct.getModel();
         tblModel.setRowCount(0);
         for (ProductInfo prd : data) {
-            Integer price = new DiscountCalculator().calculateDiscountedPrice(prd.getMilk().getPrice(), 80);//Get sale
-            prd.getMilk().setPrice(price);
             if (!prd.getMilk().getIsDelete()) {
+                this.temp.add(prd);
                 Object[] rowData = {
                         prd.getMilk().getId(),
                         prd.getMilk().getProduct_name(),
                         prd.getFlavor().getTaste(),
-                        prd.getMilk().getPrice(),
+                        priceUpdate(prd.getMilk().getId(), prd.getMilk().getPrice()),
                         prd.getMilk().getAmount(),
                         prd.getMilk().getProvider()};
                 tblModel.addRow(rowData);
-                this.temp.add(prd);
                 tblProduct.setDefaultRenderer(Object.class, new CustomCellRenderer(tblProduct));
             }
         }
@@ -140,18 +147,16 @@ public class ProductManagement extends javax.swing.JPanel {
         tblModel = (DefaultTableModel) tblProduct.getModel();
         tblModel.setRowCount(0);
         for (ProductInfo prd : data) {
-            Integer price = new DiscountCalculator().calculateDiscountedPrice(prd.getMilk().getPrice(), 80);//Get sale
-            prd.getMilk().setPrice(price);
             if (!prd.getMilk().getIsDelete()) {
+                this.temp.add(prd);
                 tblModel.addRow(new Object[]{
                         prd.getMilk().getId(),
                         prd.getMilk().getProduct_name(),
                         prd.getFlavor().getTaste(),
-                        prd.getMilk().getPrice(),
+                        priceUpdate(prd.getMilk().getId(), prd.getMilk().getPrice()),
                         prd.getMilk().getAmount(),
                         prd.getMilk().getProvider()
                 });
-                this.temp.add(prd);
             }
         }
     }
@@ -173,18 +178,16 @@ public class ProductManagement extends javax.swing.JPanel {
         tblModel = (DefaultTableModel) tblProduct.getModel();
         tblModel.setRowCount(0);
         for (ProductInfo prd : data) {
-            Integer price = new DiscountCalculator().calculateDiscountedPrice(prd.getMilk().getPrice(), 80);//Get sale
-            prd.getMilk().setPrice(price);
             if (!prd.getMilk().getIsDelete()) {
+                this.temp.add(prd);
                 tblModel.addRow(new Object[]{
                         prd.getMilk().getId(),
                         prd.getMilk().getProduct_name(),
                         prd.getFlavor().getTaste(),
-                        prd.getMilk().getPrice(),
+                        priceUpdate(prd.getMilk().getId(), prd.getMilk().getPrice()),
                         prd.getMilk().getAmount(),
                         prd.getMilk().getProvider()
                 });
-                this.temp.add(prd);
             }
         }
     }
@@ -264,7 +267,7 @@ public class ProductManagement extends javax.swing.JPanel {
         lbId.setText(String.valueOf(pi.getMilk().getId()));
         lbName.setText(pi.getMilk().getProduct_name());
         lbTaste.setText(pi.getFlavor().getTaste());
-        lbPrice.setText(setSelectedIndex(pi.getMilk().getPrice()) + " VND");
+        lbPrice.setText(setSelectedIndex(priceUpdate(pi.getMilk().getId(), pi.getMilk().getPrice())) + " VND");
         lbAmount.setText(String.valueOf(pi.getMilk().getAmount()));
         lbProductionDate.setText(removeTimeUsingDateTimeFormatter(String.valueOf(pi.getMilk().getProduction_date())));
         lbExpirationDate.setText(removeTimeUsingDateTimeFormatter(String.valueOf(pi.getMilk().getExpiration_date())));
