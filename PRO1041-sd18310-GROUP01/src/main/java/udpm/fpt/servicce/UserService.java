@@ -27,6 +27,10 @@ public class UserService {
     public boolean addNewUser(UserDetails userDetails) {
         return this.iUserDetails.save(userDetails) != null;
     }
+    
+    public boolean deleteNewUser(UserDetails userDetails) {
+        return this.iUserDetails.save(userDetails) != null;
+    }
 
     public String getAvatar(String username) {
         try {

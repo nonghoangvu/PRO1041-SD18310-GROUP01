@@ -50,6 +50,7 @@ udpm\fpt\swing\TextField$1.class
 udpm\fpt\swing\PasswordField.class
 udpm\fpt\swing\table\TableCustomCellRender.class
 udpm\fpt\component\AddNewUser$2.class
+udpm\fpt\form\UserForm$5.class
 udpm\fpt\form\History.class
 udpm\fpt\swing\Combobox$ComboUI$ArrowButton.class
 udpm\fpt\swing\TextField$3.class
@@ -65,6 +66,7 @@ udpm\fpt\swing\TextAreaScroll.class
 udpm\fpt\main\Main$SizeOption.class
 udpm\fpt\swing\ModernScrollBarUI.class
 udpm\fpt\swing\Spinner.class
+udpm\fpt\form\UserForm$4.class
 udpm\fpt\form\ProductManagement$5.class
 udpm\fpt\swing\PasswordField$3.class
 udpm\fpt\component\NewProduct$1.class
@@ -81,6 +83,7 @@ udpm\fpt\swing\table\TextAreaCellRenderer.class
 udpm\fpt\component\AddNewUser.class
 udpm\fpt\swing\ScrollBarCustomUI$ScrollButton.class
 udpm\fpt\servicce\ProductService.class
+udpm\fpt\form\UserForm$3.class
 udpm\fpt\component\WebCamProduct.class
 udpm\fpt\component\NewProduct$2.class
 udpm\fpt\form\ProductManagement$4.class

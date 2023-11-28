@@ -3,6 +3,10 @@ package udpm.fpt.component;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import javax.imageio.ImageIO;
@@ -81,6 +85,12 @@ public class AddNewUser extends javax.swing.JFrame {
         return user;
     }
 
+    public Date getCurrentDate() {
+        LocalDate localDate = LocalDate.now();
+        Date date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        return date;
+    }
+
     public UserDetails createNewUserDetails() {
         UserDetails userDetails = new UserDetails();
 
@@ -114,15 +124,31 @@ public class AddNewUser extends javax.swing.JFrame {
         userDetails.setAddress(txtAddress.getText().trim());
         userDetails.setNote(txtNote.getText().trim());
         userDetails.setStatus("Active");
+        userDetails.setCreatedAt(getCurrentDate());
 
         return userDetails;
+    }
+
+    public void clearForm() {
+        txtUsername.setText("");
+        txtPassword.setText("");
+        lblAvatar.setText("");
+        txtFullname.setText("");
+        txtPhonenum.setText("");
+        txtPosition.setText("");
+        txtEmail.setText("");
+        txtCitizenID.setText("");
+        txtAddress.setText("");
+        txtNote.setText("");
     }
 
     public void addNewUser() {
 
         System.out.println(createNewUserDetails().getSalary().getId());
         if (this.userService.addNewUser(createNewUserDetails())) {
-            this.main.notificationShowWARNING("Added a new employee !!!");
+            this.main.notificationShowSUCCESS("Added a new employee !!!");
+            clearForm();
+            this.dispose();
         } else {
             this.main.notificationShowWARNING("Failed !!!");
         }
@@ -437,6 +463,7 @@ public class AddNewUser extends javax.swing.JFrame {
     private void btnAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddMouseClicked
         // TODO add your handling code here:
         addNewUser();
+
     }//GEN-LAST:event_btnAddMouseClicked
 
     private void lblAvatarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAvatarMouseClicked
