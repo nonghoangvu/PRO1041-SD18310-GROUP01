@@ -1,5 +1,10 @@
 package udpm.fpt;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
@@ -38,14 +43,22 @@ public class test {
     }
 
     public static void main(String[] args) {
-        context = createApplicationContext(args);
-        IUserDetails iuserDetails = getBean(IUserDetails.class);
-        IUser iuser = getBean(IUser.class);
+//        context = createApplicationContext(args);
+//        IUserDetails iuserDetails = getBean(IUserDetails.class);
+//        IUser iuser = getBean(IUser.class);
+//
+//        List<UserDetails> list = iuserDetails.findAll().stream()
+//                .filter(user -> user.getSalary().getId() == 1)
+//                .collect(Collectors.toList());
+//        list.forEach(s -> System.out.println(s.getFullname()));
+        
+        LocalDate localDate = LocalDate.now();
 
-        List<UserDetails> list = iuserDetails.findAll().stream()
-                .filter(user -> user.getSalary().getId() == 1)
-                .collect(Collectors.toList());
-        list.forEach(s -> System.out.println(s.getFullname()));
+        // Convert LocalDate to Date
+        Date date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+        // Print the converted Date object
+        System.out.println("Converted Date: " + date);
 
     }
 }
