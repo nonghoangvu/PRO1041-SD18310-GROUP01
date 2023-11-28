@@ -44,21 +44,21 @@
     <Component class="udpm.fpt.swing.table.ActionButton" name="cmdDelete">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/udpm/fpt/icon/bin.png"/>
+          <Image iconType="3" name="//Icon/bin.png"/>
         </Property>
       </Properties>
     </Component>
     <Component class="udpm.fpt.swing.table.ActionButton" name="cmdView">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/udpm/fpt/icon/view.png"/>
+          <Image iconType="3" name="//Icon/view.png"/>
         </Property>
       </Properties>
     </Component>
     <Component class="udpm.fpt.swing.table.ActionButton" name="cmdRestore">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/udpm/fpt/icon/cloud-sync.png"/>
+          <Image iconType="3" name="//Icon/cloud-sync.png"/>
         </Property>
       </Properties>
     </Component>

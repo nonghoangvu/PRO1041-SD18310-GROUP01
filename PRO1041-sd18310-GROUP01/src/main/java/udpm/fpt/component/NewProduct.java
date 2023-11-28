@@ -8,6 +8,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import javax.imageio.ImageIO;
 import javax.swing.DefaultComboBoxModel;
@@ -201,7 +202,7 @@ public class NewProduct extends javax.swing.JFrame {
     public String urlImage(Boolean get_set) {
         try {
             String currentDirectory = System.getProperty("user.dir")
-                    + "/src/main/java/udpm/fpt/productgallery/";
+                    + "/src/main/java/ProductGallery/";
             JFileChooser fileChooser = new JFileChooser(currentDirectory);
             fileChooser.showOpenDialog(null);
             File selectedFile = fileChooser.getSelectedFile();
@@ -345,7 +346,7 @@ public class NewProduct extends javax.swing.JFrame {
 
         txtId.setLabelText("ID");
 
-        button1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/udpm/fpt/icon/barcode-scanner.png"))); // NOI18N
+        button1.setIcon(new javax.swing.ImageIcon(Objects.requireNonNull(getClass().getResource("/Icon/barcode-scanner.png")))); // NOI18N
         button1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 button1ActionPerformed(evt);
@@ -495,21 +496,21 @@ public class NewProduct extends javax.swing.JFrame {
         txtDescription.setRows(5);
         textAreaScroll2.setViewportView(txtDescription);
 
-        btnNewFlavor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/udpm/fpt/icon/insert.png"))); // NOI18N
+        btnNewFlavor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/insert.png"))); // NOI18N
         btnNewFlavor.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnNewFlavorMouseClicked(evt);
             }
         });
 
-        btnNewUnit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/udpm/fpt/icon/insert.png"))); // NOI18N
+        btnNewUnit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/insert.png"))); // NOI18N
         btnNewUnit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnNewUnitActionPerformed(evt);
             }
         });
 
-        btnNewPackagingSpecification.setIcon(new javax.swing.ImageIcon(getClass().getResource("/udpm/fpt/icon/insert.png"))); // NOI18N
+        btnNewPackagingSpecification.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/insert.png"))); // NOI18N
         btnNewPackagingSpecification.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnNewPackagingSpecificationMouseClicked(evt);

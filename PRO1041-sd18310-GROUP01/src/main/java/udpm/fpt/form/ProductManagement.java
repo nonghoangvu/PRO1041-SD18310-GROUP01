@@ -315,7 +315,7 @@ public class ProductManagement extends javax.swing.JPanel {
         try {
             int labelWidth = lbproductgallery.getWidth();
             int labelHeight = lbproductgallery.getHeight();
-            ImageIcon originalIcon = new javax.swing.ImageIcon(getClass().getResource("/udpm/fpt/productgallery/" + url));
+            ImageIcon originalIcon = new javax.swing.ImageIcon(Objects.requireNonNull(getClass().getResource("/ProductGallery/" + url)));
             Image originalImage = originalIcon.getImage();
             Image scaledImage = originalImage.getScaledInstance(labelWidth, labelHeight, Image.SCALE_SMOOTH);
             ImageIcon scaledIcon = new ImageIcon(scaledImage);
@@ -531,7 +531,7 @@ public class ProductManagement extends javax.swing.JPanel {
 
         txtProductionDate.setLabelText("Production Date");
 
-        button2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/udpm/fpt/icon/barcode-scanner.png"))); // NOI18N
+        button2.setIcon(new javax.swing.ImageIcon(Objects.requireNonNull(getClass().getResource("/Icon/barcode-scanner.png")))); // NOI18N
         button2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 button2ActionPerformed(evt);

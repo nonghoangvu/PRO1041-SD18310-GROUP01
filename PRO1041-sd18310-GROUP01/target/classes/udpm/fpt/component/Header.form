@@ -63,7 +63,7 @@
           <Color blue="fa" green="fa" red="fa" type="rgb"/>
         </Property>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/udpm/fpt/icon/menu.png"/>
+          <Image iconType="3" name="//Icon/menu.png"/>
         </Property>
       </Properties>
     </Component>
@@ -83,7 +83,7 @@
     <Container class="udpm.fpt.swing.ImageAvatar" name="imageAvatar1">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/udpm/fpt/icon/user.png"/>
+          <Image iconType="3" name="//Icon/user.png"/>
         </Property>
       </Properties>
 

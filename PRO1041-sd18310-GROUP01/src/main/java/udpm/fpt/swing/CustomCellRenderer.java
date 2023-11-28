@@ -28,7 +28,7 @@ public class CustomCellRenderer extends DefaultTableCellRenderer {
     @Override
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         Component component = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-        table.setRowHeight(30);
+        table.setRowHeight(40);
         int quantityColumnIndex = 4;
         int quantity = (int) table.getValueAt(row, quantityColumnIndex);
 
@@ -52,9 +52,9 @@ public class CustomCellRenderer extends DefaultTableCellRenderer {
         table.getTableHeader().setBackground(new Color(250, 250, 250));
 
         if (row == hoveredRow) {
-            Color originalColor = isSelected ? new Color(123, 207, 255) : new Color(255, 255, 255, 50);
+            Color originalColor = isSelected ? new Color(123, 207, 255) : new Color(255, 255, 255, 255);
             float[] hsb = Color.RGBtoHSB(originalColor.getRed(), originalColor.getGreen(), originalColor.getBlue(), null);
-            Color fadedColor = Color.getHSBColor(hsb[0], hsb[1], hsb[2] * 0.8f);
+            Color fadedColor = Color.getHSBColor(hsb[0], hsb[1], hsb[2] * 0.9f);
             component.setBackground(fadedColor);
         }
 

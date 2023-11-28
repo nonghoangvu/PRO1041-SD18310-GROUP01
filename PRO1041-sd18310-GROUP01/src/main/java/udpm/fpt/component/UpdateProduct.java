@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import javax.imageio.ImageIO;
 import javax.swing.DefaultComboBoxModel;
@@ -95,7 +96,7 @@ public class UpdateProduct extends javax.swing.JFrame {
             int labelWidth = lbproductgallery.getWidth();
             int labelHeight = lbproductgallery.getHeight();
             ImageIcon originalIcon = new javax.swing.ImageIcon(
-                    getClass().getResource("/udpm/fpt/productgallery/" + url));
+                    Objects.requireNonNull(getClass().getResource("/ProductGallery/" + url)));
             Image originalImage = originalIcon.getImage();
             Image scaledImage = originalImage.getScaledInstance(labelWidth, labelHeight,
                     Image.SCALE_SMOOTH);
@@ -342,7 +343,7 @@ public class UpdateProduct extends javax.swing.JFrame {
     public String urlImage(Boolean get_set) {
         try {
             String currentDirectory = System.getProperty("user.dir")
-                    + "/src/main/java/udpm/fpt/productgallery/";
+                    + "/src/main/java/ProductGallery/";
             JFileChooser fileChooser = new JFileChooser(currentDirectory);
             fileChooser.showOpenDialog(null);
             File selectedFile = fileChooser.getSelectedFile();
@@ -549,21 +550,21 @@ public class UpdateProduct extends javax.swing.JFrame {
         txtDescription.setRows(5);
         textAreaScroll2.setViewportView(txtDescription);
 
-        btnNewFlavor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/udpm/fpt/icon/insert.png"))); // NOI18N
+        btnNewFlavor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/insert.png"))); // NOI18N
         btnNewFlavor.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnNewFlavorMouseClicked(evt);
             }
         });
 
-        btnNewUnit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/udpm/fpt/icon/insert.png"))); // NOI18N
+        btnNewUnit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/insert.png"))); // NOI18N
         btnNewUnit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnNewUnitActionPerformed(evt);
             }
         });
 
-        btnNewPackagingSpecification.setIcon(new javax.swing.ImageIcon(getClass().getResource("/udpm/fpt/icon/insert.png"))); // NOI18N
+        btnNewPackagingSpecification.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/insert.png"))); // NOI18N
         btnNewPackagingSpecification.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnNewPackagingSpecificationMouseClicked(evt);
