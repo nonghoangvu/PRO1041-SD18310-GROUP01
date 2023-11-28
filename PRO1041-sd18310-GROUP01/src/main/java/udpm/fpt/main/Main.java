@@ -131,7 +131,7 @@ public class Main extends javax.swing.JFrame {
                 case 6 -> {
                     main.show(new Setting(this.user, this));
                 }
-                case 7 -> {
+                case 8 -> {
                     new Login().setVisible(true);
                     this.dispose();
                 }
