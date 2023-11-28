@@ -1,30 +1,20 @@
 package udpm.fpt.servicce;
 
-import udpm.fpt.model.Flavor;
-import udpm.fpt.model.ProductInfo;
+import udpm.fpt.model.*;
 
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executors;
-import org.springframework.beans.factory.annotation.Autowired;
-import static udpm.fpt.Application.getBean;
-import udpm.fpt.model.HistoryProduct;
 
-import udpm.fpt.repository.IFlavor;
-import udpm.fpt.repository.IProductInfo;
-import udpm.fpt.model.Milk;
-import udpm.fpt.model.PackagingSpecification;
-import udpm.fpt.model.Unit;
-import udpm.fpt.model.User;
-import udpm.fpt.repository.IHistoryProduct;
-import udpm.fpt.repository.IMilk;
-import udpm.fpt.repository.IPackagingSpecification;
-import udpm.fpt.repository.IUnit;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import static udpm.fpt.Application.getBean;
+
+import udpm.fpt.repository.*;
 
 /**
- *
  * @author NONG HOANG VU
  */
 public class ProductService {
@@ -35,8 +25,9 @@ public class ProductService {
     private final IUnit iUnit = getBean(IUnit.class);
     private final IPackagingSpecification iPackagingSpecification = getBean(IPackagingSpecification.class);
     private final IHistoryProduct iHistoryProduct = getBean(IHistoryProduct.class);
-
+    private final ISaleMilk iSaleMilk = getBean(ISaleMilk.class);
     private final HistoryProductService historyProduct = new HistoryProductService();
+
     @Autowired
     public ProductService() {
     }
@@ -173,4 +164,10 @@ public class ProductService {
         }
         return milkDeleted && productInfoDeleted;
     }
+
+    public List<SaleMilk> getPercentSale() {
+        return this.iSaleMilk.findSalesInRange();
+//        return this.iSaleMilk.findAll();
+    }
+
 }

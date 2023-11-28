@@ -40,7 +40,7 @@ public class Main extends javax.swing.JFrame {
     public Main(User user) {
         initComponents();
         openDefault();
-        Image icon = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("/udpm/fpt/icon/cow.png"))).getImage();
+        Image icon = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("/Icon/cow.png"))).getImage();
         this.setIconImage(icon);
         layout = new MigLayout("fill", "0[fill]0", "0[fill]0");
         this.user = user;

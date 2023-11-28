@@ -24,10 +24,10 @@ public class Header extends javax.swing.JPanel {
     public void setAvatar(String avatar) {
         try {
             imageAvatar1.setIcon(new javax.swing.ImageIcon(
-                    Objects.requireNonNull(getClass().getResource("/udpm/fpt/icon/" + avatar))));
+                    Objects.requireNonNull(getClass().getResource("/Icon/icon/" + avatar))));
         } catch (Exception exception) {
             imageAvatar1.setIcon(new javax.swing.ImageIcon(
-                    Objects.requireNonNull(getClass().getResource("/udpm/fpt/icon/rubber-duck.png"))));
+                    Objects.requireNonNull(getClass().getResource("/Icon/rubber-duck.png"))));
         }
     }
 
@@ -53,7 +53,7 @@ public class Header extends javax.swing.JPanel {
         jSeparator1 = new javax.swing.JSeparator();
 
         cmdMenu.setBackground(new java.awt.Color(250, 250, 250));
-        cmdMenu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/udpm/fpt/icon/menu.png"))); // NOI18N
+        cmdMenu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/menu.png"))); // NOI18N
 
         txtUsername.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         txtUsername.setForeground(new java.awt.Color(127, 127, 127));
@@ -61,7 +61,7 @@ public class Header extends javax.swing.JPanel {
         txtUsername.setText("Username");
         txtUsername.setToolTipText("");
 
-        imageAvatar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/udpm/fpt/icon/user.png"))); // NOI18N
+        imageAvatar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/user.png"))); // NOI18N
 
         txtRole.setForeground(new java.awt.Color(127, 127, 127));
         txtRole.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);

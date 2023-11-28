@@ -22,9 +22,23 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
+<<<<<<< HEAD
               <EmptySpace pref="215" max="32767" attributes="0"/>
               <Component id="jScrollPane1" min="-2" pref="688" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
+=======
+              <EmptySpace pref="197" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="1" attributes="0">
+                      <Component id="jScrollPane1" min="-2" pref="697" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="1" attributes="0">
+                      <Component id="btnAdd" min="-2" pref="130" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="114" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+>>>>>>> 4b3882298a4478b20cd3f21ee4dee9ec0d96b3b8
               <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
           </Group>
@@ -35,8 +49,17 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
+<<<<<<< HEAD
                   <Component id="jScrollPane1" min="-2" max="-2" attributes="0"/>
                   <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
+=======
+                  <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <Component id="jScrollPane1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="150" max="-2" attributes="0"/>
+                      <Component id="btnAdd" min="-2" max="-2" attributes="0"/>
+                  </Group>
+>>>>>>> 4b3882298a4478b20cd3f21ee4dee9ec0d96b3b8
               </Group>
               <EmptySpace max="32767" attributes="0"/>
           </Group>
@@ -167,9 +190,17 @@
                           <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
+<<<<<<< HEAD
                           <Component id="btnAdd" min="-2" pref="130" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="button2" min="-2" pref="130" max="-2" attributes="0"/>
+=======
+                          <EmptySpace min="-2" pref="142" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="button3" min="-2" pref="130" max="-2" attributes="0"/>
+                              <Component id="button2" min="-2" pref="130" max="-2" attributes="0"/>
+                          </Group>
+>>>>>>> 4b3882298a4478b20cd3f21ee4dee9ec0d96b3b8
                           <EmptySpace max="32767" attributes="0"/>
                           <Component id="btnDelete" min="-2" pref="130" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
@@ -251,6 +282,7 @@
                       <Component id="jLabel14" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="lblCreateDate" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
+<<<<<<< HEAD
                   <EmptySpace pref="20" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="btnAdd" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -258,6 +290,13 @@
                       <Component id="btnDelete" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
+=======
+                  <EmptySpace pref="43" max="32767" attributes="0"/>
+                  <Component id="button2" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="button3" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
+>>>>>>> 4b3882298a4478b20cd3f21ee4dee9ec0d96b3b8
               </Group>
           </Group>
         </DimensionLayout>
@@ -465,14 +504,6 @@
             <Property name="text" type="java.lang.String" value="jLabel26"/>
           </Properties>
         </Component>
-        <Component class="udpm.fpt.swing.Button" name="btnAdd">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Add new employee"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAddActionPerformed"/>
-          </Events>
-        </Component>
         <Component class="udpm.fpt.swing.Button" name="button2">
           <Properties>
             <Property name="text" type="java.lang.String" value="button1"/>
@@ -493,5 +524,13 @@
         </Component>
       </SubComponents>
     </Container>
+    <Component class="udpm.fpt.swing.Button" name="btnAdd">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Add new employee"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAddActionPerformed"/>
+      </Events>
+    </Component>
   </SubComponents>
 </Form>

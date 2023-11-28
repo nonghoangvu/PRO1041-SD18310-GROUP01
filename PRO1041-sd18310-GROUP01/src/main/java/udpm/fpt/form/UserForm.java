@@ -77,7 +77,7 @@ public class UserForm extends javax.swing.JPanel {
         lblGender.setText(userDetails.getGender());
         lblPhonenum.setText(userDetails.getTel());
         lblEmail.setText(userDetails.getEmail());
-        lblBirthdate.setText(convertDateToString(userDetails.getBirthdate()));
+//        lblBirthdate.setText(convertDateToString(userDetails.getBirthdate()));
         lblCitizenID.setText(userDetails.getCitizenId());
         lblAddress.setText(userDetails.getAddress());
         lblNote.setText(userDetails.getNote());
@@ -98,7 +98,7 @@ public class UserForm extends javax.swing.JPanel {
         try {
             int labelWidth = lblAva.getWidth();
             int labelHeight = lblAva.getHeight();
-            ImageIcon originalIcon = new javax.swing.ImageIcon(getClass().getResource("/udpm/fpt/icon/" + url));
+            ImageIcon originalIcon = new javax.swing.ImageIcon(getClass().getResource("/Ava/" + url));
             Image originalImage = originalIcon.getImage();
             Image scaledImage = originalImage.getScaledInstance(labelWidth, labelHeight, Image.SCALE_SMOOTH);
             ImageIcon scaledIcon = new ImageIcon(scaledImage);
@@ -163,10 +163,10 @@ public class UserForm extends javax.swing.JPanel {
         jScrollPane3 = new javax.swing.JScrollPane();
         lblAddress = new javax.swing.JTextArea();
         lblCreateDate = new javax.swing.JLabel();
-        btnAdd = new udpm.fpt.swing.Button();
         button2 = new udpm.fpt.swing.Button();
         btnDelete = new udpm.fpt.swing.Button();
         lblAva = new javax.swing.JLabel();
+        btnAdd = new udpm.fpt.swing.Button();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -264,13 +264,6 @@ public class UserForm extends javax.swing.JPanel {
         jScrollPane3.setViewportView(lblAddress);
 
         lblCreateDate.setText("jLabel26");
-
-        btnAdd.setText("Add new employee");
-        btnAdd.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAddActionPerformed(evt);
-            }
-        });
 
         button2.setText("button1");
 
@@ -431,6 +424,13 @@ public class UserForm extends javax.swing.JPanel {
                     .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(37, 37, 37))
         );
+
+        btnAdd.setText("Add new employee");
+        btnAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);

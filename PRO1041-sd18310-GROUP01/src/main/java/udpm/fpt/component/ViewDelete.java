@@ -72,7 +72,7 @@ public class ViewDelete extends javax.swing.JFrame {
         try {
             int labelWidth = lbproductgallery.getWidth();
             int labelHeight = lbproductgallery.getHeight();
-            ImageIcon originalIcon = new javax.swing.ImageIcon(getClass().getResource("/udpm/fpt/productgallery/" + url));
+            ImageIcon originalIcon = new javax.swing.ImageIcon(getClass().getResource("/ProductGallery/" + url));
             Image originalImage = originalIcon.getImage();
             Image scaledImage = originalImage.getScaledInstance(labelWidth, labelHeight, Image.SCALE_SMOOTH);
             ImageIcon scaledIcon = new ImageIcon(scaledImage);

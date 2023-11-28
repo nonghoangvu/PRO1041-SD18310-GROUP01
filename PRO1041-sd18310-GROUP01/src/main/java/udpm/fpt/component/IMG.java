@@ -3,6 +3,7 @@ package udpm.fpt.component;
 import java.awt.Image;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.util.Objects;
 import javax.swing.ImageIcon;
 
 /**
@@ -32,7 +33,7 @@ public class IMG extends javax.swing.JFrame {
         try {
             int labelWidth = lbproductgallery.getWidth();
             int labelHeight = lbproductgallery.getHeight();
-            ImageIcon originalIcon = new javax.swing.ImageIcon(getClass().getResource("/udpm/fpt/productgallery/" + url));
+            ImageIcon originalIcon = new javax.swing.ImageIcon(getClass().getResource("/ProductGallery/" + url));
             Image originalImage = originalIcon.getImage();
             Image scaledImage = originalImage.getScaledInstance(labelWidth, labelHeight, Image.SCALE_SMOOTH);
             ImageIcon scaledIcon = new ImageIcon(scaledImage);
@@ -57,7 +58,7 @@ public class IMG extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
         lbproductgallery.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lbproductgallery.setIcon(new javax.swing.ImageIcon(getClass().getResource("/udpm/fpt/productgallery/1.jpg"))); // NOI18N
+        lbproductgallery.setIcon(new javax.swing.ImageIcon(Objects.requireNonNull(getClass().getResource("/ProductGallery/1.jpg")))); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);

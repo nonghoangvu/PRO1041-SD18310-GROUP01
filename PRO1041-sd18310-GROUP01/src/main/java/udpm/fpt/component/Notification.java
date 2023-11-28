@@ -57,13 +57,13 @@ public class Notification extends javax.swing.JComponent {
         dialog.add(this);
         dialog.setSize(getPreferredSize());
         if (type == Type.SUCCESS) {
-            lbIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/udpm/fpt/icon/sucess.png")));
+            lbIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/sucess.png")));
             lbMessage.setText("Success");
         } else if (type == Type.INFO) {
-            lbIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/udpm/fpt/icon/info.png")));
+            lbIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/info.png")));
             lbMessage.setText("Info");
         } else {
-            lbIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/udpm/fpt/icon/warning.png")));
+            lbIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/warning.png")));
             lbMessage.setText("Warning");
         }
         lbMessageText.setText(message);
@@ -251,7 +251,7 @@ public class Notification extends javax.swing.JComponent {
         cmdClose = new javax.swing.JButton();
 
         lbIcon.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lbIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/udpm/fpt/icon/sucess.png"))); // NOI18N
+        lbIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/sucess.png"))); // NOI18N
 
         panel.setOpaque(false);
 
@@ -281,7 +281,7 @@ public class Notification extends javax.swing.JComponent {
                                 .addComponent(lbMessageText)
                                 .addContainerGap()));
 
-        cmdClose.setIcon(new javax.swing.ImageIcon(getClass().getResource("/udpm/fpt/icon/close.png"))); // NOI18N
+        cmdClose.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/close.png"))); // NOI18N
         cmdClose.setBorder(null);
         cmdClose.setContentAreaFilled(false);
         cmdClose.setFocusable(false);

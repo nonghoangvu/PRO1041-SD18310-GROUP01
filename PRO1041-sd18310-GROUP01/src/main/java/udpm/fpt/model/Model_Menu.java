@@ -44,7 +44,7 @@ public class Model_Menu {
     private MenuType type;
 
     public Icon toIcon() {
-        return new ImageIcon(Objects.requireNonNull(getClass().getResource("/udpm/fpt/icon/" + icon)));
+        return new ImageIcon(Objects.requireNonNull(getClass().getResource("/Icon/" + icon)));
     }
 
     public static enum MenuType {

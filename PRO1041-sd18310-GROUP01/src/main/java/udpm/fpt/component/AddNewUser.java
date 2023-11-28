@@ -35,6 +35,7 @@ public class AddNewUser extends javax.swing.JFrame {
 
     public AddNewUser(Main main) {
         initComponents();
+        setLocationRelativeTo(null);
         this.main = main;
         loadDataAndFillSalary();
     }
@@ -157,7 +158,7 @@ public class AddNewUser extends javax.swing.JFrame {
     public String urlImage(Boolean get_set) {
         try {
             String currentDirectory = System.getProperty("user.dir")
-                    + "/src/main/java/udpm/fpt/productgallery/";
+                    + "/src/main/java/Ava/";
             JFileChooser fileChooser = new JFileChooser(currentDirectory);
             fileChooser.showOpenDialog(null);
             File selectedFile = fileChooser.getSelectedFile();

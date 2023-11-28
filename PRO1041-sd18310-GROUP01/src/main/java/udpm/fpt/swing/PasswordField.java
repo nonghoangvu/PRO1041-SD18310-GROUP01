@@ -15,6 +15,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.geom.Rectangle2D;
+import java.util.Objects;
 import javax.swing.ImageIcon;
 import javax.swing.JPasswordField;
 import javax.swing.border.EmptyBorder;
@@ -130,8 +131,8 @@ public class PasswordField extends JPasswordField {
             }
 
         };
-        eye = new ImageIcon(getClass().getResource("/udpm/fpt/icon/eye.png")).getImage();
-        eye_hide = new ImageIcon(getClass().getResource("/udpm/fpt/icon/eye_hide.png")).getImage();
+        eye = new ImageIcon(Objects.requireNonNull(getClass().getResource("/Icon/eye.png"))).getImage();
+        eye_hide = new ImageIcon(Objects.requireNonNull(getClass().getResource("/Icon/eye_hide.png"))).getImage();
         animator = new Animator(300, target);
         animator.setResolution(0);
         animator.setAcceleration(0.5f);

@@ -51,11 +51,11 @@ public class PanelAction extends javax.swing.JPanel {
         cmdView = new udpm.fpt.swing.table.ActionButton();
         cmdRestore = new udpm.fpt.swing.table.ActionButton();
 
-        cmdDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/udpm/fpt/icon/bin.png"))); // NOI18N
+        cmdDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/bin.png"))); // NOI18N
 
-        cmdView.setIcon(new javax.swing.ImageIcon(getClass().getResource("/udpm/fpt/icon/view.png"))); // NOI18N
+        cmdView.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/view.png"))); // NOI18N
 
-        cmdRestore.setIcon(new javax.swing.ImageIcon(getClass().getResource("/udpm/fpt/icon/cloud-sync.png"))); // NOI18N
+        cmdRestore.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/cloud-sync.png"))); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
