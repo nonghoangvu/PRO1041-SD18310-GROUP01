@@ -767,11 +767,12 @@ VALUES
 SELECT * FROM MILK INNER JOIN PRODUCTINFO ON MILK.ID = PRODUCTINFO.MILK_ID
 */
 SELECT * FROM Salary
-
+INSERT INTO Salary (salary_type, salary_mount, status) VALUES ('B', 121414, 'Active')
+SELECT *FROM UserDetails
 ALTER TABLE Salary
-ALTER COLUMN [status] nvarchar(10)
+add [status] nvarchar(10)
 GO
-
+UPDATE UserDetails SET status = 'Active' where id = 1 or id = 2
 UPDATE Salary
 SET [status] = N'Active'
 WHERE id = 1 or id = 2

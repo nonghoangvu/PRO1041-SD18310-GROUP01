@@ -106,7 +106,7 @@ public class ProductManagement extends javax.swing.JPanel {
         tblModel = (DefaultTableModel) tblProduct.getModel();
         tblModel.setRowCount(0);
         for (ProductInfo prd : data) {
-            Integer price = new DiscountCalculator().calculateDiscountedPrice(prd.getMilk().getPrice(), 0);//Get sale
+            Integer price = new DiscountCalculator().calculateDiscountedPrice(prd.getMilk().getPrice(), 80);//Get sale
             prd.getMilk().setPrice(price);
             if (!prd.getMilk().getIsDelete()) {
                 Object[] rowData = {
@@ -140,7 +140,7 @@ public class ProductManagement extends javax.swing.JPanel {
         tblModel = (DefaultTableModel) tblProduct.getModel();
         tblModel.setRowCount(0);
         for (ProductInfo prd : data) {
-            Integer price = new DiscountCalculator().calculateDiscountedPrice(prd.getMilk().getPrice(), 0);//Get sale
+            Integer price = new DiscountCalculator().calculateDiscountedPrice(prd.getMilk().getPrice(), 80);//Get sale
             prd.getMilk().setPrice(price);
             if (!prd.getMilk().getIsDelete()) {
                 tblModel.addRow(new Object[]{
@@ -173,7 +173,7 @@ public class ProductManagement extends javax.swing.JPanel {
         tblModel = (DefaultTableModel) tblProduct.getModel();
         tblModel.setRowCount(0);
         for (ProductInfo prd : data) {
-            Integer price = new DiscountCalculator().calculateDiscountedPrice(prd.getMilk().getPrice(), 0);//Get sale
+            Integer price = new DiscountCalculator().calculateDiscountedPrice(prd.getMilk().getPrice(), 80);//Get sale
             prd.getMilk().setPrice(price);
             if (!prd.getMilk().getIsDelete()) {
                 tblModel.addRow(new Object[]{

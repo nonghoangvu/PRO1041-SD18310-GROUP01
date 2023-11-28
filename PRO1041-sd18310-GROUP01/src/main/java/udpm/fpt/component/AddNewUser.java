@@ -31,6 +31,7 @@ public class AddNewUser extends javax.swing.JFrame {
 
     public AddNewUser(Main main) {
         initComponents();
+        setLocationRelativeTo(null);
         this.main = main;
         loadDataAndFillSalary();
     }
@@ -123,6 +124,7 @@ public class AddNewUser extends javax.swing.JFrame {
         System.out.println(createNewUserDetails().getSalary().getId());
         if (this.userService.addNewUser(createNewUserDetails())) {
             this.main.notificationShowWARNING("Added a new employee !!!");
+            this.dispose();
         } else {
             this.main.notificationShowWARNING("Failed !!!");
         }
