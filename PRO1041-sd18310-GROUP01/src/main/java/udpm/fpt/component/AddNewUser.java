@@ -1,11 +1,13 @@
 package udpm.fpt.component;
 
+import com.raven.datechooser.DateChooser;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -15,6 +17,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.SwingUtilities;
 import udpm.fpt.Utitlity.BcryptHash;
+import udpm.fpt.form.UserForm;
 import udpm.fpt.main.Main;
 import udpm.fpt.model.Salary;
 import udpm.fpt.model.User;
@@ -32,12 +35,15 @@ public class AddNewUser extends javax.swing.JFrame {
     UserService userService = new UserService();
     private final Main main;
     private String imgName = null;
-
-    public AddNewUser(Main main) {
+    private UserForm userForm;
+    
+    public AddNewUser(Main main, UserForm userForm) {
         initComponents();
         setLocationRelativeTo(null);
         this.main = main;
+        this.userForm = userForm;
         loadDataAndFillSalary();
+        getProductionDate();
     }
 
     public void loadDataAndFillSalary() {
@@ -60,30 +66,13 @@ public class AddNewUser extends javax.swing.JFrame {
             cbbModel.addElement(salary);
         }
     }
-
-    public User createNewUser() {
-        User user = new User();
-        String username = txtUsername.getText().trim();
-        if (username.isBlank() || username.length() < 5) {
-            this.main.notificationShowWARNING("Username is a required field and must contain at least 5 characters !!!");
-            txtUsername.requestFocus();
-            return null;
-        } else {
-            user.setUsername(username);
-        }
-
-        String password = String.valueOf(txtPassword.getPassword()).trim();
-        if (password.isBlank() || password.length() < 5) {
-            this.main.notificationShowWARNING("Password is a required field and must contain at least 5 characters !!!");
-            txtPassword.requestFocus();
-            return null;
-        } else {
-            user.setPassword(new BcryptHash().hashPassword(password));
-        }
-
-        user.setRole((rdoAdmin.isSelected() ? "Admin" : "User"));
-
-        return user;
+    
+    private void getProductionDate() {
+        DateChooser dateChooser = new DateChooser();
+        dateChooser.setDateSelectionMode(DateChooser.DateSelectionMode.SINGLE_DATE_SELECTED);
+        dateChooser.setLabelCurrentDayVisible(false);
+        dateChooser.setDateFormat(new SimpleDateFormat("dd-MM-yyyy"));
+        dateChooser.setTextField(txtBirthDate);
     }
 
     public Date getCurrentDate() {
@@ -91,33 +80,35 @@ public class AddNewUser extends javax.swing.JFrame {
         Date date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
         return date;
     }
+    
+    public Date dateFM(String date) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        try {
+            Date utilDate = dateFormat.parse(date);
+            java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+            return sqlDate;
+        } catch (ParseException e) {
+            e.printStackTrace(System.out);
+            return null;
+        }
+    }
+    
+    
+    public User createNewUser() {
+        User user = new User();
+        user.setUsername(txtUsername.getText().trim());
+        user.setPassword(new BcryptHash().hashPassword(String.valueOf(txtPassword.getPassword()).trim()));
+        user.setRole((rdoAdmin.isSelected() ? "Admin" : "User"));
+        return user;
+    }
 
     public UserDetails createNewUserDetails() {
         UserDetails userDetails = new UserDetails();
-
         userDetails.setUser(createNewUser());
         userDetails.setSalary((Salary) cboSalary.getSelectedItem());
-
-        String fullName = txtFullname.getText().trim();
-        userDetails.setFullname(fullName);
-        String phonenum = txtPhonenum.getText().trim();
-        userDetails.setTel(phonenum);
-//        if (fullName.isBlank() || fullName.length() < 5) {
-//            this.main.notificationShowWARNING("FullName is a required field and must contain at least 5 characters !!!");
-//            txtFullname.requestFocus();
-//            return;
-//        } else {
-//            userDetails.setFullname(fullName);
-//        }
-
-//        String phonenum = txtPhonenum.getText().trim();
-//        if (phonenum.isBlank() || phonenum.length() < 5) {
-//            this.main.notificationShowWARNING("Phonenum is a required field and must contain at least 5 characters !!!");
-//            txtPhonenum.requestFocus();
-//            return null;
-//        } else {
-//            userDetails.setTel(phonenum);
-//        }
+        userDetails.setGender(rdoFemale.isSelected() ? "Female" : "Male");
+        userDetails.setFullname(txtFullname.getText().trim());
+        userDetails.setTel(txtPhonenum.getText().trim());
         userDetails.setPhoto(this.imgName);
         userDetails.setEmail(txtEmail.getText().trim());
         userDetails.setJobPosition(txtPosition.getText().trim());
@@ -125,34 +116,10 @@ public class AddNewUser extends javax.swing.JFrame {
         userDetails.setAddress(txtAddress.getText().trim());
         userDetails.setNote(txtNote.getText().trim());
         userDetails.setStatus("Active");
+        userDetails.setBirthdate(dateFM(txtBirthDate.getText()));
         userDetails.setCreatedAt(getCurrentDate());
 
         return userDetails;
-    }
-
-    public void clearForm() {
-        txtUsername.setText("");
-        txtPassword.setText("");
-        lblAvatar.setText("");
-        txtFullname.setText("");
-        txtPhonenum.setText("");
-        txtPosition.setText("");
-        txtEmail.setText("");
-        txtCitizenID.setText("");
-        txtAddress.setText("");
-        txtNote.setText("");
-    }
-
-    public void addNewUser() {
-
-        System.out.println(createNewUserDetails().getSalary().getId());
-        if (this.userService.addNewUser(createNewUserDetails())) {
-            this.main.notificationShowSUCCESS("Added a new employee !!!");
-            clearForm();
-            this.dispose();
-        } else {
-            this.main.notificationShowWARNING("Failed !!!");
-        }
     }
 
     public String urlImage(Boolean get_set) {
@@ -181,6 +148,45 @@ public class AddNewUser extends javax.swing.JFrame {
         return null;
     }
 
+    public boolean validateUser() {
+        if (txtUsername.getText().trim().isBlank() || txtUsername.getText().length() < 5) {
+            this.main.notificationShowWARNING("Username is a required field and must contain at least 5 characters !!!");
+            txtUsername.requestFocus();
+            return false;
+        } else if (userService.uniquedUsername(txtUsername.getText().trim())) {
+            this.main.notificationShowWARNING("This username has exist. Change another username pls !!!");
+            txtUsername.requestFocus();
+            return false;
+        } else if (txtPassword.getPassword().length < 5) {
+            this.main.notificationShowWARNING("Password is a required field and must contain at least 5 characters !!!");
+            txtPassword.requestFocus();
+            return false;
+        } else if (txtFullname.getText().trim().isBlank()) {
+            this.main.notificationShowWARNING("Fullname is a required field !!!");
+            txtFullname.requestFocus();
+            return false;
+        } else if (txtPhonenum.getText().isBlank()) {
+            this.main.notificationShowWARNING("Phone number is a required field !!!");
+            txtPhonenum.requestFocus();
+            return false;
+        }
+        return true;
+    }
+
+    public void addNewUser() {
+        if (validateUser()) {
+            if (this.userService.addNewUser(createNewUserDetails())) {
+                this.main.notificationShowSUCCESS("Added a new employee !!!");
+                this.userForm.loadDataToTable();
+                this.dispose();
+            } else {
+                this.main.notificationShowWARNING("Failed !!!");
+            }
+        }
+    }
+
+    //Create validate function 
+    //Surrounded btnAdd w if else
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -212,6 +218,7 @@ public class AddNewUser extends javax.swing.JFrame {
         txtNote = new javax.swing.JTextArea();
         jScrollPane4 = new javax.swing.JScrollPane();
         txtAddress = new javax.swing.JTextArea();
+        txtBirthDate = new udpm.fpt.swing.TextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -316,6 +323,13 @@ public class AddNewUser extends javax.swing.JFrame {
         txtAddress.setRows(5);
         jScrollPane4.setViewportView(txtAddress);
 
+        txtBirthDate.setLabelText("Birthdate");
+        txtBirthDate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtBirthDateActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -333,45 +347,46 @@ public class AddNewUser extends javax.swing.JFrame {
                 .addComponent(imageAvatar1, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(54, 54, 54)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel2)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(rdoUser)
-                                            .addGap(18, 18, 18)
-                                            .addComponent(rdoAdmin))
-                                        .addComponent(jLabel3)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(rdoMale)
-                                            .addGap(18, 18, 18)
-                                            .addComponent(rdoFemale)))
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 262, Short.MAX_VALUE))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(txtPassword, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(txtUsername, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                    .addGap(68, 68, 68)))
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(txtPhonenum, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 322, Short.MAX_VALUE)
-                                    .addComponent(txtFullname, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(cboSalary, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel2)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(rdoUser)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(rdoAdmin))
+                                    .addComponent(jLabel3)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(rdoMale)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(rdoFemale)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(txtPassword, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(txtUsername, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGap(68, 68, 68)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtEmail, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 371, Short.MAX_VALUE)
-                            .addComponent(txtPosition, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtCitizenID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel5)
-                            .addComponent(jScrollPane3)
-                            .addComponent(jScrollPane4))
-                        .addGap(148, 148, 148))
+                        .addGroup(layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(txtPhonenum, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 322, Short.MAX_VALUE)
+                                .addComponent(txtFullname, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(cboSalary, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGap(68, 68, 68)))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGap(297, 297, 297)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(txtEmail, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(txtPosition, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(txtCitizenID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(txtBirthDate, javax.swing.GroupLayout.PREFERRED_SIZE, 371, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel5)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 419, Short.MAX_VALUE)
+                        .addComponent(jScrollPane4))
+                    .addComponent(jLabel4))
+                .addGap(148, 148, 148))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -403,9 +418,11 @@ public class AddNewUser extends javax.swing.JFrame {
                                 .addComponent(txtCitizenID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(32, 32, 32)
+                        .addComponent(txtBirthDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel4)
-                        .addGap(18, 18, 18)
+                        .addGap(4, 4, 4)
                         .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(6, 6, 6))
                     .addGroup(layout.createSequentialGroup()
@@ -418,18 +435,18 @@ public class AddNewUser extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(txtFullname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(txtPhonenum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(cboSalary, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(32, 32, 32)
+                        .addComponent(cboSalary, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton1))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
                 .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(27, 27, 27))
         );
@@ -473,6 +490,10 @@ public class AddNewUser extends javax.swing.JFrame {
 
     }//GEN-LAST:event_lblAvatarMouseClicked
 
+    private void txtBirthDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBirthDateActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtBirthDateActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -497,6 +518,7 @@ public class AddNewUser extends javax.swing.JFrame {
     private javax.swing.ButtonGroup rdoRoleGroup;
     private javax.swing.JRadioButton rdoUser;
     private javax.swing.JTextArea txtAddress;
+    private udpm.fpt.swing.TextField txtBirthDate;
     private udpm.fpt.swing.TextField txtCitizenID;
     private udpm.fpt.swing.TextField txtEmail;
     private udpm.fpt.swing.TextField txtFullname;

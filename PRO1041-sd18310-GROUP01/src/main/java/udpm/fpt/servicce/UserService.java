@@ -28,7 +28,22 @@ public class UserService {
         return this.iUserDetails.save(userDetails) != null;
     }
     
+    public boolean uniquedUsername(String username) {
+        boolean isContain = false;
+        List<UserDetails> list = this.getList();
+        for(UserDetails obj : list) {
+            if(obj.getUser().getUsername().equals(username)) {
+                isContain = true;
+            }
+        }
+        return isContain;
+    }
+    
     public boolean deleteNewUser(UserDetails userDetails) {
+        return this.iUserDetails.save(userDetails) != null;
+    }
+    
+    public boolean updateUser(UserDetails userDetails) {
         return this.iUserDetails.save(userDetails) != null;
     }
 
