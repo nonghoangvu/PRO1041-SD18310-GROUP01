@@ -133,6 +133,13 @@ public class Main extends javax.swing.JFrame {
                     new Login().setVisible(true);
                     this.dispose();
                 }
+                case 9 ->{
+                    if (ADMIN_ROLE.equalsIgnoreCase(this.user.getRole())) {
+                        main.show(new SaleMilkForm());
+                    } else {
+                        showAccessWarning();
+                    }
+                }
                 default -> {
                     System.out.println("index: " + index);
                 }
