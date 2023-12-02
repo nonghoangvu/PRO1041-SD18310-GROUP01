@@ -811,6 +811,9 @@
                   </Properties>
                 </Component>
                 <Component class="udpm.fpt.swing.Combobox" name="cbbSearchStatus">
+                  <Properties>
+                    <Property name="labeText" type="java.lang.String" value="Status"/>
+                  </Properties>
                   <Events>
                     <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="cbbSearchStatusMouseClicked"/>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbbSearchStatusActionPerformed"/>

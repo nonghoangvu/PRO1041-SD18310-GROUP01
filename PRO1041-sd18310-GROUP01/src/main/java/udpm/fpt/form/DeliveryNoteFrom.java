@@ -540,6 +540,7 @@ public class DeliveryNoteFrom extends javax.swing.JPanel {
 
         txtTimKiem.setLabelText("Search");
 
+        cbbSearchStatus.setLabeText("Status");
         cbbSearchStatus.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 cbbSearchStatusMouseClicked(evt);
@@ -591,7 +592,7 @@ public class DeliveryNoteFrom extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPaneDanhSach2)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 703, Short.MAX_VALUE))
+                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 703, Short.MAX_VALUE))
                 .addGap(21, 21, 21))
         );
 
