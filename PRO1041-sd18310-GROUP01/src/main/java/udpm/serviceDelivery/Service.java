@@ -24,7 +24,6 @@ import udpm.fpt.repository.IBillDetails_Respository;
 import udpm.fpt.repository.IBill_Respository;
 import udpm.fpt.repository.ICustomer_Resposutory;
 import udpm.fpt.repository.IDelivery_noteRespository;
-import udpm.fpt.repository.IMilk;
 import udpm.fpt.repository.IMilk_Respository;
 import udpm.fpt.repository.IStatus_Respository;
 import udpm.fpt.repository.ITranportUnit_Respository;
@@ -42,7 +41,7 @@ public class Service {
     private final IBillDetails_Respository billDetail = getBean(IBillDetails_Respository.class);
     private final IMilk_Respository milk = getBean(IMilk_Respository.class);
     private final IStatus_Respository status = getBean(IStatus_Respository.class);
-    
+
     public boolean insertDeli(DeliveryNote deli) {
         boolean check = false;
         if (delivery.save(deli) != null) {
@@ -176,10 +175,22 @@ public class Service {
             return billDetail.findAll();
         }, Executors.newCachedThreadPool());
     }
-    
-     public CompletableFuture<List<DeliveryNote>> findBetweenDate(Date minSalary, Date maxSalary) {
+
+    public CompletableFuture<List<DeliveryNote>> findBetweenDate(Date minSalary, Date maxSalary) {
         return CompletableFuture.supplyAsync(() -> {
             return delivery.findBySalaryBetween(minSalary, maxSalary);
         }, Executors.newCachedThreadPool());
     }
+
+    public CompletableFuture<List<DeliveryNote>> findByStatus(int idStatus) {
+        return CompletableFuture.supplyAsync(() -> {
+            return delivery.findByStatus(idStatus);
+        }, Executors.newCachedThreadPool());
+    }
+    public CompletableFuture<List<DeliveryNote>> SearchAll (String idDelivery, String Customer_name, String idStatus) {
+        return CompletableFuture.supplyAsync(() -> {
+            return delivery.searchAll(idDelivery, Customer_name, idStatus);
+        }, Executors.newCachedThreadPool());
+    }
+    
 }
