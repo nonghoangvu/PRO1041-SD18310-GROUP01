@@ -2,7 +2,8 @@ package udpm.fpt.main;
 
 import java.awt.Image;
 import udpm.fpt.component.MenuLayout;
-import udpm.fpt.form.MainForm;
+import udpm.fpt.form.*;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -20,6 +21,7 @@ import org.jdesktop.animation.timing.TimingTarget;
 import org.jdesktop.animation.timing.TimingTargetAdapter;
 import udpm.fpt.Utitlity.BcryptHash;
 import udpm.fpt.component.Notification;
+<<<<<<< HEAD
 import udpm.fpt.form.History;
 import udpm.fpt.form.Home;
 import udpm.fpt.form.Login;
@@ -27,6 +29,8 @@ import udpm.fpt.form.ProductManagement;
 import udpm.fpt.form.Setting;
 import udpm.fpt.form.UserForm;
 import udpm.fpt.form.UserManagementForm;
+=======
+>>>>>>> 4f7396050818df4e64a693d09f67e083bc76a540
 import udpm.fpt.model.User;
 
 public class Main extends javax.swing.JFrame {
@@ -110,7 +114,7 @@ public class Main extends javax.swing.JFrame {
                 }
                 case 1 -> {
                     if (ADMIN_ROLE.equalsIgnoreCase(this.user.getRole())) {
-                        main.show(new ProductManagement(this.user, this));
+                        main.show(new ProductManagementForm(this.user, this));
                     } else {
                         showAccessWarning();
                     }
@@ -132,9 +136,19 @@ public class Main extends javax.swing.JFrame {
                 case 6 -> {
                     main.show(new Setting(this.user, this));
                 }
-                case 7 -> {
+                case 7 ->{
+                    main.show(new DeliveryNoteFrom(this.user));
+                }
+                case 8 -> {
                     new Login().setVisible(true);
                     this.dispose();
+                }
+                case 9 ->{
+                    if (ADMIN_ROLE.equalsIgnoreCase(this.user.getRole())) {
+                        main.show(new SaleMilkForm());
+                    } else {
+                        showAccessWarning();
+                    }
                 }
                 default -> {
                     System.out.println("index: " + index);

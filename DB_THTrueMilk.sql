@@ -3,7 +3,7 @@ User: sa
 Pasword: 123
 server: localhost
 Port: 1433
-*/
+*/ 
 CREATE DATABASE THTrueMilk
 GO
 USE THTrueMilk
@@ -251,47 +251,34 @@ CREATE TABLE [HistoryBill]
     [service_id]      INT
 )
 GO
-CREATE TABLE [DeliveryNote]
-(
-    [id]           INT PRIMARY KEY,
-    [creationdate] DATETIME DEFAULT (GETDATE()),
-    [customer_id]  INT,
-    [bill_id]      INT,
-    [note]         NVARCHAR(MAX)
+CREATE TABLE [Status] (
+  [id] INT PRIMARY KEY identity(1,1),
+  [statusname] NVARCHAR(50)
+);
+GO
+CREATE TABLE [TransportUnit] (
+  [id] INT PRIMARY KEY identity(1,1),
+  [transport_unit_name] NVARCHAR(255),
+  [address] NVARCHAR(255),
+  [phone] NVARCHAR(15)
 )
 GO
-CREATE TABLE [DeliveryNoteDetail]
-(
-    [id]                INT PRIMARY KEY,
-    [delivery_note_id]  INT,
-    [status_id]         INT,
-    [product_id]        BIGINT,
-    [staff_id]          INT,
-    [Quantity]          INT,
-    [transport_unit_id] INT
-)
-GO
-CREATE TABLE [Status]
-(
-    [id]         INT PRIMARY KEY,
-    [statusname] NVARCHAR(50)
-)
-GO
-CREATE TABLE [Transport]
-(
-    [id]                    INT PRIMARY KEY,
-    [deliverynotedetail_id] INT,
-    [deliverydate]          DATETIME DEFAULT (GETDATE()),
-    [estimatedtime]         DATETIME,
-    [transportunit_id]      INT
-)
-GO
-CREATE TABLE [TransportUnit]
-(
-    [id]                  INT PRIMARY KEY,
-    [transport_unit_name] NVARCHAR(255),
-    [address]             NVARCHAR(255),
-    [phone]               NVARCHAR(15)
+CREATE TABLE [DeliveryNote] (
+  [id] INT PRIMARY KEY identity(1,1),
+  [creationdate] DATETIME DEFAULT (GETDATE()), 
+  [customer_name] NVARCHAR(50),
+  [address] NVARCHAR(50),
+  [bill_id] INT,
+  [waybill_number] NVARCHAR(50), 
+  [transport_unit_id] INT,  
+  [note] NVARCHAR(MAX),
+  [shipping_cost] DECIMAL(10, 2),
+  [status_id] INT,
+  [sdt] nvarchar(50),
+  [estimatedtime] DATETIME,
+  [milk_name] NVARCHAR(250),
+  [quantity] INT, 
+  [total_amount] DECIMAL(10, 2),
 )
 GO
 ALTER TABLE [ProductInfo]
@@ -372,35 +359,20 @@ GO
 ALTER TABLE [HistoryBill]
     ADD FOREIGN KEY ([milk_id]) REFERENCES [Milk] ([id])
 GO
-ALTER TABLE [DeliveryNote]
-    ADD FOREIGN KEY ([bill_id]) REFERENCES [Bill] ([id])
+ALTER TABLE [DeliveryNote] ADD FOREIGN KEY ([bill_id]) REFERENCES [Bill] ([id])
 GO
-ALTER TABLE [DeliveryNote]
-    ADD FOREIGN KEY ([customer_id]) REFERENCES [customer] ([id])
+ALTER TABLE [DeliveryNote] ADD FOREIGN KEY ([transport_unit_id]) REFERENCES [TransportUnit] ([id])
 GO
-ALTER TABLE [DeliveryNoteDetail]
-    ADD FOREIGN KEY ([delivery_note_id]) REFERENCES [DeliveryNote] ([id])
-GO
-ALTER TABLE [DeliveryNoteDetail]
-    ADD FOREIGN KEY ([status_id]) REFERENCES [Status] ([id])
-GO
-ALTER TABLE [DeliveryNoteDetail]
-    ADD FOREIGN KEY ([product_id]) REFERENCES [Milk] ([id])
-GO
-ALTER TABLE [DeliveryNoteDetail]
-    ADD FOREIGN KEY ([staff_id]) REFERENCES [Users] ([id])
-GO
-ALTER TABLE [DeliveryNoteDetail]
-    ADD FOREIGN KEY ([transport_unit_id]) REFERENCES [TransportUnit] ([id])
-GO
-ALTER TABLE [DeliveryNoteDetail]
-    ADD FOREIGN KEY ([transport_unit_id]) REFERENCES [TransportUnit] ([id])
+ALTER TABLE [DeliveryNote] ADD FOREIGN KEY ([status_id]) REFERENCES [Status] ([id])
 GO
 INSERT INTO [Users] ([username], [password], [role])
 VALUES ('Admin', '$2a$10$roI7ElW8vMZ/aa/ndvev5ekg.szrhPLnsihszv5fyi1moKL5DNrN2', 'Admin'),
        ('NongHoangVu04', '$2a$10$ALO4bzEz7frQ0XHXyU3a/ehNCLg1MC2ROOWQNuoRs7tpNpwsYvVEO', 'Admin'),
        ('Employee001', '$2a$10$roI7ElW8vMZ/aa/ndvev5ekg.szrhPLnsihszv5fyi1moKL5DNrN2', 'User'),
        ('convitcute', '$2a$10$roI7ElW8vMZ/aa/ndvev5ekg.szrhPLnsihszv5fyi1moKL5DNrN2', 'User');
+GO
+INSERT INTO [UserDetails] ( [user_id], [fullname], [tel], [email], [photo], [address], [birthdate], [citizen_id], [job_position], [status], [note]) 
+VALUES ( 1, N'AdminUser', N'123-456-7890', N'admin@example.com', N'admin.jpg', N'123 Main St, City', '1990-01-01', N'1234567890', N'Admin', N'Active', N'Admin User');
 GO
 INSERT INTO Salary (salary_type, salary_mount, status) VALUES ('A', 131112, 'Active'), ('B', 131112, 'Active')
 INSERT INTO [Flavor] ([taste], [user_id])
@@ -487,9 +459,73 @@ VALUES
 INSERT INTO SaleMilk (id, sale_event, percent_decrease, start_day, end_day, milk_id, staff_id) VALUES (1, 'SALE 28-11-2023', 30, GETDATE(), '2023-12-01', 98765432, 1)
 INSERT INTO SaleMilk (id, sale_event, percent_decrease, start_day, end_day, milk_id, staff_id) VALUES (2, 'SALE 28-11-2023', 70, GETDATE(), '2023-12-01', 87654321, 1)
 
+INSERT INTO [CustomerType] ([id], [customer]) 
+VALUES (1, N'Regular');
+INSERT INTO [CustomerType] ([id], [customer]) 
+VALUES (2, N'VIP');
+GO
+-- Add data to Customer table
+INSERT INTO [Customer] ([id], [fullname], [phone], [email], [birth_year], [address], [customer_type_id], [note]) 
+VALUES (1, N'John Doe', N'555-555-5555', N'john.doe@example.com', 1980, N'123 Elm St, City', 1, N'Regular customer');
+INSERT INTO [Customer] ([id], [fullname], [phone], [email], [birth_year], [address], [customer_type_id], [note]) 
+VALUES (2, N'Jane Smith', N'777-777-7777', N'jane.smith@example.com', 1975, N'456 Oak St, Town', 2, N'VIP customer');
+GO
+INSERT INTO [Bill] ([id], [customer_id], [payment_menthod], [payment_status], [coupon_id], [tax], [total_amount_after_tax], [notes], [created_at])
+VALUES
+  (1, 1, N'Credit Card', N'Paid', 1, 0.05, 105.00, N'Note 1', '2023-11-25 13:34:00'),
+  (2, 2, N'PayPal', N'Pending', 2, 0.10, 110.00, N'Note 2', '2023-11-25 13:34:00'),
+  (3, 1, N'Cash', N'Unpaid', 3, 0.15, 115.00, N'Note 3', '2023-11-25 13:34:00'),
+  (4, 2, N'Credit Card', N'Paid', 4, 0.20, 120.00, N'Note 4', '2023-11-25 13:34:00'),
+  (5, 2, N'PayPal', N'Pending', 5, 0.25, 125.00, N'Note 5', '2023-11-25 13:34:00'),
+  (6, 1, N'Cash', N'Unpaid', 1, 0.30, 130.00, N'Note 6', '2023-11-25 13:34:00'),
+  (7, 2, N'Credit Card', N'Paid', 2, 0.35, 135.00, N'Note 7', '2023-11-25 13:34:00'),
+  (8, 2, N'PayPal', N'Pending', 3, 0.40, 140.00, N'Note 8', '2023-11-25 13:34:00'),
+  (9, 1, N'Cash', N'Unpaid', 4, 0.45, 145.00, N'Note 9', '2023-11-25 13:34:00'),
+  (10, 2, N'Credit Card', N'Paid', 5, 0.50, 150.00, N'Note 10', '2023-11-25 13:34:00');
+
+INSERT INTO [Status] ( [statusname]) 
+VALUES ( N'Chờ giao hàng');
+INSERT INTO [Status] ( [statusname]) 
+VALUES ( N'Đang giao hàng');
+INSERT INTO [Status] ( [statusname]) 
+VALUES ( N' Đã giao hàng');
+INSERT INTO [Status] ( [statusname]) 
+VALUES ( N'Huỷ giao hàng');
+INSERT INTO [Status] ( [statusname]) 
+VALUES (N'Giao thành công');
+GO
+-- Add data to TransportUnit table
+INSERT INTO [TransportUnit] ( [transport_unit_name], [address], [phone]) 
+VALUES ( N'Express Delivery', N'123 Main Street, City A', N'123-456-7890');
+INSERT INTO [TransportUnit] ([transport_unit_name], [address], [phone]) 
+VALUES ( N'Speedy Logistics', N'456 Elm Street, City B', N'987-654-3210');
+INSERT INTO [TransportUnit] ( [transport_unit_name], [address], [phone]) 
+VALUES ( N'Rapid Shippers', N'789 Oak Street, City C', N'789-123-4567');
+INSERT INTO [TransportUnit] ( [transport_unit_name], [address], [phone]) 
+VALUES ( N'Swift Couriers', N'101 Pine Street, City D', N'654-321-9870');
+INSERT INTO [TransportUnit] ([transport_unit_name], [address], [phone]) 
+VALUES ( N'Quick Dispatch', N'202 Maple Street, City E', N'321-987-6540');
+GO
+-- Add data to DeliveryNoteDetail table
+
+INSERT INTO [DeliveryNote] ([bill_id], [waybill_number], [transport_unit_id], [note], [shipping_cost], [status_id], [estimatedtime], [milk_name], [quantity], [customer_name], [address], [sdt], [total_amount])
+VALUES
+  (1, N'ABC123', 1, N'Giao hàng đến địa chỉ A', 100.00, 1, '2023-11-30 12:00:00', 1, 10, N'Nguyễn Văn A', N'Địa chỉ A', N'0123456789', 500.00),
+  (2, N'XYZ456', 2, N'Giao hàng đến địa chỉ B', 200.00, 2, '2023-12-01 14:00:00', 2, 20, N'Nguyễn Văn B', N'Địa chỉ B', N'0123456789', 1000.00),
+  (3, N'PQR789', 3, N'Giao hàng đến địa chỉ C', 300.00, 3, '2023-12-02 16:00:00', 3, 30, N'Nguyễn Văn C', N'Địa chỉ C', N'0123456789', 1500.00),
+  (4, N'LMN012', 4, N'Giao hàng đến địa chỉ D', 400.00, 4, '2023-12-03 18:00:00', 4, 40, N'Nguyễn Văn D', N'Địa chỉ D', N'0123456789', 2000.00),
+  (5, N'JKL345', 1, N'Giao hàng đến địa chỉ E', 500.00, 5, '2023-12-04 20:00:00', 5, 50, N'Nguyễn Văn E', N'Địa chỉ E', N'0123456789', 2500.00),
+  (6, N'ABC123', 2, N'Giao hàng đến địa chỉ F', 100.00, 1, '2023-11-30 12:00:00', 6, 60, N'Nguyễn Văn F', N'Địa chỉ F', N'0123456789', 500.00),
+  (7, N'XYZ456', 3, N'Giao hàng đến địa chỉ G', 200.00, 2, '2023-12-01 14:00:00', 7, 70, N'Nguyễn Văn G', N'Địa chỉ G', N'0123456789', 1000.00),
+  (8, N'PQR789', 4, N'Giao hàng đến địa chỉ H', 300.00, 3, '2023-12-02 16:00:00', 8, 80, N'Nguyễn Văn H', N'Địa chỉ H', N'0123456789', 1500.00),
+  (9, N'LMN012', 5, N'Giao hàng đến địa chỉ I', 400.00, 4, '2023-12-03 18:00:00', 9, 90, N'Nguyễn Văn I', N'Địa chỉ I', N'0123456789', 2000.00),
+  (10, N'JKL345', 1, N'Giao hàng đến địa chỉ J', 500.00, 1, '2023-12-04 20:00:00', 10, 100, N'Nguyễn Văn J', N'Địa chỉ J', N'0123456789', 2500.00);
+
+/*
 UPDATE SaleMilk SET end_day = '2023-12-01' WHERE id = 1
 UPDATE SaleMilk SET percent_decrease = 10 WHERE id = 2
 
 SELECT * FROM SaleMilk
 SELECT * FROM Users
 SELECT * FROM MILK INNER JOIN PRODUCTINFO ON MILK.ID = PRODUCTINFO.MILK_ID
+*/
