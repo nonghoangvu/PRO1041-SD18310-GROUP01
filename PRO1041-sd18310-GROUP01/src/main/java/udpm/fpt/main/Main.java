@@ -130,6 +130,9 @@ public class Main extends javax.swing.JFrame {
                         showAccessWarning();
                     }
                 }
+                case 4->{
+                    main.show(new KhachHangForm());
+                }
                 case 6 -> {
                     main.show(new Setting(this.user, this));
                 }
