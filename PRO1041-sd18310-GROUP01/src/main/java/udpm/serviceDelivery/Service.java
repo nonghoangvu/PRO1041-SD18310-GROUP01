@@ -166,7 +166,7 @@ public class Service {
 
     public CompletableFuture<List<Bill>> findAllBill() {
         return CompletableFuture.supplyAsync(() -> {
-            return bill.findAll();
+            return bill.findBillByshoppingmethod();
         }, Executors.newCachedThreadPool());
     }
 

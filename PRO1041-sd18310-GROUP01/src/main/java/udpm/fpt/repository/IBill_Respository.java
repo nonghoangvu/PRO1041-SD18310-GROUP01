@@ -4,7 +4,9 @@
  */
 package udpm.fpt.repository;
 
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import udpm.fpt.model.Bill;
 
 /**
@@ -12,5 +14,6 @@ import udpm.fpt.model.Bill;
  * @author PHONG PC
  */
 public interface IBill_Respository extends JpaRepository<Bill, Integer>{
-    
+    @Query("From Bill WHERE shopping_method like 'delivery'")
+    List<Bill> findBillByshoppingmethod();
 }

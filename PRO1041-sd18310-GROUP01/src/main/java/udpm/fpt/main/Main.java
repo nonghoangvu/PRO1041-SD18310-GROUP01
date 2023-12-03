@@ -152,7 +152,7 @@ public class Main extends javax.swing.JFrame {
                 }
                  case 10 ->{
                     if (ADMIN_ROLE.equalsIgnoreCase(this.user.getRole())) {
-                        main.show(new SaleBill());
+                        main.show(new FormBill(this.user));
                     } else {
                         showAccessWarning();
                     }
