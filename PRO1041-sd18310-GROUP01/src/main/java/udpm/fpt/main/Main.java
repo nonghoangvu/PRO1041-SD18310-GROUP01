@@ -147,6 +147,13 @@ public class Main extends javax.swing.JFrame {
                         showAccessWarning();
                     }
                 }
+                 case 10 ->{
+                    if (ADMIN_ROLE.equalsIgnoreCase(this.user.getRole())) {
+                        main.show(new SaleBill());
+                    } else {
+                        showAccessWarning();
+                    }
+                }
                 default -> {
                     System.out.println("index: " + index);
                 }
