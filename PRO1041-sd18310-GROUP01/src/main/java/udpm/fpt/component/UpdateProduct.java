@@ -20,7 +20,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.text.AbstractDocument;
 import udpm.fpt.form.ProductForm;
-import udpm.fpt.form.ProductManagement;
 import udpm.fpt.model.Flavor;
 import udpm.fpt.model.Milk;
 import udpm.fpt.model.PackagingSpecification;
@@ -58,7 +57,7 @@ public class UpdateProduct extends javax.swing.JFrame {
     }
 
     public void setTextField() {
-        ((AbstractDocument) txtId.getDocument()).setDocumentFilter(new NumberOnlyFilter());
+        ((AbstractDocument) txtBarcode.getDocument()).setDocumentFilter(new NumberOnlyFilter());
         ((AbstractDocument) txtPrice.getDocument()).setDocumentFilter(new NumberOnlyFilter());
         txtAmount.addChangeListener((ChangeEvent e) -> {
             int value = (int) txtAmount.getValue();
@@ -69,7 +68,7 @@ public class UpdateProduct extends javax.swing.JFrame {
     }
 
     private void loadData() {
-        txtId.setText(String.valueOf(this.pi.getMilk().getId()));
+        txtBarcode.setText(String.valueOf(this.pi.getMilk().getBarcode()));
         txtBrand.setText(this.pi.getBrand());
         txtName.setText(this.pi.getMilk().getProduct_name());
         txtPrice.setText(String.valueOf(this.pi.getMilk().getPrice()));
@@ -131,11 +130,11 @@ public class UpdateProduct extends javax.swing.JFrame {
     }
 
     public void setData(String data) {
-        txtId.setText(data);
+        txtBarcode.setText(data);
     }
 
     public String getData() {
-        return txtId.getText();
+        return txtBarcode.getText();
     }
 
     public void filDataCombo() {
@@ -239,7 +238,7 @@ public class UpdateProduct extends javax.swing.JFrame {
     }
 
     private Boolean isValidate() {
-        if (txtId.getText().isBlank()) {
+        if (txtBarcode.getText().isBlank()) {
             new Notification(this, Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP, "The ID is empty!")
                     .showNotification();
             return false;
@@ -313,6 +312,7 @@ public class UpdateProduct extends javax.swing.JFrame {
     private Milk getMilk() {
         Milk milk = new Milk();
         milk.setId(this.pi.getMilk().getId());
+        milk.setBarcode(Long.valueOf(txtBarcode.getText().trim()));
         milk.setProduct_name(txtName.getText());
         milk.setImg(this.imgName);
         milk.setPrice(Integer.valueOf(txtPrice.getText()));
@@ -336,7 +336,7 @@ public class UpdateProduct extends javax.swing.JFrame {
         p.setPackagingSpecification((PackagingSpecification) cbbPackagingSpecification.getSelectedItem());
         p.setComposition(txtComposition.getText());
         p.setProduct_description(txtDescription.getText());
-        p.setCreate_at(new Date());
+        p.setCreate_at(this.pi.getCreate_at());
         p.setUser(this.user);
         return p;
     }
@@ -379,7 +379,7 @@ public class UpdateProduct extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
-        txtId = new udpm.fpt.swing.TextField();
+        txtBarcode = new udpm.fpt.swing.TextField();
         txtName = new udpm.fpt.swing.TextField();
         txtPrice = new udpm.fpt.swing.TextField();
         txtAmount = new udpm.fpt.swing.Spinner();
@@ -414,7 +414,7 @@ public class UpdateProduct extends javax.swing.JFrame {
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "New Product", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14))); // NOI18N
 
-        txtId.setLabelText("Barcode");
+        txtBarcode.setLabelText("Barcode");
 
         txtName.setLabelText("Name");
 
@@ -467,13 +467,13 @@ public class UpdateProduct extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(txtId, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(txtBarcode, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(23, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtBarcode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -681,7 +681,7 @@ public class UpdateProduct extends javax.swing.JFrame {
             Notification n = new Notification(this, Notification.Type.SUCCESS,
                     Notification.Location.DEFAULT_DESKTOP, "SUCCESS");
             n.showNotification();
-            String data = txtId.getText();
+            String data = txtBarcode.getText();
             perentForm.setData(data);
             dispose();
         } else {
@@ -746,11 +746,11 @@ public class UpdateProduct extends javax.swing.JFrame {
     private udpm.fpt.swing.TextAreaScroll textAreaScroll1;
     private udpm.fpt.swing.TextAreaScroll textAreaScroll2;
     private udpm.fpt.swing.Spinner txtAmount;
+    private udpm.fpt.swing.TextField txtBarcode;
     private udpm.fpt.swing.TextField txtBrand;
     private udpm.fpt.swing.TextArea txtComposition;
     private udpm.fpt.swing.TextArea txtDescription;
     private udpm.fpt.swing.TextField txtExpirationDate;
-    private udpm.fpt.swing.TextField txtId;
     private udpm.fpt.swing.TextField txtName;
     private udpm.fpt.swing.TextField txtOrgin;
     private udpm.fpt.swing.TextField txtPrice;

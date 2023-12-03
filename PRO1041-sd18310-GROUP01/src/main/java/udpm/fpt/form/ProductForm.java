@@ -17,10 +17,12 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.text.AbstractDocument;
 import udpm.fpt.Utitlity.DiscountCalculator;
 import udpm.fpt.component.IMG;
+import udpm.fpt.component.MessagePanel;
 import udpm.fpt.component.NewProduct;
 import udpm.fpt.component.UpdateProduct;
 import udpm.fpt.main.Main;
 import udpm.fpt.model.Flavor;
+import udpm.fpt.model.Milk;
 import udpm.fpt.model.PackagingSpecification;
 import udpm.fpt.model.ProductInfo;
 import udpm.fpt.model.SaleMilk;
@@ -36,13 +38,15 @@ import udpm.fpt.swing.table.TableCustom;
  * @author NONG HOANG VU
  */
 public class ProductForm extends javax.swing.JPanel {
-private DefaultTableModel tblModel;
+
+    private DefaultTableModel tblModel;
     private final ProductService list;
     private List<ProductInfo> temp;
     private final User user;
     private final Main main;
     private Integer countHidden = 0;
     private Integer countOutOfStock = 0;
+
     public ProductForm(User user, Main main) {
         initComponents();
         initComponents();
@@ -51,6 +55,7 @@ private DefaultTableModel tblModel;
         this.main = main;
         initProduct();
     }
+
     public void initProduct() {
         TableCustom.apply(jScrollPane1, TableCustom.TableType.MULTI_LINE);
         this.temp = new ArrayList<>();
@@ -59,6 +64,7 @@ private DefaultTableModel tblModel;
         loadComboBox();
         loadDataAndFillTable();
     }
+
     /*-------------------Format data------------------*/
     private Integer priceUpdate(Long id, Integer price) {
         for (SaleMilk sm : this.list.getPercentSale()) {
@@ -73,6 +79,7 @@ private DefaultTableModel tblModel;
         DecimalFormat decimalFormat = new DecimalFormat("#,###");
         return decimalFormat.format(number);
     }
+
     public String removeTimeUsingDateTimeFormatter(String inputDate) {
         DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
         DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
@@ -105,6 +112,7 @@ private DefaultTableModel tblModel;
         loadTypeCheckExpiry();
         loadTypeSearch();
     }
+
     public void setData(String data) {
         lbId.setText(data);
         loadDataAndFillTable();
@@ -148,7 +156,7 @@ private DefaultTableModel tblModel;
     }
 
     /*-------------------------------------------Run stream processing-------------------------------------------*/
-    /*1. Load to table*/
+ /*1. Load to table*/
     public void loadDataAndFillTable() {
         CompletableFuture<List<ProductInfo>> future = this.list.loadAsync();
         future.thenAcceptAsync(data -> {
@@ -176,13 +184,13 @@ private DefaultTableModel tblModel;
             if (!prd.getMilk().getIsDelete()) {
                 this.temp.add(prd);
                 Object[] rowData = {
-                        prd.getMilk().getId(),
-                        prd.getMilk().getProduct_name(),
-                        prd.getFlavor().getTaste(),
-                        prd.getVolume() + " " + prd.getUnit().getMeasurement_unit(),
-                        prd.getMilk().getAmount(),
-                        prd.getCreate_at(),
-                        setSelectedIndex(priceUpdate(prd.getMilk().getId(), prd.getMilk().getPrice())) + " VND"
+                    prd.getMilk().getId(),
+                    prd.getMilk().getProduct_name(),
+                    prd.getFlavor().getTaste(),
+                    prd.getVolume() + " " + prd.getUnit().getMeasurement_unit(),
+                    prd.getMilk().getAmount(),
+                    prd.getCreate_at(),
+                    setSelectedIndex(priceUpdate(prd.getMilk().getId(), prd.getMilk().getPrice())) + " VND"
                 };
                 tblModel.addRow(rowData);
             }
@@ -265,13 +273,13 @@ private DefaultTableModel tblModel;
 
     private void loadTypeCheckExpiry() {
         String[] months = {
-                "Valid",
-                "Expires in 5 months",
-                "Expires in 4 months",
-                "Expires in 3 months",
-                "Expires in 2 months",
-                "Expires in 1 month",
-                "Expired"
+            "Valid",
+            "Expires in 5 months",
+            "Expires in 4 months",
+            "Expires in 3 months",
+            "Expires in 2 months",
+            "Expires in 1 month",
+            "Expired"
         };
         for (String s : months) {
             cbbCheckExpiry.addItem(s);
@@ -280,14 +288,24 @@ private DefaultTableModel tblModel;
 
     private void loadTypeSearch() {
         String[] type = {
-                "Product's name",
-                "Product code"
+            "Product's name",
+            "Product code"
         };
         for (String s : type) {
             cbbSearchType.addItem(s);
         }
     }
 
+    /*-------------------------------------------Control-------------------------------------------*/
+    public void delete() {
+        Milk m = this.list.getMilkByID(Long.valueOf(lbId.getText()));
+        m.setIsDelete(true);
+        if (this.list.hideRestoreProduct(m, this.user)) {
+            this.temp.clear();
+            loadDataAndFillTable();
+            this.main.notificationShowSUCCESS("Moved to the storage");
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -359,6 +377,7 @@ private DefaultTableModel tblModel;
         btnReplenishment = new udpm.fpt.swing.Button();
         lbCountPorduct = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        btnHidden = new udpm.fpt.swing.Button();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -699,6 +718,16 @@ private DefaultTableModel tblModel;
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel4.setText("Products");
 
+        btnHidden.setBackground(new java.awt.Color(255, 102, 102));
+        btnHidden.setForeground(new java.awt.Color(255, 255, 255));
+        btnHidden.setText("Hidden");
+        btnHidden.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnHidden.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHiddenActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -709,13 +738,7 @@ private DefaultTableModel tblModel;
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(lbCountPorduct, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel4)
-                                .addGap(102, 102, 102)
-                                .addComponent(btnNew, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jRadioButton1)
                                 .addGap(18, 18, 18)
@@ -723,10 +746,20 @@ private DefaultTableModel tblModel;
                                 .addGap(18, 18, 18)
                                 .addComponent(jRadioButton3)
                                 .addGap(18, 18, 18)
-                                .addComponent(jRadioButton4))
-                            .addComponent(btnUpdate, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnReplenishment, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jRadioButton4)
+                                .addGap(31, 31, 31))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(lbCountPorduct, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jLabel4)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(btnNew, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnReplenishment, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnHidden, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
                         .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 618, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -741,14 +774,17 @@ private DefaultTableModel tblModel;
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(lbCountPorduct, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel4)
-                                    .addComponent(btnNew, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(lbCountPorduct, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel4))
+                                    .addComponent(btnNew, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnReplenishment, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnHidden, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jRadioButton1)
@@ -794,8 +830,24 @@ private DefaultTableModel tblModel;
         }
     }//GEN-LAST:event_tblProductMouseClicked
 
+    private void btnHiddenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHiddenActionPerformed
+        if (tblProduct.getSelectedRow() < 0) {
+            return;
+        }
+        MessagePanel msg = new MessagePanel();
+        msg.setTitle("Are you sure you want to delete this?");
+        msg.setMessage("If you hidden this product, the product will be moved to the storage and can be restored.");
+        msg.setResultCallback((Boolean result) -> {
+            if (result) {
+                delete();
+            }
+        });
+        msg.setVisible(true);
+    }//GEN-LAST:event_btnHiddenActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private udpm.fpt.swing.Button btnHidden;
     private udpm.fpt.swing.Button btnNew;
     private udpm.fpt.swing.Button btnReplenishment;
     private udpm.fpt.swing.Button btnUpdate;

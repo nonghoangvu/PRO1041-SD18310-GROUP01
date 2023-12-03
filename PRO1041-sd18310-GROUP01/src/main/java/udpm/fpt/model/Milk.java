@@ -1,9 +1,7 @@
 package udpm.fpt.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
 import java.util.Date;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,8 +13,11 @@ import lombok.Setter;
 public class Milk {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+    @Column(name = "barcode")
+    private Long barcode;
     @Column(name = "product_name")
     private String product_name;
     @Column(name = "img")

@@ -3,14 +3,15 @@ User: sa
 Pasword: 123
 server: localhost
 Port: 1433
-*/ 
+*/
 CREATE DATABASE THTrueMilk
 GO
 USE THTrueMilk
 GO
 CREATE TABLE [Milk]
 (
-    [id]              BIGINT PRIMARY KEY,
+    [id]              BIGINT IDENTITY (1,1) PRIMARY KEY,
+    [barcode]         BIGINT,
     [product_name]    NVARCHAR(255),
     [img]             NVARCHAR(100),
     [price]           INT,
@@ -100,7 +101,7 @@ CREATE TABLE [Salary]
     [id]           INT PRIMARY KEY IDENTITY (1, 1),
     [salary_type]  NVARCHAR(100),
     [salary_mount] FLOAT,
-    [status] NVARCHAR(10)
+    [status]       NVARCHAR(10)
 )
 GO
 CREATE TABLE [WorkShift]
@@ -251,34 +252,37 @@ CREATE TABLE [HistoryBill]
     [service_id]      INT
 )
 GO
-CREATE TABLE [Status] (
-  [id] INT PRIMARY KEY identity(1,1),
-  [statusname] NVARCHAR(50)
+CREATE TABLE [Status]
+(
+    [id]         INT PRIMARY KEY identity (1,1),
+    [statusname] NVARCHAR(50)
 );
 GO
-CREATE TABLE [TransportUnit] (
-  [id] INT PRIMARY KEY identity(1,1),
-  [transport_unit_name] NVARCHAR(255),
-  [address] NVARCHAR(255),
-  [phone] NVARCHAR(15)
+CREATE TABLE [TransportUnit]
+(
+    [id]                  INT PRIMARY KEY identity (1,1),
+    [transport_unit_name] NVARCHAR(255),
+    [address]             NVARCHAR(255),
+    [phone]               NVARCHAR(15)
 )
 GO
-CREATE TABLE [DeliveryNote] (
-  [id] INT PRIMARY KEY identity(1,1),
-  [creationdate] DATETIME DEFAULT (GETDATE()), 
-  [customer_name] NVARCHAR(50),
-  [address] NVARCHAR(50),
-  [bill_id] INT,
-  [waybill_number] NVARCHAR(50), 
-  [transport_unit_id] INT,  
-  [note] NVARCHAR(MAX),
-  [shipping_cost] DECIMAL(10, 2),
-  [status_id] INT,
-  [sdt] nvarchar(50),
-  [estimatedtime] DATETIME,
-  [milk_name] NVARCHAR(250),
-  [quantity] INT, 
-  [total_amount] DECIMAL(10, 2),
+CREATE TABLE [DeliveryNote]
+(
+    [id]                INT PRIMARY KEY identity (1,1),
+    [creationdate]      DATETIME DEFAULT (GETDATE()),
+    [customer_name]     NVARCHAR(50),
+    [address]           NVARCHAR(50),
+    [bill_id]           INT,
+    [waybill_number]    NVARCHAR(50),
+    [transport_unit_id] INT,
+    [note]              NVARCHAR(MAX),
+    [shipping_cost]     DECIMAL(10, 2),
+    [status_id]         INT,
+    [sdt]               nvarchar(50),
+    [estimatedtime]     DATETIME,
+    [milk_name]         NVARCHAR(250),
+    [quantity]          INT,
+    [total_amount]      DECIMAL(10, 2),
 )
 GO
 ALTER TABLE [ProductInfo]
@@ -359,11 +363,14 @@ GO
 ALTER TABLE [HistoryBill]
     ADD FOREIGN KEY ([milk_id]) REFERENCES [Milk] ([id])
 GO
-ALTER TABLE [DeliveryNote] ADD FOREIGN KEY ([bill_id]) REFERENCES [Bill] ([id])
+ALTER TABLE [DeliveryNote]
+    ADD FOREIGN KEY ([bill_id]) REFERENCES [Bill] ([id])
 GO
-ALTER TABLE [DeliveryNote] ADD FOREIGN KEY ([transport_unit_id]) REFERENCES [TransportUnit] ([id])
+ALTER TABLE [DeliveryNote]
+    ADD FOREIGN KEY ([transport_unit_id]) REFERENCES [TransportUnit] ([id])
 GO
-ALTER TABLE [DeliveryNote] ADD FOREIGN KEY ([status_id]) REFERENCES [Status] ([id])
+ALTER TABLE [DeliveryNote]
+    ADD FOREIGN KEY ([status_id]) REFERENCES [Status] ([id])
 GO
 INSERT INTO [Users] ([username], [password], [role])
 VALUES ('Admin', '$2a$10$roI7ElW8vMZ/aa/ndvev5ekg.szrhPLnsihszv5fyi1moKL5DNrN2', 'Admin'),
@@ -371,10 +378,14 @@ VALUES ('Admin', '$2a$10$roI7ElW8vMZ/aa/ndvev5ekg.szrhPLnsihszv5fyi1moKL5DNrN2',
        ('Employee001', '$2a$10$roI7ElW8vMZ/aa/ndvev5ekg.szrhPLnsihszv5fyi1moKL5DNrN2', 'User'),
        ('convitcute', '$2a$10$roI7ElW8vMZ/aa/ndvev5ekg.szrhPLnsihszv5fyi1moKL5DNrN2', 'User');
 GO
-INSERT INTO [UserDetails] ( [user_id], [fullname], [tel], [email], [photo], [address], [birthdate], [citizen_id], [job_position], [status], [note]) 
-VALUES ( 1, N'AdminUser', N'123-456-7890', N'admin@example.com', N'admin.jpg', N'123 Main St, City', '1990-01-01', N'1234567890', N'Admin', N'Active', N'Admin User');
+INSERT INTO [UserDetails] ([user_id], [fullname], [tel], [email], [photo], [address], [birthdate], [citizen_id],
+                           [job_position], [status], [note])
+VALUES (1, N'AdminUser', N'123-456-7890', N'admin@example.com', N'admin.jpg', N'123 Main St, City', '1990-01-01',
+        N'1234567890', N'Admin', N'Active', N'Admin User');
 GO
-INSERT INTO Salary (salary_type, salary_mount, status) VALUES ('A', 131112, 'Active'), ('B', 131112, 'Active')
+INSERT INTO Salary (salary_type, salary_mount, status)
+VALUES ('A', 131112, 'Active'),
+       ('B', 131112, 'Active')
 INSERT INTO [Flavor] ([taste], [user_id])
 VALUES (N'Ngọt', 1),
        ('Chocolate', 2),
@@ -389,137 +400,138 @@ VALUES ('Chai', 2),
        (N'Hộp', 2),
        ('Lon', 2);
 GO
-INSERT INTO [Milk] ([id], [product_name], [img], [price], [amount], [production_date], [expiration_date], [provider])
-VALUES
-    (98765432, N'Sữa Tươi 1L', 'sua_tuoi_1l.jpg', 25000, 100, '2023-01-01', '2023-02-01', 'TH True Milk'),
-    (87654321, N'Sữa Chocolate 500ml', 'sua_chocolate_500ml.jpg', 30000, 80, '2023-02-01', '2023-03-01', 'TH True Milk'),
-    (76543210, N'Sữa Dâu 1L', 'sua_dau_1l.jpg', 28000, 90, '2023-03-01', '2023-04-01', 'TH True Milk'),
-    (6543210, N'Sữa UHT 1L', 'sua_uht_1l.jpg', 22000, 120, '2023-04-01', '2023-05-01', 'TH True Milk'),
-    (54321098, N'Yogurt 200g', 'yogurt_200g.jpg', 15000, 150, '2023-05-01', '2023-06-01', 'TH True Milk'),
-    (43210987, N'Sữa Vanilla 500ml', 'sua_vanilla_500ml.jpg', 28000, 100, '2023-06-01', '2023-07-01', 'TH True Milk'),
-    (32109876, N'Sữa Low-Fat 1L', 'sua_low_fat_1l.jpg', 23000, 110, '2023-07-01', '2023-08-01', 'TH True Milk'),
-    (21098765, N'Sữa Dừa 500ml', 'sua_dua_500ml.jpg', 32000, 70, '2023-08-01', '2023-09-01', 'TH True Milk'),
-    (10987654, N'Sữa Bổ Sung Canxi 1L', 'sua_bo_sung_canxi_1l.jpg', 26000, 130, '2023-09-01', '2023-10-01', 'TH True Milk'),
-    (9876543, N'Sữa Cà Phê 500ml', 'sua_ca_phe_500ml.jpg', 35000, 60, '2023-10-01', '2023-11-01', 'TH True Milk'),
-    (87654320, N'Sữa Hạt Mâm Xôi 500ml', 'sua_hat_mam_xoi_500ml.jpg', 29000, 95, '2023-11-01', '2023-12-01', 'TH True Milk'),
-    (76543219, N'Sữa Mocha 1L', 'sua_mocha_1l.jpg', 33000, 105, '2023-12-01', '2024-01-01', 'TH True Milk'),
-    (65432108, N'Sữa Hạt Lựu 500ml', 'sua_hat_luu_500ml.jpg', 30000, 85, '2024-01-01', '2024-02-01', 'TH True Milk'),
-    (54321097, N'Sữa Đậu Nành 1L', 'sua_dau_nanh_1l.jpg', 27000, 115, '2024-02-01', '2024-03-01', 'TH True Milk'),
-    (43210986, N'Sữa Hạt Nho 500ml', 'sua_hat_nho_500ml.jpg', 31000, 75, '2024-03-01', '2024-04-01', 'TH True Milk'),
-    (32109875, N'Sữa Protein Whey 1L', 'sua_protein_whey_1l.jpg', 34000, 110, '2024-04-01', '2024-05-01', 'TH True Milk'),
-    (21098764, N'Sữa Yogurt Vani 500ml', 'sua_yogurt_vani_500ml.jpg', 28000, 100, '2024-05-01', '2024-06-01', 'TH True Milk'),
-    (10987653, N'Sữa Hạt Mè 1L', 'sua_hat_me_1l.jpg', 32000, 120, '2024-06-01', '2024-07-01', 'TH True Milk'),
-    (98765442, N'Sữa Hạt Dưa Hấu 500ml', 'sua_hat_dua_hau_500ml.jpg', 29000, 95, '2024-07-01', '2024-08-01', 'TH True Milk'),
-    (87654331, N'Sữa Cacao 1L', 'sua_cacao_1l.jpg', 33000, 105, '2024-08-01', '2024-09-01', 'TH True Milk'),
-    (76543220, N'Sữa Hạt Hạnh Nhân 500ml', 'sua_hat_hanh_nhan_500ml.jpg', 30000, 85, '2024-09-01', '2024-10-01', 'TH True Milk'),
-    (65432109, N'Sữa Yogurt Dâu 200g', 'sua_yogurt_dau_200g.jpg', 32000, 75, '2024-10-01', '2024-11-01', 'TH True Milk'),
-    (43210988, N'Sữa Dâu Tây 500ml', 'sua_dau_tay_500ml.jpg', 28000, 100, '2024-11-01', '2024-12-01', 'TH True Milk'),
-    (32109877, N'Sữa Hạt Việt Quất 1L', 'sua_hat_viet_quat_1l.jpg', 29000, 95, '2024-12-01', '2025-01-01', 'TH True Milk'),
-    (21098766, N'Sữa Hạt Mâm Xôi 500ml', 'sua_hat_mam_xoi_500ml_2.jpg', 33000, 105, '2025-01-01', '2025-02-01', 'TH True Milk'),
-    (10987655, N'Sữa Mocha 1L', 'sua_mocha_1l_2.jpg', 30000, 85, '2025-02-01', '2025-03-01', 'TH True Milk'),
-    (98765434, N'Sữa Hạt Lựu 500ml', 'sua_hat_luu_500ml_2.jpg', 32000, 110, '2025-03-01', '2025-04-01', 'TH True Milk'),
-    (87654323, N'Sữa Đậu Nành 1L', 'sua_dau_nanh_1l_2.jpg', 29000, 95, '2025-04-01', '2025-05-01', 'TH True Milk'),
-    (76543212, N'Sữa Hạt Nho 500ml', 'sua_hat_nho_500ml_2.jpg', 27000, 115, '2025-05-01', '2025-06-01', 'TH True Milk'),
-    (52525366, N'Sữa Hạt Việt Quất 500ml', 'sua_hat_viet_quat_500ml.jpg', 31000, 80, '2025-06-01', '2025-07-01', 'TH True Milk');
+INSERT INTO [Milk] ([barcode], [product_name], [img], [price], [amount], [production_date], [expiration_date], [provider])
+VALUES (98765432, N'Sữa Tươi 1L', 'sua_tuoi_1l.jpg', 25000, 100, '2023-01-01', '2023-02-01', 'TH True Milk'),
+       (87654321, N'Sữa Chocolate 500ml', 'sua_chocolate_500ml.jpg', 30000, 80, '2023-02-01', '2023-03-01',
+        'TH True Milk'),
+       (76543210, N'Sữa Dâu 1L', 'sua_dau_1l.jpg', 28000, 90, '2023-03-01', '2023-04-01', 'TH True Milk'),
+       (6543210, N'Sữa UHT 1L', 'sua_uht_1l.jpg', 22000, 120, '2023-04-01', '2023-05-01', 'TH True Milk'),
+       (54321098, N'Yogurt 200g', 'yogurt_200g.jpg', 15000, 150, '2023-05-01', '2023-06-01', 'TH True Milk'),
+       (43210987, N'Sữa Vanilla 500ml', 'sua_vanilla_500ml.jpg', 28000, 100, '2023-06-01', '2023-07-01',
+        'TH True Milk'),
+       (32109876, N'Sữa Low-Fat 1L', 'sua_low_fat_1l.jpg', 23000, 110, '2023-07-01', '2023-08-01', 'TH True Milk'),
+       (21098765, N'Sữa Dừa 500ml', 'sua_dua_500ml.jpg', 32000, 70, '2023-08-01', '2023-09-01', 'TH True Milk'),
+       (10987654, N'Sữa Bổ Sung Canxi 1L', 'sua_bo_sung_canxi_1l.jpg', 26000, 130, '2023-09-01', '2023-10-01',
+        'TH True Milk'),
+       (9876543, N'Sữa Cà Phê 500ml', 'sua_ca_phe_500ml.jpg', 35000, 60, '2023-10-01', '2023-11-01', 'TH True Milk'),
+       (87654320, N'Sữa Hạt Mâm Xôi 500ml', 'sua_hat_mam_xoi_500ml.jpg', 29000, 95, '2023-11-01', '2023-12-01',
+        'TH True Milk'),
+       (76543219, N'Sữa Mocha 1L', 'sua_mocha_1l.jpg', 33000, 105, '2023-12-01', '2024-01-01', 'TH True Milk'),
+       (65432108, N'Sữa Hạt Lựu 500ml', 'sua_hat_luu_500ml.jpg', 30000, 85, '2024-01-01', '2024-02-01', 'TH True Milk'),
+       (54321097, N'Sữa Đậu Nành 1L', 'sua_dau_nanh_1l.jpg', 27000, 115, '2024-02-01', '2024-03-01', 'TH True Milk'),
+       (43210986, N'Sữa Hạt Nho 500ml', 'sua_hat_nho_500ml.jpg', 31000, 75, '2024-03-01', '2024-04-01', 'TH True Milk'),
+       (32109875, N'Sữa Protein Whey 1L', 'sua_protein_whey_1l.jpg', 34000, 110, '2024-04-01', '2024-05-01',
+        'TH True Milk'),
+       (21098764, N'Sữa Yogurt Vani 500ml', 'sua_yogurt_vani_500ml.jpg', 28000, 100, '2024-05-01', '2024-06-01',
+        'TH True Milk'),
+       (10987653, N'Sữa Hạt Mè 1L', 'sua_hat_me_1l.jpg', 32000, 120, '2024-06-01', '2024-07-01', 'TH True Milk'),
+       (98765442, N'Sữa Hạt Dưa Hấu 500ml', 'sua_hat_dua_hau_500ml.jpg', 29000, 95, '2024-07-01', '2024-08-01',
+        'TH True Milk'),
+       (87654331, N'Sữa Cacao 1L', 'sua_cacao_1l.jpg', 33000, 105, '2024-08-01', '2024-09-01', 'TH True Milk');
 
 INSERT INTO [ProductInfo] ([milk_id], [flavor_id], [brand], [volume], [unit_id], [origin], [composition],
                            [packaging_id], [product_description], [user_id])
-VALUES
-    (98765432, 1, 'TH True Milk', 1.0, 1, N'Việt Nam', N'Thành phần sữa tươi', 1, N'Mô tả sữa tươi', 2),
-    (87654321, 2, 'TH True Milk', 0.5, 2, N'Việt Nam', N'Thành phần sữa chocolate', 2, N'Mô tả sữa chocolate', 1),
-    (76543210, 3, 'TH True Milk', 1.0, 1, N'Việt Nam', N'Thành phần sữa dâu', 1, N'Mô tả sữa dâu', 2),
-    (6543210, 1, 'TH True Milk', 1.0, 1, N'Việt Nam', N'Thành phần sữa UHT', 1, N'Mô tả sữa UHT', 1),
-    (54321098, 2, 'TH True Milk', 0.2, 3, N'Việt Nam', N'Thành phần yogurt', 3, N'Mô tả yogurt', 2),
-    (43210987, 3, 'TH True Milk', 0.5, 2, N'Việt Nam', N'Thành phần sữa vanilla', 2, N'Mô tả sữa vanilla', 1),
-    (32109876, 1, 'TH True Milk', 1.0, 1, N'Việt Nam', N'Thành phần sữa low-fat', 1, N'Mô tả sữa low-fat', 2),
-    (21098765, 2, 'TH True Milk', 0.5, 2, N'Việt Nam', N'Thành phần sữa dừa', 2, N'Mô tả sữa dừa', 1),
-    (10987654, 3, 'TH True Milk', 1.0, 1, N'Việt Nam', N'Thành phần sữa bổ sung canxi', 1, N'Mô tả sữa bổ sung canxi', 2),
-    (9876543, 1, 'TH True Milk', 0.5, 2, N'Việt Nam', N'Thành phần sữa cà phê', 2, N'Mô tả sữa cà phê', 1),
-    (87654320, 3, 'TH True Milk', 0.5, 2, N'Việt Nam', N'Thành phần sữa hạt mâm xôi', 2, N'Mô tả sữa hạt mâm xôi', 1),
-    (76543219, 1, 'TH True Milk', 1.0, 1, N'Việt Nam', N'Thành phần sữa mocha', 1, N'Mô tả sữa mocha', 2),
-    (65432108, 2, 'TH True Milk', 0.5, 2, N'Việt Nam', N'Thành phần sữa hạt lựu', 2, N'Mô tả sữa hạt lựu', 1),
-    (54321097, 3, 'TH True Milk', 1.0, 1, N'Việt Nam', N'Thành phần sữa đậu nành', 1, N'Mô tả sữa đậu nành', 2),
-    (43210986, 1, 'TH True Milk', 0.5, 2, N'Việt Nam', N'Thành phần sữa hạt nho', 2, N'Mô tả sữa hạt nho', 1),
-    (32109875, 3, 'TH True Milk', 1.0, 1, N'Việt Nam', N'Thành phần sữa protein whey', 1, N'Mô tả sữa protein whey', 2),
-    (21098764, 1, 'TH True Milk', 0.5, 2, N'Việt Nam', N'Thành phần yogurt vani', 2, N'Mô tả yogurt vani', 1),
-    (10987653, 2, 'TH True Milk', 1.0, 1, N'Việt Nam', N'Thành phần sữa hạt mè', 1, N'Mô tả sữa hạt mè', 2),
-    (98765442, 3, 'TH True Milk', 0.5, 2, N'Việt Nam', N'Thành phần sữa hạt dưa hấu', 2, N'Mô tả sữa hạt dưa hấu', 1),
-    (87654331, 1, 'TH True Milk', 1.0, 1, N'Việt Nam', N'Thành phần sữa cacao', 1, N'Mô tả sữa cacao', 2),
-    (76543220, 2, 'TH True Milk', 0.5, 2, N'Việt Nam', N'Thành phần sữa hạt hạnh nhân', 2, N'Mô tả sữa hạt hạnh nhân', 1),
-    (65432109, 3, 'TH True Milk', 0.2, 3, N'Việt Nam', N'Thành phần yogurt dâu', 3, N'Mô tả yogurt dâu', 2),
-    (43210988, 1, 'TH True Milk', 0.5, 2, N'Việt Nam', N'Thành phần sữa dâu tây', 2, N'Mô tả sữa dâu tây', 1),
-    (32109877, 2, 'TH True Milk', 1.0, 1, N'Việt Nam', N'Thành phần sữa hạt việt quất', 1, N'Mô tả sữa hạt việt quất', 2),
-    (21098766, 3, 'TH True Milk', 0.5, 2, N'Việt Nam', N'Thành phần sữa hạt mâm xôi', 2, N'Mô tả sữa hạt mâm xôi', 1),
-    (10987655, 1, 'TH True Milk', 1.0, 1, N'Việt Nam', N'Thành phần sữa mocha', 1, N'Mô tả sữa mocha', 2),
-    (98765434, 2, 'TH True Milk', 0.5, 2, N'Việt Nam', N'Thành phần sữa hạt lựu', 2, N'Mô tả sữa hạt lựu', 1),
-    (87654323, 3, 'TH True Milk', 1.0, 1, N'Việt Nam', N'Thành phần sữa đậu nành', 1, N'Mô tả sữa đậu nành', 2),
-    (76543212, 1, 'TH True Milk', 0.5, 2, N'Việt Nam', N'Thành phần sữa hạt nho', 2, N'Mô tả sữa hạt nho', 1),
-    (52525366, 2, 'TH True Milk', 0.5, 2, N'Việt Nam', N'Thành phần sữa hạt việt quất', 2, N'Mô tả sữa hạt việt quất', 1);
+VALUES (1, 1, 'TH True Milk', 1.0, 1, N'Việt Nam', N'Thành phần sữa tươi', 1, N'Mô tả sữa tươi', 2),
+       (2, 2, 'TH True Milk', 0.5, 2, N'Việt Nam', N'Thành phần sữa chocolate', 2, N'Mô tả sữa chocolate', 1),
+       (3, 3, 'TH True Milk', 1.0, 1, N'Việt Nam', N'Thành phần sữa dâu', 1, N'Mô tả sữa dâu', 2),
+       (4, 1, 'TH True Milk', 1.0, 1, N'Việt Nam', N'Thành phần sữa UHT', 1, N'Mô tả sữa UHT', 1),
+       (5, 2, 'TH True Milk', 0.2, 3, N'Việt Nam', N'Thành phần yogurt', 3, N'Mô tả yogurt', 2),
+       (6, 3, 'TH True Milk', 0.5, 2, N'Việt Nam', N'Thành phần sữa vanilla', 2, N'Mô tả sữa vanilla', 1),
+       (7, 1, 'TH True Milk', 1.0, 1, N'Việt Nam', N'Thành phần sữa low-fat', 1, N'Mô tả sữa low-fat', 2),
+       (8, 2, 'TH True Milk', 0.5, 2, N'Việt Nam', N'Thành phần sữa dừa', 2, N'Mô tả sữa dừa', 1),
+       (9, 3, 'TH True Milk', 1.0, 1, N'Việt Nam', N'Thành phần sữa bổ sung canxi', 1,
+        N'Mô tả sữa bổ sung canxi', 2),
+       (10, 1, 'TH True Milk', 0.5, 2, N'Việt Nam', N'Thành phần sữa cà phê', 2, N'Mô tả sữa cà phê', 1),
+       (11, 3, 'TH True Milk', 0.5, 2, N'Việt Nam', N'Thành phần sữa hạt mâm xôi', 2, N'Mô tả sữa hạt mâm xôi',
+        1),
+       (12, 1, 'TH True Milk', 1.0, 1, N'Việt Nam', N'Thành phần sữa mocha', 1, N'Mô tả sữa mocha', 2),
+       (13, 2, 'TH True Milk', 0.5, 2, N'Việt Nam', N'Thành phần sữa hạt lựu', 2, N'Mô tả sữa hạt lựu', 1),
+       (14, 3, 'TH True Milk', 1.0, 1, N'Việt Nam', N'Thành phần sữa đậu nành', 1, N'Mô tả sữa đậu nành', 2),
+       (15, 1, 'TH True Milk', 0.5, 2, N'Việt Nam', N'Thành phần sữa hạt nho', 2, N'Mô tả sữa hạt nho', 1),
+       (16, 3, 'TH True Milk', 1.0, 1, N'Việt Nam', N'Thành phần sữa protein whey', 1, N'Mô tả sữa protein whey',
+        2),
+       (17, 1, 'TH True Milk', 0.5, 2, N'Việt Nam', N'Thành phần yogurt vani', 2, N'Mô tả yogurt vani', 1),
+       (18, 2, 'TH True Milk', 1.0, 1, N'Việt Nam', N'Thành phần sữa hạt mè', 1, N'Mô tả sữa hạt mè', 2),
+       (19, 3, 'TH True Milk', 0.5, 2, N'Việt Nam', N'Thành phần sữa hạt dưa hấu', 2, N'Mô tả sữa hạt dưa hấu',
+        1),
+       (20, 1, 'TH True Milk', 1.0, 1, N'Việt Nam', N'Thành phần sữa cacao', 1, N'Mô tả sữa cacao', 2)
 
-INSERT INTO SaleMilk (id, sale_event, percent_decrease, start_day, end_day, milk_id, staff_id) VALUES (1, 'SALE 28-11-2023', 30, GETDATE(), '2023-12-01', 98765432, 1)
-INSERT INTO SaleMilk (id, sale_event, percent_decrease, start_day, end_day, milk_id, staff_id) VALUES (2, 'SALE 28-11-2023', 70, GETDATE(), '2023-12-01', 87654321, 1)
-
-INSERT INTO [CustomerType] ([id], [customer]) 
+INSERT INTO SaleMilk (id, sale_event, percent_decrease, start_day, end_day, milk_id, staff_id)
+VALUES (1, 'SALE 28-11-2023', 30, GETDATE(), '2023-12-01', 1, 1)
+INSERT INTO SaleMilk (id, sale_event, percent_decrease, start_day, end_day, milk_id, staff_id)
+VALUES (2, 'SALE 28-11-2023', 70, GETDATE(), '2023-12-01', 2, 1)
+--Bug--
+INSERT INTO [CustomerType] ([id], [customer])
 VALUES (1, N'Regular');
-INSERT INTO [CustomerType] ([id], [customer]) 
+INSERT INTO [CustomerType] ([id], [customer])
 VALUES (2, N'VIP');
 GO
 -- Add data to Customer table
-INSERT INTO [Customer] ([id], [fullname], [phone], [email], [birth_year], [address], [customer_type_id], [note]) 
+INSERT INTO [Customer] ([id], [fullname], [phone], [email], [birth_year], [address], [customer_type_id], [note])
 VALUES (1, N'John Doe', N'555-555-5555', N'john.doe@example.com', 1980, N'123 Elm St, City', 1, N'Regular customer');
-INSERT INTO [Customer] ([id], [fullname], [phone], [email], [birth_year], [address], [customer_type_id], [note]) 
+INSERT INTO [Customer] ([id], [fullname], [phone], [email], [birth_year], [address], [customer_type_id], [note])
 VALUES (2, N'Jane Smith', N'777-777-7777', N'jane.smith@example.com', 1975, N'456 Oak St, Town', 2, N'VIP customer');
 GO
-INSERT INTO [Bill] ([id], [customer_id], [payment_menthod], [payment_status], [coupon_id], [tax], [total_amount_after_tax], [notes], [created_at])
-VALUES
-  (1, 1, N'Credit Card', N'Paid', 1, 0.05, 105.00, N'Note 1', '2023-11-25 13:34:00'),
-  (2, 2, N'PayPal', N'Pending', 2, 0.10, 110.00, N'Note 2', '2023-11-25 13:34:00'),
-  (3, 1, N'Cash', N'Unpaid', 3, 0.15, 115.00, N'Note 3', '2023-11-25 13:34:00'),
-  (4, 2, N'Credit Card', N'Paid', 4, 0.20, 120.00, N'Note 4', '2023-11-25 13:34:00'),
-  (5, 2, N'PayPal', N'Pending', 5, 0.25, 125.00, N'Note 5', '2023-11-25 13:34:00'),
-  (6, 1, N'Cash', N'Unpaid', 1, 0.30, 130.00, N'Note 6', '2023-11-25 13:34:00'),
-  (7, 2, N'Credit Card', N'Paid', 2, 0.35, 135.00, N'Note 7', '2023-11-25 13:34:00'),
-  (8, 2, N'PayPal', N'Pending', 3, 0.40, 140.00, N'Note 8', '2023-11-25 13:34:00'),
-  (9, 1, N'Cash', N'Unpaid', 4, 0.45, 145.00, N'Note 9', '2023-11-25 13:34:00'),
-  (10, 2, N'Credit Card', N'Paid', 5, 0.50, 150.00, N'Note 10', '2023-11-25 13:34:00');
+INSERT INTO [Bill] ([id], [customer_id], [payment_menthod], [payment_status], [coupon_id], [tax],
+                    [total_amount_after_tax], [notes], [created_at])
+VALUES (1, 1, N'Credit Card', N'Paid', 1, 0.05, 105.00, N'Note 1', '2023-11-25 13:34:00'),
+       (2, 2, N'PayPal', N'Pending', 2, 0.10, 110.00, N'Note 2', '2023-11-25 13:34:00'),
+       (3, 1, N'Cash', N'Unpaid', 3, 0.15, 115.00, N'Note 3', '2023-11-25 13:34:00'),
+       (4, 2, N'Credit Card', N'Paid', 4, 0.20, 120.00, N'Note 4', '2023-11-25 13:34:00'),
+       (5, 2, N'PayPal', N'Pending', 5, 0.25, 125.00, N'Note 5', '2023-11-25 13:34:00'),
+       (6, 1, N'Cash', N'Unpaid', 1, 0.30, 130.00, N'Note 6', '2023-11-25 13:34:00'),
+       (7, 2, N'Credit Card', N'Paid', 2, 0.35, 135.00, N'Note 7', '2023-11-25 13:34:00'),
+       (8, 2, N'PayPal', N'Pending', 3, 0.40, 140.00, N'Note 8', '2023-11-25 13:34:00'),
+       (9, 1, N'Cash', N'Unpaid', 4, 0.45, 145.00, N'Note 9', '2023-11-25 13:34:00'),
+       (10, 2, N'Credit Card', N'Paid', 5, 0.50, 150.00, N'Note 10', '2023-11-25 13:34:00');
 
-INSERT INTO [Status] ( [statusname]) 
-VALUES ( N'Chờ giao hàng');
-INSERT INTO [Status] ( [statusname]) 
-VALUES ( N'Đang giao hàng');
-INSERT INTO [Status] ( [statusname]) 
-VALUES ( N' Đã giao hàng');
-INSERT INTO [Status] ( [statusname]) 
-VALUES ( N'Huỷ giao hàng');
-INSERT INTO [Status] ( [statusname]) 
+INSERT INTO [Status] ([statusname])
+VALUES (N'Chờ giao hàng');
+INSERT INTO [Status] ([statusname])
+VALUES (N'Đang giao hàng');
+INSERT INTO [Status] ([statusname])
+VALUES (N' Đã giao hàng');
+INSERT INTO [Status] ([statusname])
+VALUES (N'Huỷ giao hàng');
+INSERT INTO [Status] ([statusname])
 VALUES (N'Giao thành công');
 GO
 -- Add data to TransportUnit table
-INSERT INTO [TransportUnit] ( [transport_unit_name], [address], [phone]) 
-VALUES ( N'Express Delivery', N'123 Main Street, City A', N'123-456-7890');
-INSERT INTO [TransportUnit] ([transport_unit_name], [address], [phone]) 
-VALUES ( N'Speedy Logistics', N'456 Elm Street, City B', N'987-654-3210');
-INSERT INTO [TransportUnit] ( [transport_unit_name], [address], [phone]) 
-VALUES ( N'Rapid Shippers', N'789 Oak Street, City C', N'789-123-4567');
-INSERT INTO [TransportUnit] ( [transport_unit_name], [address], [phone]) 
-VALUES ( N'Swift Couriers', N'101 Pine Street, City D', N'654-321-9870');
-INSERT INTO [TransportUnit] ([transport_unit_name], [address], [phone]) 
-VALUES ( N'Quick Dispatch', N'202 Maple Street, City E', N'321-987-6540');
+INSERT INTO [TransportUnit] ([transport_unit_name], [address], [phone])
+VALUES (N'Express Delivery', N'123 Main Street, City A', N'123-456-7890');
+INSERT INTO [TransportUnit] ([transport_unit_name], [address], [phone])
+VALUES (N'Speedy Logistics', N'456 Elm Street, City B', N'987-654-3210');
+INSERT INTO [TransportUnit] ([transport_unit_name], [address], [phone])
+VALUES (N'Rapid Shippers', N'789 Oak Street, City C', N'789-123-4567');
+INSERT INTO [TransportUnit] ([transport_unit_name], [address], [phone])
+VALUES (N'Swift Couriers', N'101 Pine Street, City D', N'654-321-9870');
+INSERT INTO [TransportUnit] ([transport_unit_name], [address], [phone])
+VALUES (N'Quick Dispatch', N'202 Maple Street, City E', N'321-987-6540');
 GO
 -- Add data to DeliveryNoteDetail table
 
-INSERT INTO [DeliveryNote] ([bill_id], [waybill_number], [transport_unit_id], [note], [shipping_cost], [status_id], [estimatedtime], [milk_name], [quantity], [customer_name], [address], [sdt], [total_amount])
-VALUES
-  (1, N'ABC123', 1, N'Giao hàng đến địa chỉ A', 100.00, 1, '2023-11-30 12:00:00', 1, 10, N'Nguyễn Văn A', N'Địa chỉ A', N'0123456789', 500.00),
-  (2, N'XYZ456', 2, N'Giao hàng đến địa chỉ B', 200.00, 2, '2023-12-01 14:00:00', 2, 20, N'Nguyễn Văn B', N'Địa chỉ B', N'0123456789', 1000.00),
-  (3, N'PQR789', 3, N'Giao hàng đến địa chỉ C', 300.00, 3, '2023-12-02 16:00:00', 3, 30, N'Nguyễn Văn C', N'Địa chỉ C', N'0123456789', 1500.00),
-  (4, N'LMN012', 4, N'Giao hàng đến địa chỉ D', 400.00, 4, '2023-12-03 18:00:00', 4, 40, N'Nguyễn Văn D', N'Địa chỉ D', N'0123456789', 2000.00),
-  (5, N'JKL345', 1, N'Giao hàng đến địa chỉ E', 500.00, 5, '2023-12-04 20:00:00', 5, 50, N'Nguyễn Văn E', N'Địa chỉ E', N'0123456789', 2500.00),
-  (6, N'ABC123', 2, N'Giao hàng đến địa chỉ F', 100.00, 1, '2023-11-30 12:00:00', 6, 60, N'Nguyễn Văn F', N'Địa chỉ F', N'0123456789', 500.00),
-  (7, N'XYZ456', 3, N'Giao hàng đến địa chỉ G', 200.00, 2, '2023-12-01 14:00:00', 7, 70, N'Nguyễn Văn G', N'Địa chỉ G', N'0123456789', 1000.00),
-  (8, N'PQR789', 4, N'Giao hàng đến địa chỉ H', 300.00, 3, '2023-12-02 16:00:00', 8, 80, N'Nguyễn Văn H', N'Địa chỉ H', N'0123456789', 1500.00),
-  (9, N'LMN012', 5, N'Giao hàng đến địa chỉ I', 400.00, 4, '2023-12-03 18:00:00', 9, 90, N'Nguyễn Văn I', N'Địa chỉ I', N'0123456789', 2000.00),
-  (10, N'JKL345', 1, N'Giao hàng đến địa chỉ J', 500.00, 1, '2023-12-04 20:00:00', 10, 100, N'Nguyễn Văn J', N'Địa chỉ J', N'0123456789', 2500.00);
+INSERT INTO [DeliveryNote] ([bill_id], [waybill_number], [transport_unit_id], [note], [shipping_cost], [status_id],
+                            [estimatedtime], [milk_name], [quantity], [customer_name], [address], [sdt], [total_amount])
+VALUES (1, N'ABC123', 1, N'Giao hàng đến địa chỉ A', 100.00, 1, '2023-11-30 12:00:00', 1, 10, N'Nguyễn Văn A',
+        N'Địa chỉ A', N'0123456789', 500.00),
+       (2, N'XYZ456', 2, N'Giao hàng đến địa chỉ B', 200.00, 2, '2023-12-01 14:00:00', 2, 20, N'Nguyễn Văn B',
+        N'Địa chỉ B', N'0123456789', 1000.00),
+       (3, N'PQR789', 3, N'Giao hàng đến địa chỉ C', 300.00, 3, '2023-12-02 16:00:00', 3, 30, N'Nguyễn Văn C',
+        N'Địa chỉ C', N'0123456789', 1500.00),
+       (4, N'LMN012', 4, N'Giao hàng đến địa chỉ D', 400.00, 4, '2023-12-03 18:00:00', 4, 40, N'Nguyễn Văn D',
+        N'Địa chỉ D', N'0123456789', 2000.00),
+       (5, N'JKL345', 1, N'Giao hàng đến địa chỉ E', 500.00, 5, '2023-12-04 20:00:00', 5, 50, N'Nguyễn Văn E',
+        N'Địa chỉ E', N'0123456789', 2500.00),
+       (6, N'ABC123', 2, N'Giao hàng đến địa chỉ F', 100.00, 1, '2023-11-30 12:00:00', 6, 60, N'Nguyễn Văn F',
+        N'Địa chỉ F', N'0123456789', 500.00),
+       (7, N'XYZ456', 3, N'Giao hàng đến địa chỉ G', 200.00, 2, '2023-12-01 14:00:00', 7, 70, N'Nguyễn Văn G',
+        N'Địa chỉ G', N'0123456789', 1000.00),
+       (8, N'PQR789', 4, N'Giao hàng đến địa chỉ H', 300.00, 3, '2023-12-02 16:00:00', 8, 80, N'Nguyễn Văn H',
+        N'Địa chỉ H', N'0123456789', 1500.00),
+       (9, N'LMN012', 5, N'Giao hàng đến địa chỉ I', 400.00, 4, '2023-12-03 18:00:00', 9, 90, N'Nguyễn Văn I',
+        N'Địa chỉ I', N'0123456789', 2000.00),
+       (10, N'JKL345', 1, N'Giao hàng đến địa chỉ J', 500.00, 1, '2023-12-04 20:00:00', 10, 100, N'Nguyễn Văn J',
+        N'Địa chỉ J', N'0123456789', 2500.00);
 
 /*
 UPDATE SaleMilk SET end_day = '2023-12-01' WHERE id = 1
