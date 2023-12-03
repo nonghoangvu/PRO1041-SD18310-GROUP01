@@ -14,6 +14,7 @@ udpm\fpt\component\UpdateUser$4.class
 udpm\fpt\component\AddNewUser$7.class
 udpm\fpt\form\Setting.class
 udpm\fpt\component\UpdateProduct$2.class
+udpm\fpt\form\ProductForm.class
 udpm\fpt\swing\ShadowRenderer.class
 udpm\fpt\swing\SpinnerUI$ArrowButton.class
 udpm\fpt\swing\Combobox.class
@@ -95,6 +96,7 @@ udpm\fpt\form\History$1.class
 udpm\fpt\component\IMG$1.class
 udpm\fpt\swing\Button$1.class
 udpm\fpt\servicce\LoginService.class
+udpm\fpt\form\ProductForm$1.class
 udpm\fpt\component\UpdateUser$5.class
 udpm\fpt\form\SaleBill$10.class
 udpm\fpt\component\UpdateUser$8.class

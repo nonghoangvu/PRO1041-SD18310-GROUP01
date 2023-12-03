@@ -111,7 +111,7 @@ public class Main extends javax.swing.JFrame {
                 }
                 case 1 -> {
                     if (ADMIN_ROLE.equalsIgnoreCase(this.user.getRole())) {
-                        main.show(new ProductManagementForm(this.user, this));
+                        main.show(new ProductForm(this.user, this));
                     } else {
                         showAccessWarning();
                     }
