@@ -203,6 +203,7 @@ udpm\fpt\form\UserManagementForm$1.class
 udpm\fpt\component\MessagePanel.class
 udpm\fpt\config\DBConnect1.class
 udpm\fpt\component\AddNewUser$4.class
+udpm\fpt\main\Main$3.class
 udpm\fpt\form\SaleMilkForm$7.class
 udpm\fpt\component\Notification$2.class
 udpm\fpt\form\SaleBill.class
