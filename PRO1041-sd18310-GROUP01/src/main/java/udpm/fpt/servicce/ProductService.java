@@ -119,7 +119,7 @@ public class ProductService {
 
     public Boolean insertProduct(Milk m, ProductInfo pi) {
         if (iMilk.findAllById(m.getId()) == null) {
-            if (this.iMilk.save(m) != null && r.save(pi) != null) {
+            if (r.save(pi) != null) {
                 return this.historyProduct.trackHistory("New product has been added with ID " + m.getId(), pi.getUser().getUsername(), HistoryProductService.ChangeType.NEW);
             }
         }
