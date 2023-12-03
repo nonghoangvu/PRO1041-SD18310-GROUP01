@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
+<Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
   <NonVisualComponents>
     <Component class="javax.swing.ButtonGroup" name="buttonGroup1">
     </Component>
@@ -37,7 +37,7 @@
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="102" max="-2" attributes="0"/>
-                              <Component id="button1" min="-2" pref="100" max="-2" attributes="0"/>
+                              <Component id="btnNew" min="-2" pref="100" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" attributes="0">
                               <Component id="jRadioButton1" min="-2" max="-2" attributes="0"/>
@@ -48,8 +48,8 @@
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="jRadioButton4" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <Component id="button3" alignment="1" min="-2" pref="100" max="-2" attributes="0"/>
-                          <Component id="button4" alignment="1" min="-2" pref="100" max="-2" attributes="0"/>
+                          <Component id="btnUpdate" alignment="1" min="-2" pref="100" max="-2" attributes="0"/>
+                          <Component id="btnReplenishment" alignment="1" min="-2" pref="100" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="jPanel3" pref="618" max="32767" attributes="0"/>
@@ -73,12 +73,12 @@
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="lbCountPorduct" alignment="3" min="-2" pref="50" max="-2" attributes="0"/>
                                   <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="button1" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="btnNew" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="button3" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnUpdate" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="button4" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnReplenishment" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="32767" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="jRadioButton1" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -122,31 +122,30 @@
               <Group type="102" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="1" attributes="0">
-                          <Component id="txtEntryDate" min="-2" pref="144" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
-                          <Component id="cbbCheckExpiry" max="32767" attributes="0"/>
-                      </Group>
                       <Component id="button2" max="32767" attributes="0"/>
                       <Component id="txtSearch" max="32767" attributes="0"/>
+                      <Component id="jPanel4" alignment="0" max="32767" attributes="0"/>
+                      <Component id="jPanel5" alignment="0" max="32767" attributes="0"/>
+                      <Component id="button5" alignment="0" max="32767" attributes="0"/>
+                      <Group type="102" attributes="0">
+                          <Component id="cbbSearchType" min="-2" pref="200" max="-2" attributes="0"/>
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      </Group>
                       <Group type="102" alignment="0" attributes="0">
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="cbbTaste" max="32767" attributes="0"/>
-                              <Component id="txtVolume" pref="144" max="32767" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="cbbTaste" max="32767" attributes="0"/>
+                                  <Component id="txtVolume" pref="144" max="32767" attributes="0"/>
+                              </Group>
+                              <Component id="txtEntryDate" alignment="0" min="-2" pref="144" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="cbbCheckExpiry" max="32767" attributes="0"/>
                               <Component id="cbbPackagingSpecification" max="32767" attributes="0"/>
                               <Component id="cbbUnit" max="32767" attributes="0"/>
                           </Group>
                       </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <Component id="cbbSearchType" min="-2" pref="200" max="-2" attributes="0"/>
-                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                      </Group>
-                      <Component id="jPanel4" alignment="0" max="32767" attributes="0"/>
-                      <Component id="jPanel5" alignment="0" max="32767" attributes="0"/>
-                      <Component id="button5" alignment="0" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -438,6 +437,9 @@
               <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tblProductMouseClicked"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
@@ -484,6 +486,9 @@
             <Property name="horizontalAlignment" type="int" value="0"/>
             <Property name="text" type="java.lang.String" value="Image not found"/>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lbproductgalleryMouseClicked"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
@@ -581,7 +586,7 @@
             </Constraint>
           </Constraints>
         </Component>
-        <Component class="javax.swing.JLabel" name="jLabel6">
+        <Component class="javax.swing.JLabel" name="lbName">
           <Properties>
             <Property name="text" type="java.lang.String" value="Product&apos;s name"/>
           </Properties>
@@ -601,7 +606,7 @@
             </Constraint>
           </Constraints>
         </Component>
-        <Component class="javax.swing.JLabel" name="jLabel8">
+        <Component class="javax.swing.JLabel" name="lbPrice">
           <Properties>
             <Property name="text" type="java.lang.String" value="000,000 VND"/>
           </Properties>
@@ -621,7 +626,7 @@
             </Constraint>
           </Constraints>
         </Component>
-        <Component class="javax.swing.JLabel" name="jLabel10">
+        <Component class="javax.swing.JLabel" name="lbAmount">
           <Properties>
             <Property name="text" type="java.lang.String" value="0"/>
           </Properties>
@@ -641,7 +646,7 @@
             </Constraint>
           </Constraints>
         </Component>
-        <Component class="javax.swing.JLabel" name="jLabel12">
+        <Component class="javax.swing.JLabel" name="lbExpirationDate">
           <Properties>
             <Property name="text" type="java.lang.String" value="00-00-0000"/>
           </Properties>
@@ -661,7 +666,7 @@
             </Constraint>
           </Constraints>
         </Component>
-        <Component class="javax.swing.JLabel" name="jLabel14">
+        <Component class="javax.swing.JLabel" name="lbProductionDate">
           <Properties>
             <Property name="text" type="java.lang.String" value="00-00-0000"/>
           </Properties>
@@ -681,7 +686,7 @@
             </Constraint>
           </Constraints>
         </Component>
-        <Component class="javax.swing.JLabel" name="jLabel16">
+        <Component class="javax.swing.JLabel" name="lbProvider">
           <Properties>
             <Property name="text" type="java.lang.String" value="Null"/>
           </Properties>
@@ -711,7 +716,7 @@
             </Constraint>
           </Constraints>
         </Component>
-        <Component class="javax.swing.JLabel" name="jLabel18">
+        <Component class="javax.swing.JLabel" name="lbTaste">
           <Properties>
             <Property name="text" type="java.lang.String" value="Null"/>
           </Properties>
@@ -731,7 +736,7 @@
             </Constraint>
           </Constraints>
         </Component>
-        <Component class="javax.swing.JLabel" name="jLabel20">
+        <Component class="javax.swing.JLabel" name="lbPackagingSpecification">
           <Properties>
             <Property name="text" type="java.lang.String" value="Null"/>
           </Properties>
@@ -751,7 +756,7 @@
             </Constraint>
           </Constraints>
         </Component>
-        <Component class="javax.swing.JLabel" name="jLabel22">
+        <Component class="javax.swing.JLabel" name="lbVolume">
           <Properties>
             <Property name="text" type="java.lang.String" value="Null Null"/>
           </Properties>
@@ -771,7 +776,7 @@
             </Constraint>
           </Constraints>
         </Component>
-        <Component class="javax.swing.JLabel" name="jLabel24">
+        <Component class="javax.swing.JLabel" name="lbBrand">
           <Properties>
             <Property name="text" type="java.lang.String" value="Null"/>
           </Properties>
@@ -791,7 +796,7 @@
             </Constraint>
           </Constraints>
         </Component>
-        <Component class="javax.swing.JLabel" name="jLabel26">
+        <Component class="javax.swing.JLabel" name="lbOrigin">
           <Properties>
             <Property name="text" type="java.lang.String" value="Null"/>
           </Properties>
@@ -811,7 +816,7 @@
             </Constraint>
           </Constraints>
         </Component>
-        <Component class="javax.swing.JLabel" name="jLabel28">
+        <Component class="javax.swing.JLabel" name="lbComposition">
           <Properties>
             <Property name="text" type="java.lang.String" value="Null"/>
           </Properties>
@@ -831,7 +836,7 @@
             </Constraint>
           </Constraints>
         </Component>
-        <Component class="javax.swing.JLabel" name="jLabel30">
+        <Component class="javax.swing.JLabel" name="lbDescrription">
           <Properties>
             <Property name="text" type="java.lang.String" value="Null"/>
           </Properties>
@@ -843,7 +848,7 @@
         </Component>
       </SubComponents>
     </Container>
-    <Component class="udpm.fpt.swing.Button" name="button1">
+    <Component class="udpm.fpt.swing.Button" name="btnNew">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="ff" green="cc" red="66" type="rgb"/>
@@ -856,8 +861,11 @@
           <Font name="Segoe UI" size="12" style="1"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnNewActionPerformed"/>
+      </Events>
     </Component>
-    <Component class="udpm.fpt.swing.Button" name="button3">
+    <Component class="udpm.fpt.swing.Button" name="btnUpdate">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="ff" green="cc" red="66" type="rgb"/>
@@ -870,8 +878,11 @@
           <Font name="Segoe UI" size="12" style="1"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnUpdateActionPerformed"/>
+      </Events>
     </Component>
-    <Component class="udpm.fpt.swing.Button" name="button4">
+    <Component class="udpm.fpt.swing.Button" name="btnReplenishment">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="ff" green="cc" red="66" type="rgb"/>

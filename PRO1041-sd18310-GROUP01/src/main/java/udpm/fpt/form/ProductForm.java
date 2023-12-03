@@ -4,6 +4,8 @@ import com.raven.datechooser.DateChooser;
 import java.awt.Image;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -14,6 +16,9 @@ import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.AbstractDocument;
 import udpm.fpt.Utitlity.DiscountCalculator;
+import udpm.fpt.component.IMG;
+import udpm.fpt.component.NewProduct;
+import udpm.fpt.component.UpdateProduct;
 import udpm.fpt.main.Main;
 import udpm.fpt.model.Flavor;
 import udpm.fpt.model.PackagingSpecification;
@@ -68,6 +73,12 @@ private DefaultTableModel tblModel;
         DecimalFormat decimalFormat = new DecimalFormat("#,###");
         return decimalFormat.format(number);
     }
+    public String removeTimeUsingDateTimeFormatter(String inputDate) {
+        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
+        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        LocalDateTime dateTime = LocalDateTime.parse(inputDate, inputFormatter);
+        return dateTime.format(outputFormatter);
+    }
 
     /*---------------Set format------------------*/
     private void setTxtEntryToDate() {
@@ -94,6 +105,12 @@ private DefaultTableModel tblModel;
         loadTypeCheckExpiry();
         loadTypeSearch();
     }
+    public void setData(String data) {
+        lbId.setText(data);
+        loadDataAndFillTable();
+        loadDataAndFillFlavor();
+        loadDataAndFillPackagingSpecification();
+    }
 
     private void setImange(String url) {
         lbproductgallery.setText(null);
@@ -113,7 +130,20 @@ private DefaultTableModel tblModel;
 
     private void setLabel() {
         ProductInfo pi = this.temp.get(tblProduct.getSelectedRow());
-        lbId.setText(String.valueOf(pi.getId()));
+        lbId.setText(String.valueOf(pi.getMilk().getId()));
+        lbName.setText(pi.getMilk().getProduct_name());
+        lbTaste.setText(pi.getFlavor().getTaste());
+        lbPrice.setText(setSelectedIndex(priceUpdate(pi.getMilk().getId(), pi.getMilk().getPrice())) + " VND");
+        lbAmount.setText(String.valueOf(pi.getMilk().getAmount()));
+        lbProductionDate.setText(removeTimeUsingDateTimeFormatter(String.valueOf(pi.getMilk().getProduction_date())));
+        lbExpirationDate.setText(removeTimeUsingDateTimeFormatter(String.valueOf(pi.getMilk().getExpiration_date())));
+        lbProvider.setText(pi.getMilk().getProvider());
+        lbVolume.setText(String.valueOf(pi.getVolume()) + pi.getUnit().getMeasurement_unit());
+        lbPackagingSpecification.setText(pi.getPackagingSpecification().getPackaging_type());
+        lbDescrription.setText(pi.getProduct_description());
+        lbBrand.setText(pi.getBrand());
+        lbOrigin.setText(pi.getOrigin());
+        lbComposition.setText(pi.getComposition());
         setImange(pi.getMilk().getImg());
     }
 
@@ -176,6 +206,9 @@ private DefaultTableModel tblModel;
         DefaultComboBoxModel<Flavor> cbbModel = new DefaultComboBoxModel<>();
         cbbTaste.removeAll();
         cbbTaste.setModel(cbbModel);
+        Flavor flavorAll = new Flavor();
+        flavorAll.setTaste("All");
+        cbbModel.addElement(flavorAll);
         for (Flavor flavor : data) {
             cbbModel.addElement(flavor);
         }
@@ -198,6 +231,9 @@ private DefaultTableModel tblModel;
         DefaultComboBoxModel<PackagingSpecification> cbbModel = new DefaultComboBoxModel<>();
         cbbPackagingSpecification.removeAll();
         cbbPackagingSpecification.setModel(cbbModel);
+        PackagingSpecification packagingSpecificationAll = new PackagingSpecification();
+        packagingSpecificationAll.setPackaging_type("All");
+        cbbModel.addElement(packagingSpecificationAll);
         for (PackagingSpecification specification : data) {
             cbbModel.addElement(specification);
         }
@@ -219,6 +255,9 @@ private DefaultTableModel tblModel;
         DefaultComboBoxModel<Unit> cbbModel = new DefaultComboBoxModel<>();
         cbbUnit.removeAll();
         cbbUnit.setModel(cbbModel);
+        Unit unitAll = new Unit();
+        unitAll.setMeasurement_unit("All");
+        cbbModel.addElement(unitAll);
         for (Unit unit : data) {
             cbbModel.addElement(unit);
         }
@@ -289,35 +328,35 @@ private DefaultTableModel tblModel;
         jLabel2 = new javax.swing.JLabel();
         lbId = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
+        lbName = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
+        lbPrice = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
+        lbAmount = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
-        jLabel12 = new javax.swing.JLabel();
+        lbExpirationDate = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
-        jLabel14 = new javax.swing.JLabel();
+        lbProductionDate = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
-        jLabel16 = new javax.swing.JLabel();
+        lbProvider = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         jLabel17 = new javax.swing.JLabel();
-        jLabel18 = new javax.swing.JLabel();
+        lbTaste = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
-        jLabel20 = new javax.swing.JLabel();
+        lbPackagingSpecification = new javax.swing.JLabel();
         jLabel21 = new javax.swing.JLabel();
-        jLabel22 = new javax.swing.JLabel();
+        lbVolume = new javax.swing.JLabel();
         jLabel23 = new javax.swing.JLabel();
-        jLabel24 = new javax.swing.JLabel();
+        lbBrand = new javax.swing.JLabel();
         jLabel25 = new javax.swing.JLabel();
-        jLabel26 = new javax.swing.JLabel();
+        lbOrigin = new javax.swing.JLabel();
         jLabel27 = new javax.swing.JLabel();
-        jLabel28 = new javax.swing.JLabel();
+        lbComposition = new javax.swing.JLabel();
         jLabel29 = new javax.swing.JLabel();
-        jLabel30 = new javax.swing.JLabel();
-        button1 = new udpm.fpt.swing.Button();
-        button3 = new udpm.fpt.swing.Button();
-        button4 = new udpm.fpt.swing.Button();
+        lbDescrription = new javax.swing.JLabel();
+        btnNew = new udpm.fpt.swing.Button();
+        btnUpdate = new udpm.fpt.swing.Button();
+        btnReplenishment = new udpm.fpt.swing.Button();
         lbCountPorduct = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
 
@@ -418,26 +457,25 @@ private DefaultTableModel tblModel;
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(txtEntryDate, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(33, 33, 33)
-                        .addComponent(cbbCheckExpiry, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(button2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(txtSearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(cbbTaste, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtVolume, javax.swing.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE))
-                        .addGap(24, 24, 24)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cbbPackagingSpecification, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(cbbUnit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(button5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(cbbSearchType, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(button5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(cbbTaste, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(txtVolume, javax.swing.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE))
+                            .addComponent(txtEntryDate, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(24, 24, 24)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cbbCheckExpiry, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(cbbPackagingSpecification, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(cbbUnit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -486,6 +524,11 @@ private DefaultTableModel tblModel;
                 return canEdit [columnIndex];
             }
         });
+        tblProduct.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblProductMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblProduct);
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
@@ -494,6 +537,11 @@ private DefaultTableModel tblModel;
         lbproductgallery.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lbproductgallery.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lbproductgallery.setText("Image not found");
+        lbproductgallery.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lbproductgalleryMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -541,38 +589,38 @@ private DefaultTableModel tblModel;
         jLabel5.setText("Name:");
         jPanel3.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 40, -1, -1));
 
-        jLabel6.setText("Product's name");
-        jPanel3.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 40, 150, -1));
+        lbName.setText("Product's name");
+        jPanel3.add(lbName, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 40, 150, -1));
 
         jLabel7.setText("Price:");
         jPanel3.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 60, -1, -1));
 
-        jLabel8.setText("000,000 VND");
-        jPanel3.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 60, -1, -1));
+        lbPrice.setText("000,000 VND");
+        jPanel3.add(lbPrice, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 60, -1, -1));
 
         jLabel9.setText("Amount:");
         jPanel3.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 80, -1, -1));
 
-        jLabel10.setText("0");
-        jPanel3.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 80, 60, -1));
+        lbAmount.setText("0");
+        jPanel3.add(lbAmount, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 80, 60, -1));
 
         jLabel11.setText("Production Date:");
         jPanel3.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 100, -1, -1));
 
-        jLabel12.setText("00-00-0000");
-        jPanel3.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 120, 70, -1));
+        lbExpirationDate.setText("00-00-0000");
+        jPanel3.add(lbExpirationDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 120, 70, -1));
 
         jLabel13.setText("Expiration Date:");
         jPanel3.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 120, -1, -1));
 
-        jLabel14.setText("00-00-0000");
-        jPanel3.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 100, 70, -1));
+        lbProductionDate.setText("00-00-0000");
+        jPanel3.add(lbProductionDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 100, 70, -1));
 
         jLabel15.setText("Provider:");
         jPanel3.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 140, -1, -1));
 
-        jLabel16.setText("Null");
-        jPanel3.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 140, 110, -1));
+        lbProvider.setText("Null");
+        jPanel3.add(lbProvider, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 140, 110, -1));
 
         jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
         jPanel3.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 20, 10, 150));
@@ -580,59 +628,69 @@ private DefaultTableModel tblModel;
         jLabel17.setText("Taste:");
         jPanel3.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 20, -1, -1));
 
-        jLabel18.setText("Null");
-        jPanel3.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 20, -1, -1));
+        lbTaste.setText("Null");
+        jPanel3.add(lbTaste, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 20, -1, -1));
 
         jLabel19.setText("Packaging Type:");
         jPanel3.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 40, -1, -1));
 
-        jLabel20.setText("Null");
-        jPanel3.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 40, 80, -1));
+        lbPackagingSpecification.setText("Null");
+        jPanel3.add(lbPackagingSpecification, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 40, 80, -1));
 
         jLabel21.setText("Volume:");
         jPanel3.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 60, -1, -1));
 
-        jLabel22.setText("Null Null");
-        jPanel3.add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 60, 130, -1));
+        lbVolume.setText("Null Null");
+        jPanel3.add(lbVolume, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 60, 130, -1));
 
         jLabel23.setText("Brand:");
         jPanel3.add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 80, -1, -1));
 
-        jLabel24.setText("Null");
-        jPanel3.add(jLabel24, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 80, 130, -1));
+        lbBrand.setText("Null");
+        jPanel3.add(lbBrand, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 80, 130, -1));
 
         jLabel25.setText("Origin:");
         jPanel3.add(jLabel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 100, -1, -1));
 
-        jLabel26.setText("Null");
-        jPanel3.add(jLabel26, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 100, 150, -1));
+        lbOrigin.setText("Null");
+        jPanel3.add(lbOrigin, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 100, 150, -1));
 
         jLabel27.setText("Composition:");
         jPanel3.add(jLabel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 120, -1, -1));
 
-        jLabel28.setText("Null");
-        jPanel3.add(jLabel28, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 120, 140, -1));
+        lbComposition.setText("Null");
+        jPanel3.add(lbComposition, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 120, 140, -1));
 
         jLabel29.setText("Description:");
         jPanel3.add(jLabel29, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 140, -1, -1));
 
-        jLabel30.setText("Null");
-        jPanel3.add(jLabel30, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 140, 150, -1));
+        lbDescrription.setText("Null");
+        jPanel3.add(lbDescrription, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 140, 150, -1));
 
-        button1.setBackground(new java.awt.Color(102, 204, 255));
-        button1.setForeground(new java.awt.Color(255, 255, 255));
-        button1.setText("New");
-        button1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnNew.setBackground(new java.awt.Color(102, 204, 255));
+        btnNew.setForeground(new java.awt.Color(255, 255, 255));
+        btnNew.setText("New");
+        btnNew.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnNew.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNewActionPerformed(evt);
+            }
+        });
 
-        button3.setBackground(new java.awt.Color(102, 204, 255));
-        button3.setForeground(new java.awt.Color(255, 255, 255));
-        button3.setText("Update");
-        button3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnUpdate.setBackground(new java.awt.Color(102, 204, 255));
+        btnUpdate.setForeground(new java.awt.Color(255, 255, 255));
+        btnUpdate.setText("Update");
+        btnUpdate.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateActionPerformed(evt);
+            }
+        });
 
-        button4.setBackground(new java.awt.Color(102, 204, 255));
-        button4.setForeground(new java.awt.Color(255, 255, 255));
-        button4.setText("Replenishment");
-        button4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnReplenishment.setBackground(new java.awt.Color(102, 204, 255));
+        btnReplenishment.setForeground(new java.awt.Color(255, 255, 255));
+        btnReplenishment.setText("Replenishment");
+        btnReplenishment.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
 
         lbCountPorduct.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lbCountPorduct.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -657,7 +715,7 @@ private DefaultTableModel tblModel;
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel4)
                                 .addGap(102, 102, 102)
-                                .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(btnNew, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jRadioButton1)
                                 .addGap(18, 18, 18)
@@ -666,8 +724,8 @@ private DefaultTableModel tblModel;
                                 .addComponent(jRadioButton3)
                                 .addGap(18, 18, 18)
                                 .addComponent(jRadioButton4))
-                            .addComponent(button3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(button4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btnUpdate, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnReplenishment, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 618, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -686,11 +744,11 @@ private DefaultTableModel tblModel;
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(lbCountPorduct, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel4)
-                                    .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(btnNew, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(button3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(button4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnReplenishment, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jRadioButton1)
@@ -706,12 +764,42 @@ private DefaultTableModel tblModel;
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewActionPerformed
+        NewProduct prd = new NewProduct(this, this.user);
+        prd.setVisible(true);
+    }//GEN-LAST:event_btnNewActionPerformed
+
+    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
+        if (tblProduct.getSelectedRow() < 0) {
+            return;
+        }
+        ProductInfo pi = temp.get(tblProduct.getSelectedRow());
+        UpdateProduct prd = new UpdateProduct(this, pi, pi.getUser(), this.user);
+        prd.setVisible(true);
+    }//GEN-LAST:event_btnUpdateActionPerformed
+
+    private void lbproductgalleryMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbproductgalleryMouseClicked
+        if (lbproductgallery.getIcon() == null) {
+            new IMG("ImageNull.png").setVisible(true);
+        } else {
+            ProductInfo pi = this.temp.get(tblProduct.getSelectedRow());
+            new IMG(pi.getMilk().getImg()).setVisible(true);
+        }
+    }//GEN-LAST:event_lbproductgalleryMouseClicked
+
+    private void tblProductMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblProductMouseClicked
+        try {
+            setLabel();
+        } catch (Exception e) {
+        }
+    }//GEN-LAST:event_tblProductMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private udpm.fpt.swing.Button button1;
+    private udpm.fpt.swing.Button btnNew;
+    private udpm.fpt.swing.Button btnReplenishment;
+    private udpm.fpt.swing.Button btnUpdate;
     private udpm.fpt.swing.Button button2;
-    private udpm.fpt.swing.Button button3;
-    private udpm.fpt.swing.Button button4;
     private udpm.fpt.swing.Button button5;
     private javax.swing.ButtonGroup buttonGroup1;
     private udpm.fpt.swing.Combobox cbbCheckExpiry;
@@ -719,33 +807,20 @@ private DefaultTableModel tblModel;
     private udpm.fpt.swing.Combobox cbbSearchType;
     private udpm.fpt.swing.Combobox cbbTaste;
     private udpm.fpt.swing.Combobox cbbUnit;
-    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
-    private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
-    private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
-    private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
-    private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
-    private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel29;
-    private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -758,8 +833,21 @@ private DefaultTableModel tblModel;
     private javax.swing.JRadioButton jRadioButton4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JLabel lbAmount;
+    private javax.swing.JLabel lbBrand;
+    private javax.swing.JLabel lbComposition;
     private javax.swing.JLabel lbCountPorduct;
+    private javax.swing.JLabel lbDescrription;
+    private javax.swing.JLabel lbExpirationDate;
     private javax.swing.JLabel lbId;
+    private javax.swing.JLabel lbName;
+    private javax.swing.JLabel lbOrigin;
+    private javax.swing.JLabel lbPackagingSpecification;
+    private javax.swing.JLabel lbPrice;
+    private javax.swing.JLabel lbProductionDate;
+    private javax.swing.JLabel lbProvider;
+    private javax.swing.JLabel lbTaste;
+    private javax.swing.JLabel lbVolume;
     private javax.swing.JLabel lbproductgallery;
     private javax.swing.JTable tblProduct;
     private udpm.fpt.swing.TextField txtEntryDate;

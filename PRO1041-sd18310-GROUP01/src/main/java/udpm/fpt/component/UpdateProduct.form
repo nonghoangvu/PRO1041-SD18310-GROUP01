@@ -139,8 +139,7 @@
           <SubComponents>
             <Component class="udpm.fpt.swing.TextField" name="txtId">
               <Properties>
-                <Property name="editable" type="boolean" value="false"/>
-                <Property name="labelText" type="java.lang.String" value="ID"/>
+                <Property name="labelText" type="java.lang.String" value="Barcode"/>
               </Properties>
             </Component>
             <Component class="udpm.fpt.swing.TextField" name="txtName">

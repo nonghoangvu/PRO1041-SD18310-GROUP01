@@ -10,7 +10,10 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.util.Date;
 import java.util.Objects;
+
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
@@ -21,6 +24,8 @@ import lombok.Setter;
 @Table(name = "PackagingSpecification")
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class PackagingSpecification {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

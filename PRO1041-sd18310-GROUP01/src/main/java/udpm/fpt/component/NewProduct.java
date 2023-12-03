@@ -17,7 +17,7 @@ import javax.swing.JFileChooser;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.text.AbstractDocument;
-import udpm.fpt.form.ProductManagement;
+import udpm.fpt.form.ProductForm;
 import udpm.fpt.model.Flavor;
 import udpm.fpt.model.Milk;
 import udpm.fpt.model.PackagingSpecification;
@@ -33,12 +33,12 @@ import udpm.fpt.swing.NumberOnlyFilter;
  */
 public class NewProduct extends javax.swing.JFrame {
 
-    public ProductManagement perentForm;
+    public ProductForm  perentForm;
     private final User user;
     private final ProductService list;
     private String imgName = null;
 
-    public NewProduct(ProductManagement perentForm, User user) {
+    public NewProduct(ProductForm perentForm, User user) {
         initComponents();
         this.list = new ProductService();
         this.user = user;
@@ -344,9 +344,9 @@ public class NewProduct extends javax.swing.JFrame {
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "New Product", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14))); // NOI18N
 
-        txtId.setLabelText("ID");
+        txtId.setLabelText("Barcode");
 
-        button1.setIcon(new javax.swing.ImageIcon(Objects.requireNonNull(getClass().getResource("/Icon/barcode-scanner.png")))); // NOI18N
+        button1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/barcode-scanner.png"))); // NOI18N
         button1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 button1ActionPerformed(evt);

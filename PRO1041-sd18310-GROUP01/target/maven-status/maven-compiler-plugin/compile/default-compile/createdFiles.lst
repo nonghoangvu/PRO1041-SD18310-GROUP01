@@ -41,6 +41,7 @@ udpm\fpt\form\UserManagementForm$8.class
 udpm\fpt\component\UnitManagement$2.class
 udpm\fpt\component\NewProduct.class
 udpm\fpt\swing\table\TableHeaderCustomCellRender.class
+udpm\fpt\form\ProductForm$3.class
 udpm\fpt\form\ProductManagement$2.class
 udpm\fpt\form\UserForm$1.class
 udpm\fpt\swing\TextAreaScroll.class
@@ -61,6 +62,7 @@ udpm\fpt\swing\ButtonMessage.class
 udpm\fpt\component\NewProduct$3.class
 udpm\fpt\swing\table\TextAreaCellRenderer.class
 udpm\fpt\component\AddNewUser.class
+udpm\fpt\form\ProductForm$5.class
 udpm\fpt\component\WebCamProduct.class
 udpm\fpt\model\Milk.class
 udpm\fpt\swing\GraphicsUtilities.class
@@ -91,6 +93,7 @@ udpm\fpt\swing\table\TableCustom$3.class
 udpm\fpt\repository\IFlavor.class
 udpm\fpt\swing\ScrollBarCustomUI$1.class
 udpm\fpt\repository\ISalary.class
+udpm\fpt\form\ProductForm$2.class
 udpm\fpt\swing\TextAreaScroll$1.class
 udpm\fpt\form\History$1.class
 udpm\fpt\component\IMG$1.class
@@ -124,6 +127,7 @@ udpm\fpt\event\EventMenuSelected.class
 udpm\fpt\swing\MenuItem.class
 udpm\fpt\main\Main.class
 udpm\fpt\component\AddNewUser$1.class
+udpm\fpt\form\ProductForm$4.class
 udpm\fpt\swing\Combobox$ComboUI$2.class
 udpm\fpt\form\UserManagementForm$16.class
 udpm\fpt\component\UnitManagement$1.class
