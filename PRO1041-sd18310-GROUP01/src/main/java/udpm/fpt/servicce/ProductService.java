@@ -38,6 +38,12 @@ public class ProductService {
         }, Executors.newCachedThreadPool());
     }
 
+    public CompletableFuture<List<ProductInfo>> loadASearch(ProductInfoByCriteria data) {
+        return CompletableFuture.supplyAsync(() -> {
+            return Collections.unmodifiableList(r.findProductInfoByCriteria(data.getProductName(), data.getFlavor(), data.getPackagingType(), data.getMeasurementUnit(), data.getVolume(), data.getEntryDate(), data.getMinQuantity(), data.getMaxQuantity(), data.getMinPrice(), data.getMaxPrice()));
+        }, Executors.newCachedThreadPool());
+    }
+
     public CompletableFuture<List<ProductInfo>> loadSearch(String search) {
         return CompletableFuture.supplyAsync(() -> {
             return r.findProductInfo(search);
