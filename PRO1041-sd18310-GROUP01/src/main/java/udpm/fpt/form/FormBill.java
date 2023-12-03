@@ -14,6 +14,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 import static udpm.fpt.Application.getBean;
 import udpm.fpt.component.ChooseCustomersForm;
+import udpm.fpt.component.Notification;
+import udpm.fpt.main.Main;
 import udpm.fpt.model.Bill;
 import udpm.fpt.model.BillDetails;
 import udpm.fpt.model.Customer;
@@ -37,6 +39,8 @@ public final class FormBill extends javax.swing.JPanel {
     IBill_Respository bill = getBean(IBill_Respository.class);
     IBillDetails_Respository billDetail = getBean(IBillDetails_Respository.class);
     User user;
+    Main main;
+
     /**
      * Creates new form FromBill
      */
@@ -46,7 +50,8 @@ public final class FormBill extends javax.swing.JPanel {
         loadAndFillMilk();
         cbbShoppingMethod();
         cbbPaymentMethods();
-        this.user= user;
+        this.user = user;
+        loadHoaDonChiTiet(0);
     }
 
     public void setCustomer(Customer ct) {
@@ -184,6 +189,8 @@ public final class FormBill extends javax.swing.JPanel {
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+
         tblBill.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -221,6 +228,8 @@ public final class FormBill extends javax.swing.JPanel {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
+
+        jPanel4.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel3.setText("Product List");
 
@@ -262,6 +271,8 @@ public final class FormBill extends javax.swing.JPanel {
                 .addGap(212, 212, 212))
         );
 
+        jPanel5.setBackground(new java.awt.Color(255, 255, 255));
+
         tblShoppingCart.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -301,6 +312,8 @@ public final class FormBill extends javax.swing.JPanel {
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(26, Short.MAX_VALUE))
         );
+
+        jPanel6.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel4.setText("Create bill");
 
@@ -483,6 +496,8 @@ public final class FormBill extends javax.swing.JPanel {
 
         if (cbbShoppingMethod.getSelectedItem().toString().equals("delivery")) {
             if (txtIDCustomer.getText().trim().isEmpty() || txtCustomerName.getText().trim().isEmpty()) {
+                new Notification(Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP,
+                        "The Customer is empty!").showNotification();
                 return;
             }
         }
@@ -505,7 +520,8 @@ public final class FormBill extends javax.swing.JPanel {
                     hd.setCustomerId(sc);
                 }
                 if (tblShoppingCart.getRowCount() == 0) {
-                    System.out.println("Hãy thêm sản phẩm");
+                    new Notification(Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP,
+                            "The product is empty!").showNotification();
                     return;
                 }
                 for (int i = 0; i < tblShoppingCart.getRowCount(); i++) {
