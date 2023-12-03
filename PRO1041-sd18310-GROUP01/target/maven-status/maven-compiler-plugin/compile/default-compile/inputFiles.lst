@@ -24,6 +24,7 @@ C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP01\PRO1041-sd18310-GRO
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP01\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\component\PackagingSpecificationManagement.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP01\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\swing\table\ActionButton.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP01\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\swing\table\TableHeaderCustomCellRender.java
+C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP01\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\model\KhachHang.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP01\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\model\Salary.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP01\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\model\BillDetails.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP01\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\form\ProductForm.java
@@ -87,6 +88,7 @@ C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP01\PRO1041-sd18310-GRO
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP01\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\model\Milk.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP01\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\repository\IBillDetails_Respository.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP01\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\swing\table\TableCustomCellRender.java
+C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP01\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\form\KhachHangForm.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP01\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\repository\IUserDetails.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP01\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\swing\ImageAvatar.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP01\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\form\UserForm.java
@@ -109,6 +111,7 @@ C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP01\PRO1041-sd18310-GRO
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP01\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\model\Customer.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP01\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\repository\IHistoryProduct.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP01\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\component\WebCamProduct.java
+C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP01\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\servicce\KhachHangDao.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP01\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\form\ProductManagementForm.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP01\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\form\DeliveryNoteFrom.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP01\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\component\AddNewUser.java
