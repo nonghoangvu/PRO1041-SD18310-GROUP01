@@ -8,7 +8,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import javax.imageio.ImageIO;
 import javax.swing.DefaultComboBoxModel;
@@ -17,7 +16,7 @@ import javax.swing.JFileChooser;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.text.AbstractDocument;
-import udpm.fpt.form.ProductManagement;
+import udpm.fpt.form.ProductForm;
 import udpm.fpt.model.Flavor;
 import udpm.fpt.model.Milk;
 import udpm.fpt.model.PackagingSpecification;
@@ -33,12 +32,12 @@ import udpm.fpt.swing.NumberOnlyFilter;
  */
 public class NewProduct extends javax.swing.JFrame {
 
-    public ProductManagement perentForm;
+    public ProductForm  perentForm;
     private final User user;
     private final ProductService list;
     private String imgName = null;
 
-    public NewProduct(ProductManagement perentForm, User user) {
+    public NewProduct(ProductForm perentForm, User user) {
         initComponents();
         this.list = new ProductService();
         this.user = user;
@@ -49,7 +48,7 @@ public class NewProduct extends javax.swing.JFrame {
     }
 
     public void setTextField() {
-        ((AbstractDocument) txtId.getDocument()).setDocumentFilter(new NumberOnlyFilter());
+        ((AbstractDocument) txtBarcode.getDocument()).setDocumentFilter(new NumberOnlyFilter());
         ((AbstractDocument) txtPrice.getDocument()).setDocumentFilter(new NumberOnlyFilter());
         txtAmount.addChangeListener((ChangeEvent e) -> {
             int value = (int) txtAmount.getValue();
@@ -81,11 +80,11 @@ public class NewProduct extends javax.swing.JFrame {
     }
 
     public void setData(String data) {
-        txtId.setText(data);
+        txtBarcode.setText(data);
     }
 
     public String getData() {
-        return txtId.getText();
+        return txtBarcode.getText();
     }
 
     public void filDataCombo() {
@@ -171,7 +170,7 @@ public class NewProduct extends javax.swing.JFrame {
 
     private Milk getMilk() {
         Milk milk = new Milk();
-        milk.setId(Long.valueOf(txtId.getText()));
+        milk.setBarcode(Long.valueOf(txtBarcode.getText()));
         milk.setProduct_name(txtName.getText());
         milk.setImg(this.imgName);
         milk.setPrice(Integer.valueOf(txtPrice.getText()));
@@ -238,7 +237,7 @@ public class NewProduct extends javax.swing.JFrame {
     }
 
     private Boolean isValidate() {
-        if (txtId.getText().isBlank()) {
+        if (txtBarcode.getText().isBlank()) {
             new Notification(this, Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP, "The ID is empty!").showNotification();
             return false;
         } else if (txtName.getText().isBlank()) {
@@ -308,7 +307,7 @@ public class NewProduct extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
-        txtId = new udpm.fpt.swing.TextField();
+        txtBarcode = new udpm.fpt.swing.TextField();
         button1 = new udpm.fpt.swing.Button();
         txtName = new udpm.fpt.swing.TextField();
         txtPrice = new udpm.fpt.swing.TextField();
@@ -344,9 +343,9 @@ public class NewProduct extends javax.swing.JFrame {
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "New Product", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14))); // NOI18N
 
-        txtId.setLabelText("ID");
+        txtBarcode.setLabelText("Barcode");
 
-        button1.setIcon(new javax.swing.ImageIcon(Objects.requireNonNull(getClass().getResource("/Icon/barcode-scanner.png")))); // NOI18N
+        button1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/barcode-scanner.png"))); // NOI18N
         button1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 button1ActionPerformed(evt);
@@ -395,7 +394,7 @@ public class NewProduct extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(txtId, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(txtBarcode, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGap(18, 18, 18)
                         .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(txtPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -413,7 +412,7 @@ public class NewProduct extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtBarcode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -629,7 +628,7 @@ public class NewProduct extends javax.swing.JFrame {
         if (this.list.insertProduct(getMilk(), getProductInfo())) {
             Notification n = new Notification(this, Notification.Type.SUCCESS, Notification.Location.DEFAULT_DESKTOP, "SUCCESS");
             n.showNotification();
-            String data = txtId.getText();
+            String data = txtBarcode.getText();
             perentForm.setData(data);
             dispose();
         } else {
@@ -703,11 +702,11 @@ public class NewProduct extends javax.swing.JFrame {
     private udpm.fpt.swing.TextAreaScroll textAreaScroll1;
     private udpm.fpt.swing.TextAreaScroll textAreaScroll2;
     private udpm.fpt.swing.Spinner txtAmount;
+    private udpm.fpt.swing.TextField txtBarcode;
     private udpm.fpt.swing.TextField txtBrand;
     private udpm.fpt.swing.TextArea txtComposition;
     private udpm.fpt.swing.TextArea txtDescription;
     private udpm.fpt.swing.TextField txtExpirationDate;
-    private udpm.fpt.swing.TextField txtId;
     private udpm.fpt.swing.TextField txtName;
     private udpm.fpt.swing.TextField txtOrgin;
     private udpm.fpt.swing.TextField txtPrice;

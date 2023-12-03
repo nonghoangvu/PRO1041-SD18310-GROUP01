@@ -26,4 +26,12 @@ public interface IDelivery_noteRespository extends JpaRepository<DeliveryNote, L
     
     @Query("FROM DeliveryNote Where id like CONCAT('%', :id, '%')")
     List<DeliveryNote> findByID(@Param("id") String id);
+    
+    @Query("FROM DeliveryNote Where status_id like CONCAT('%', :idStatus, '%')")
+    List<DeliveryNote> findByStatus(@Param("idStatus") int idStatus);
+    
+    @Query("From DeliveryNote d where d.id like CONCAT('%', :idDelivery, '%') and " 
+    +"d.customer_name like CONCAT('%',:Customer_name, '%') and "
+    +"d.status_id like CONCAT('%', :Status, '%')")
+    List<DeliveryNote> searchAll(@Param("idDelivery") String id, @Param ("Customer_name") String Customer_name, @Param("Status") String status);
 }

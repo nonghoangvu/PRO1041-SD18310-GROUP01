@@ -4,7 +4,6 @@
  */
 package udpm.fpt.servicce;
 
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,12 +11,11 @@ import java.util.Date;
 import udpm.fpt.config.DBConnect1;
 import udpm.fpt.model.Sale_Milk1;
 
-
 /**
  *
  * @author Thanh Dat
  */
-public class ServiceGGM1  {
+public class ServiceGGM1 {
 
     public List<Sale_Milk1> getAll() {
         String sql = "Select id, sale_event, percent_decrease, start_day, end_day, milk_id, staff_id, created_at from SaleMilk";
@@ -52,7 +50,6 @@ public class ServiceGGM1  {
         }
     }
 
-  
     public boolean delete(int ID) {
         String sql = "Delete from SaleMilk where id = ?;";
         try (Connection con = DBConnect1.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
@@ -64,7 +61,6 @@ public class ServiceGGM1  {
         }
     }
 
-    
     public boolean update(int ID, Sale_Milk1 sm) {
         String sql = "Update SaleMilk set sale_event=?, percent_decrease=?, start_day=?, end_day=?, milk_id=?, staff_id=?, created_at=? where id=?;";
         try (Connection con = DBConnect1.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
@@ -83,7 +79,6 @@ public class ServiceGGM1  {
         }
     }
 
-  
     public List<Sale_Milk1> timkiem(String SE) {
         String sql = "Select id, sale_event, percent_decrease, start_day, end_day, milk_id, staff_id, created_at from SaleMilk Where sale_event like ?";
         try (Connection con = DBConnect1.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {

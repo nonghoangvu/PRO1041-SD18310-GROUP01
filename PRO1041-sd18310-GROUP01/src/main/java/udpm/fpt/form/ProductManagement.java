@@ -1033,17 +1033,17 @@ public class ProductManagement extends javax.swing.JPanel {
     }//GEN-LAST:event_btnApplyFiltersMouseClicked
 
     private void btnNewMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnNewMouseClicked
-        NewProduct prd = new NewProduct(this, this.user);
-        prd.setVisible(true);
+//        NewProduct prd = new NewProduct(this, this.user);
+//        prd.setVisible(true);
     }//GEN-LAST:event_btnNewMouseClicked
 
     private void btnUpdateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnUpdateMouseClicked
-        if (tblProduct.getSelectedRow() < 0) {
-            return;
-        }
-        ProductInfo pi = temp.get(tblProduct.getSelectedRow());
-        UpdateProduct prd = new UpdateProduct(this, pi, pi.getUser(), this.user);
-        prd.setVisible(true);
+//        if (tblProduct.getSelectedRow() < 0) {
+//            return;
+//        }
+//        ProductInfo pi = temp.get(tblProduct.getSelectedRow());
+//        UpdateProduct prd = new UpdateProduct(this, pi, pi.getUser(), this.user);
+//        prd.setVisible(true);
     }//GEN-LAST:event_btnUpdateMouseClicked
 
     private void btnDeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDeleteMouseClicked
