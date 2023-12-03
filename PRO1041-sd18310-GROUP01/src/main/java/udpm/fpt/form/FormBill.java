@@ -90,13 +90,12 @@ public final class FormBill extends javax.swing.JPanel {
         model.addColumn("Mã hóa đơn");
         model.addColumn("Trạng thái");
         model.setRowCount(0);
-        List<Bill> hdctt = list.stream().filter(hd -> hd.getPaymentStatus().equals("Pending")).toList();
+        List<Bill> hdctt = list.stream().filter(hd -> hd.getPaymentStatus().equals("Pending")&&hd.getCustomerId()==null).toList();
         for (Bill hoaDon : hdctt) {
             Object[] row = new Object[]{
                 hoaDon.getId(),
                 hoaDon.getPaymentStatus()
             };
-
             model.addRow(row);
         }
     }
@@ -532,6 +531,7 @@ public final class FormBill extends javax.swing.JPanel {
                     Customer sc = new Customer();
                     sc.setId(Integer.valueOf(txtIDCustomer.getText()));
                     hd.setCustomerId(sc);
+                    hd.setPaymentStatus("Pending");
                 }
                 if (tblShoppingCart.getRowCount() == 0) {
                     new Notification(Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP,
@@ -553,10 +553,9 @@ public final class FormBill extends javax.swing.JPanel {
             loadHoaDonChiTiet(0);
             new Notification(Notification.Type.SUCCESS, Notification.Location.DEFAULT_DESKTOP,
                     "Success!").showNotification();
-            return;
         }
-        loadHoaDon(HOA_DON_REPO);
-
+        
+        loadHoaDon(HOA_DON_REPO);      
     }//GEN-LAST:event_btnThanhToanActionPerformed
 
     private void tblBillMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblBillMouseClicked
