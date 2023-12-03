@@ -10,27 +10,33 @@ import java.sql.*;
  * @author Thanh Dat
  */
 public class DBConnect1 {
-    public static String db = "THTrueMilk";
-    public static String port = "1433";
-    public static String username = "sa";
-    public static String password = "sa";
-    public static String server = "DAT\\SQLEXPRESS";
-    public static String url = "jdbc:sqlserver://DAT\\SQLEXPRESS:1433;databaseName=THTrueMilk;encrypt=true;trustServerCertificate=true;username=sa;password=sa;";   
-    public static Connection  getConnection(){ 
-        Connection conn ;
-        try{
-            conn = DriverManager.getConnection(url, username, password);
-            return conn;
-        }catch(Exception e){
-            e.printStackTrace();
+     public static final String HOSTNAME = "localhost";
+    public static final String PORT = "1433";
+    public static final String DBNAME = "THTrueMilk";
+    public static final String USERNAME = "sa";
+    public static final String PASSWORD = "sa";
+
+    public static java.sql.Connection getConnection() {
+        // Create a variable for the connection string.
+        String connectionUrl = "jdbc:sqlserver://" + HOSTNAME + ":" + PORT + ";"
+                + "databaseName=" + DBNAME + ";encrypt=true;trustservercertificate=true;";
+        try {
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            return DriverManager.getConnection(connectionUrl, USERNAME, PASSWORD);
+
+        } // Handle any errors that may have occurred.
+        catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace(System.out);
         }
         return null;
     }
-    public static void main(String[] args) {
-        if(getConnection() != null){
-            System.out.println("Kết nối thành công");
-        }else{
-            System.out.println("Kết nối thất bại");
-        }
+
+    public static void main(String[] args) throws SQLException {
+        java.sql.Connection conn = getConnection();
+        DatabaseMetaData dbmt = conn.getMetaData();
+        System.out.println(dbmt.getDriverName());
+        System.out.println(dbmt.getDatabaseProductName());
+        System.out.println(dbmt.getDatabaseProductVersion());
+
     }
 }
