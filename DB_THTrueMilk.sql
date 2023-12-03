@@ -4,6 +4,11 @@ Pasword: 123
 server: localhost
 Port: 1433
 */
+/*USE HELLO
+GO
+DROP DATABASE THTrueMilk
+GO
+*/
 CREATE DATABASE THTrueMilk
 GO
 USE THTrueMilk
@@ -220,7 +225,8 @@ CREATE TABLE [Bill]
     [tax]                    MONEY,
     [total_amount_after_tax] MONEY,
     [notes]                  NVARCHAR(MAX),
-    [created_at]             DATETIME DEFAULT GETDATE()
+    [created_at]             DATETIME DEFAULT GETDATE(),
+    [shopping_method]		 NVARCHAR(MAX)
 )
 GO
 CREATE TABLE [BillDetails]
@@ -376,16 +382,24 @@ INSERT INTO [Users] ([username], [password], [role])
 VALUES ('Admin', '$2a$10$roI7ElW8vMZ/aa/ndvev5ekg.szrhPLnsihszv5fyi1moKL5DNrN2', 'Admin'),
        ('NongHoangVu04', '$2a$10$ALO4bzEz7frQ0XHXyU3a/ehNCLg1MC2ROOWQNuoRs7tpNpwsYvVEO', 'Admin'),
        ('Employee001', '$2a$10$roI7ElW8vMZ/aa/ndvev5ekg.szrhPLnsihszv5fyi1moKL5DNrN2', 'User'),
-       ('convitcute', '$2a$10$roI7ElW8vMZ/aa/ndvev5ekg.szrhPLnsihszv5fyi1moKL5DNrN2', 'User');
+       ('convitcute', '$2a$10$roI7ElW8vMZ/aa/ndvev5ekg.szrhPLnsihszv5fyi1moKL5DNrN2', 'User'),
+       ('Employee006', '$2a$10$roI7ElW8vMZ/aa/ndvev5ekg.szrhPLnsihszv5fyi1moKL5DNrN2', 'User');
 GO
-INSERT INTO [UserDetails] ([user_id], [fullname], [tel], [email], [photo], [address], [birthdate], [citizen_id],
-                           [job_position], [status], [note])
-VALUES (1, N'AdminUser', N'123-456-7890', N'admin@example.com', N'admin.jpg', N'123 Main St, City', '1990-01-01',
-        N'1234567890', N'Admin', N'Active', N'Admin User');
+
+INSERT INTO Salary (salary_type, salary_mount, [status])
+VALUES ('Monthly salary', 8000000, 'Active'),
+       ('Hourly wage', 21000, 'Active')
+go
+
+INSERT INTO [UserDetails] ([user_id], [salary_id], [fullname], [gender], [tel], [email], [photo], [address], [birthdate], [citizen_id], [job_position], [note], [status])
+VALUES
+    (1, 1, N'John Doe', N'Male', N'1234567890', N'john.doe@example.com', N'photo1.jpg', N'123 Main St, City', '1990-01-01', N'123456789', N'Manager', N'This is a note for John Doe', N'Active'),
+    (2, 2, N'Jane Smith', N'Female', N'9876543210', N'jane.smith@example.com', N'photo2.jpg', N'456 Oak St, Town', '1985-05-15', N'987654321', N'Engineer', N'This is a note for Jane Smith', N'Active'),
+    (3, 2, N'Bob Johnson', N'Male', N'5551112222', N'bob.johnson@example.com', N'photo3.jpg', N'789 Pine St, Village', '1982-11-30', N'555111222', N'Analyst', N'This is a note for Bob Johnson', N'Active'),
+    (4, 2, N'Alice Brown', N'Female', N'7778889999', N'alice.brown@example.com', N'photo4.jpg', N'321 Elm St, County', '1988-07-20', N'777888999', N'Developer', N'This is a note for Alice Brown', N'Active'),
+    (5, 1, N'Michael White', N'Male', N'9990001111', N'michael.white@example.com', N'photo5.jpg', N'654 Birch St, State', '1995-03-10', N'999000111', N'Sales', N'This is a note for Michael White', N'Active');
 GO
-INSERT INTO Salary (salary_type, salary_mount, status)
-VALUES ('A', 131112, 'Active'),
-       ('B', 131112, 'Active')
+
 INSERT INTO [Flavor] ([taste], [user_id])
 VALUES (N'Ngọt', 1),
        ('Chocolate', 2),
@@ -473,17 +487,17 @@ INSERT INTO [Customer] ([id], [fullname], [phone], [email], [birth_year], [addre
 VALUES (2, N'Jane Smith', N'777-777-7777', N'jane.smith@example.com', 1975, N'456 Oak St, Town', 2, N'VIP customer');
 GO
 INSERT INTO [Bill] ([id], [customer_id], [payment_menthod], [payment_status], [coupon_id], [tax],
-                    [total_amount_after_tax], [notes], [created_at])
-VALUES (1, 1, N'Credit Card', N'Paid', 1, 0.05, 105.00, N'Note 1', '2023-11-25 13:34:00'),
-       (2, 2, N'PayPal', N'Pending', 2, 0.10, 110.00, N'Note 2', '2023-11-25 13:34:00'),
-       (3, 1, N'Cash', N'Unpaid', 3, 0.15, 115.00, N'Note 3', '2023-11-25 13:34:00'),
-       (4, 2, N'Credit Card', N'Paid', 4, 0.20, 120.00, N'Note 4', '2023-11-25 13:34:00'),
-       (5, 2, N'PayPal', N'Pending', 5, 0.25, 125.00, N'Note 5', '2023-11-25 13:34:00'),
-       (6, 1, N'Cash', N'Unpaid', 1, 0.30, 130.00, N'Note 6', '2023-11-25 13:34:00'),
-       (7, 2, N'Credit Card', N'Paid', 2, 0.35, 135.00, N'Note 7', '2023-11-25 13:34:00'),
-       (8, 2, N'PayPal', N'Pending', 3, 0.40, 140.00, N'Note 8', '2023-11-25 13:34:00'),
-       (9, 1, N'Cash', N'Unpaid', 4, 0.45, 145.00, N'Note 9', '2023-11-25 13:34:00'),
-       (10, 2, N'Credit Card', N'Paid', 5, 0.50, 150.00, N'Note 10', '2023-11-25 13:34:00');
+                    [total_amount_after_tax], [notes], [created_at], [shopping_method])
+VALUES (1, 1, N'Credit Card', N'Paid', 1, 0.05, 105.00, N'Note 1', '2023-11-25 13:34:00', N'directly'),
+       (2, 2, N'PayPal', N'Pending', 2, 0.10, 110.00, N'Note 2', '2023-11-25 13:34:00', N'directly'),
+       (3, 1, N'Cash', N'Unpaid', 3, 0.15, 115.00, N'Note 3', '2023-11-25 13:34:00', N'directly'),
+       (4, 2, N'Credit Card', N'Paid', 4, 0.20, 120.00, N'Note 4', '2023-11-25 13:34:00', N'directly'),
+       (5, 2, N'PayPal', N'Pending', 5, 0.25, 125.00, N'Note 5', '2023-11-25 13:34:00', N'delivery'),
+       (6, 1, N'Cash', N'Unpaid', 1, 0.30, 130.00, N'Note 6', '2023-11-25 13:34:00', N'delivery'),
+       (7, 2, N'Credit Card', N'Paid', 2, 0.35, 135.00, N'Note 7', '2023-11-25 13:34:00', N'delivery'),
+       (8, 2, N'PayPal', N'Pending', 3, 0.40, 140.00, N'Note 8', '2023-11-25 13:34:00', N'delivery'),
+       (9, 1, N'Cash', N'Unpaid', 4, 0.45, 145.00, N'Note 9', '2023-11-25 13:34:00', N'delivery'),
+       (10, 2, N'Credit Card', N'Paid', 5, 0.50, 150.00, N'Note 10', '2023-11-25 13:34:00', N'delivery');
 
 INSERT INTO [Status] ([statusname])
 VALUES (N'Chờ giao hàng');
