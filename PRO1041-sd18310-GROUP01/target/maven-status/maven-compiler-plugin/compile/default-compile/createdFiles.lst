@@ -32,6 +32,7 @@ udpm\fpt\component\NewProductForm.class
 udpm\fpt\swing\table\TableActionCellRender.class
 udpm\fpt\swing\shadow\ShadowRenderer.class
 udpm\fpt\component\UnitManagement.class
+udpm\fpt\model\ProductInfoByCriteria.class
 udpm\fpt\form\UserManagementForm$5.class
 udpm\fpt\repository\IBillDetails_Respository.class
 udpm\fpt\component\Notification.class

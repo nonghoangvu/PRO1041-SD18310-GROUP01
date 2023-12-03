@@ -50,6 +50,8 @@ public class NewProduct extends javax.swing.JFrame {
     public void setTextField() {
         ((AbstractDocument) txtBarcode.getDocument()).setDocumentFilter(new NumberOnlyFilter());
         ((AbstractDocument) txtPrice.getDocument()).setDocumentFilter(new NumberOnlyFilter());
+        txtExpirationDate.setText("00-00-0000");
+        txtProductionDate.setText("00-00-0000");
         txtAmount.addChangeListener((ChangeEvent e) -> {
             int value = (int) txtAmount.getValue();
             if (value < 0) {

@@ -38,6 +38,12 @@ public class ProductService {
         }, Executors.newCachedThreadPool());
     }
 
+    public CompletableFuture<List<ProductInfo>> loadASearch(ProductInfoByCriteria data) {
+        return CompletableFuture.supplyAsync(() -> {
+            return Collections.unmodifiableList(r.findProductInfoByCriteria(data.getProductName(), data.getFlavor(), data.getPackagingType(), data.getMeasurementUnit(), data.getVolume(), data.getEntryDate(), data.getMinQuantity(), data.getMaxQuantity(), data.getMinPrice(), data.getMaxPrice()));
+        }, Executors.newCachedThreadPool());
+    }
+
     public CompletableFuture<List<ProductInfo>> loadSearch(String search) {
         return CompletableFuture.supplyAsync(() -> {
             return r.findProductInfo(search);
@@ -113,7 +119,7 @@ public class ProductService {
 
     public Boolean insertProduct(Milk m, ProductInfo pi) {
         if (iMilk.findAllById(m.getId()) == null) {
-            if (this.iMilk.save(m) != null && r.save(pi) != null) {
+            if (r.save(pi) != null) {
                 return this.historyProduct.trackHistory("New product has been added with ID " + m.getId(), pi.getUser().getUsername(), HistoryProductService.ChangeType.NEW);
             }
         }
