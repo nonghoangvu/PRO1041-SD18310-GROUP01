@@ -32,6 +32,7 @@ udpm\fpt\component\NewProductForm.class
 udpm\fpt\swing\table\TableActionCellRender.class
 udpm\fpt\swing\shadow\ShadowRenderer.class
 udpm\fpt\component\UnitManagement.class
+udpm\fpt\model\ProductInfoByCriteria.class
 udpm\fpt\form\UserManagementForm$5.class
 udpm\fpt\repository\IBillDetails_Respository.class
 udpm\fpt\component\Notification.class
@@ -176,6 +177,7 @@ udpm\fpt\model\Customer.class
 udpm\fpt\component\PanelAction.class
 udpm\fpt\form\UserManagementForm$4.class
 udpm\fpt\swing\ImageAvatar.class
+udpm\fpt\form\FormBill$8.class
 udpm\fpt\component\UpdateProduct.class
 udpm\fpt\form\UserManagementForm$11.class
 udpm\serviceDelivery\Service.class
@@ -271,6 +273,7 @@ udpm\fpt\component\UpdateProduct$4.class
 udpm\fpt\component\UpdateUser.class
 udpm\fpt\component\Notification$1.class
 udpm\fpt\model\Status.class
+udpm\fpt\form\FormBill$9.class
 udpm\fpt\form\KhachHangForm.class
 udpm\fpt\component\IMG.class
 udpm\fpt\form\UserManagementForm$12.class
@@ -316,6 +319,7 @@ udpm\fpt\repository\ISaleMilk.class
 udpm\fpt\component\UpdateProduct$1.class
 udpm\fpt\component\ViewDelete$2.class
 udpm\fpt\swing\TextArea$2.class
+udpm\fpt\form\FormBill$7.class
 udpm\fpt\component\AddNewUser$5.class
 udpm\fpt\component\PackagingSpecificationManagement.class
 udpm\fpt\component\PanelAction$3.class
