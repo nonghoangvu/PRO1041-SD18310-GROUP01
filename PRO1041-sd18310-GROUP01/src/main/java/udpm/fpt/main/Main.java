@@ -1,6 +1,7 @@
 package udpm.fpt.main;
 
 import java.awt.Image;
+
 import udpm.fpt.component.MenuLayout;
 import udpm.fpt.form.*;
 
@@ -15,6 +16,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
 import javax.swing.SwingUtilities;
+
 import net.miginfocom.swing.MigLayout;
 import org.jdesktop.animation.timing.Animator;
 import org.jdesktop.animation.timing.TimingTarget;
@@ -31,14 +33,14 @@ import udpm.fpt.form.UserManagementForm;
 import udpm.fpt.model.User;
 
 public class Main extends javax.swing.JFrame {
-    
+
     private User user;
     public final String ADMIN_ROLE = "Admin";
     private final MigLayout layout;
     private final MainForm main;
     private final MenuLayout menu;
     private final Animator animator;
-    
+
     public Main(User user) {
         initComponents();
         openDefault();
@@ -73,7 +75,7 @@ public class Main extends javax.swing.JFrame {
                 menu.setAlpha(alpha);
                 mainPanel.revalidate();
             }
-            
+
             @Override
             public void end() {
                 menu.setShow(!menu.isShow());
@@ -81,7 +83,7 @@ public class Main extends javax.swing.JFrame {
                     menu.setVisible(false);
                 }
             }
-            
+
         };
         animator = new Animator(200, target);
         menu.addMouseListener(new MouseAdapter() {
@@ -130,32 +132,35 @@ public class Main extends javax.swing.JFrame {
                         showAccessWarning();
                     }
                 }
-                case 4->{
+                case 4 -> {
                     main.show(new KhachHangForm());
                 }
                 case 6 -> {
                     main.show(new Setting(this.user, this));
                 }
-                case 7 ->{
+                case 7 -> {
                     main.show(new DeliveryNoteFrom(this.user));
                 }
                 case 8 -> {
                     new Login().setVisible(true);
                     this.dispose();
                 }
-                case 9 ->{
+                case 9 -> {
                     if (ADMIN_ROLE.equalsIgnoreCase(this.user.getRole())) {
                         main.show(new SaleMilkForm());
                     } else {
                         showAccessWarning();
                     }
                 }
-                 case 10 ->{
+                case 10 -> {
                     if (ADMIN_ROLE.equalsIgnoreCase(this.user.getRole())) {
-                        main.show(new FormBill(this.user));
+                        main.show(new SaleBill());
                     } else {
                         showAccessWarning();
                     }
+                }
+                case 11 -> {
+                    main.show(new FormBill(this.user));
                 }
                 default -> {
                     System.out.println("index: " + index);
@@ -163,22 +168,21 @@ public class Main extends javax.swing.JFrame {
             }
         });
     }
-    
+
     private void showAccessWarning() {
         Notification notification = new Notification(this, Notification.Type.WARNING, Notification.Location.TOP_RIGHT, new BcryptHash().decodeBase64("T25seSBhZG1pbmlzdHJhdG9ycyBoYXZlIGFjY2Vzcw=="));
         notification.showNotification();
         main.show(new Home());
     }
-    
+
     public enum SizeOption {
         FULL_SIZE, DEFAULT_SIZE
     }
-    
+
     public void settingSize(SizeOption setSize) {
         if (null != setSize) {
             switch (setSize) {
-                case FULL_SIZE ->
-                    this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                case FULL_SIZE -> this.setExtendedState(JFrame.MAXIMIZED_BOTH);
                 case DEFAULT_SIZE -> {
                     this.setSize(1500, 850);
                     this.setLocationRelativeTo(null);
@@ -189,7 +193,7 @@ public class Main extends javax.swing.JFrame {
             }
         }
     }
-    
+
     public String readFile() {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("Setting.ser"))) {
             return (String) ois.readObject();
@@ -197,7 +201,7 @@ public class Main extends javax.swing.JFrame {
             return null;
         }
     }
-    
+
     private void openDefault() {
         if (readFile() == null) {
             settingSize(SizeOption.DEFAULT_SIZE);
@@ -207,19 +211,19 @@ public class Main extends javax.swing.JFrame {
             settingSize(SizeOption.FULL_SIZE);
         }
     }
-    
+
     public void notificationShowWARNING(String message) {
         new Notification(this, Notification.Type.WARNING, Notification.Location.TOP_RIGHT, message).showNotification();
     }
-    
+
     public void notificationShowINFO(String message) {
         new Notification(this, Notification.Type.INFO, Notification.Location.TOP_RIGHT, message).showNotification();
     }
-    
+
     public void notificationShowSUCCESS(String message) {
         new Notification(this, Notification.Type.SUCCESS, Notification.Location.TOP_RIGHT, message).showNotification();
     }
-    
+
     @SuppressWarnings("unchecked")
 
     // <editor-fold defaultstate="collapsed" desc="Generated
@@ -239,23 +243,23 @@ public class Main extends javax.swing.JFrame {
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
-            mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1500, Short.MAX_VALUE)
+                mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 1500, Short.MAX_VALUE)
         );
         mainPanelLayout.setVerticalGroup(
-            mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 850, Short.MAX_VALUE)
+                mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 850, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(mainPanel)
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(mainPanel)
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(mainPanel)
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(mainPanel)
         );
 
         pack();
