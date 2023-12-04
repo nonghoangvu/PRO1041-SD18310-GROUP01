@@ -251,12 +251,12 @@ public class UserManagementForm extends javax.swing.JPanel {
     }
 
     public User updateUser(UserDetails preDetails) {
-        User user = new User();
-        user.setId(preDetails.getUser().getId());
-        user.setUsername(txtUsername.getText());
-        user.setPassword(new BcryptHash().hashPassword(String.valueOf(txtPassword.getPassword()).trim()));
-        user.setRole((rdoAdmin.isSelected() ? "Admin" : "User"));
-        return user;
+        User newuser = new User();
+        newuser.setId(preDetails.getUser().getId());
+        newuser.setUsername(txtUsername.getText());
+        newuser.setPassword(new BcryptHash().hashPassword(String.valueOf(txtPassword.getPassword()).trim()));
+        newuser.setRole((rdoAdmin.isSelected() ? "Admin" : "User"));
+        return newuser;
     }
 
     public UserDetails updateUserDetails(UserDetails preDetails) {
