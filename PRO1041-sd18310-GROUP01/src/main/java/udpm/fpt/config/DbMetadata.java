@@ -5,7 +5,7 @@ public final class DbMetadata {
     private static final String PASSWORD = "sa";
     private static final String SERVER = "localhost";
     private static final String PORT = "1433";
-    private static final String DATABASE_NAME = "THTrueMilk2";
+    private static final String DATABASE_NAME = "THTrueMilk";
     private static final boolean USING_SSL = true;
     private static final String CONNECT_STRING;
 
