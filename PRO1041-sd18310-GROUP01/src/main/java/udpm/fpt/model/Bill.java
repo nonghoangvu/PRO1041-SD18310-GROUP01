@@ -36,10 +36,10 @@ public class Bill {
     @JoinColumn (name = "customer_id")
     private Customer customerId;
     @Column(name = "payment_menthod", length = 50)
-    private String paymentMethod;
+    private String payment_method;
 
     @Column(name = "payment_status", length = 50)
-    private String paymentStatus;
+    private String payment_status;
 
     @Column(name = "coupon_id")
     private Integer couponId;

@@ -5,6 +5,7 @@ udpm\fpt\servicce\UserService.class
 udpm\fpt\component\NewProduct$8.class
 udpm\fpt\form\MainForm.class
 udpm\fpt\model\Sale_Bill1.class
+udpm\fpt\component\UpdateProduct$7.class
 udpm\fpt\form\History$3.class
 udpm\fpt\swing\table\TableCustom$TableType.class
 udpm\fpt\form\UserManagementForm$10.class
@@ -224,6 +225,7 @@ udpm\fpt\form\DeliveryNoteFrom$6.class
 udpm\fpt\form\ProductManagement$10.class
 udpm\fpt\form\UserForm$3.class
 udpm\fpt\model\DeliveryNote.class
+udpm\fpt\form\ProductManagementForm$2.class
 udpm\fpt\form\DeliveryNoteFrom$12.class
 udpm\fpt\component\NewProduct$2.class
 udpm\fpt\form\ProductManagement$4.class
@@ -257,6 +259,7 @@ udpm\fpt\form\UserManagementForm$1.class
 udpm\fpt\component\MessagePanel.class
 udpm\fpt\config\DBConnect1.class
 udpm\fpt\component\AddNewUser$4.class
+udpm\fpt\form\FormBill$10.class
 udpm\fpt\repository\ICustomer_Resposutory.class
 udpm\fpt\form\SaleMilkForm$7.class
 udpm\fpt\component\Notification$2.class
@@ -283,6 +286,7 @@ udpm\fpt\component\NewProduct$6.class
 udpm\fpt\model\KhachHang.class
 udpm\fpt\component\AddNewUser$9.class
 udpm\fpt\form\DeliveryNoteFrom$2.class
+udpm\fpt\form\FormBill$11.class
 udpm\fpt\main\Main$2.class
 udpm\fpt\swing\table\HoverIndex.class
 udpm\fpt\component\MenuLayout$1.class

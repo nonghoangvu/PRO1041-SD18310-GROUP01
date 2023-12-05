@@ -9,27 +9,28 @@ import java.util.concurrent.CompletableFuture;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 import udpm.fpt.form.FormBill;
-import udpm.fpt.model.Bill;
 import udpm.fpt.model.Customer;
-import udpm.fpt.model.DeliveryNote;
 import udpm.fpt.servicce.BillService;
 
 /**
  *
  * @author PHONG PC
  */
-public class ChooseCustomersForm extends javax.swing.JFrame {
+public final class ChooseCustomersForm extends javax.swing.JFrame {
     FormBill form;
-    private BillService sv = new BillService();
+    private final BillService sv = new BillService();
 
     /**
      * Creates new form ChooseCustomersForm
+     * @param bill
      */
     public ChooseCustomersForm(FormBill bill) {
         initComponents();
         this.setLocationRelativeTo(null);
         loadDataCustomer();
         form =bill;
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        this.setResizable(false);
     }
 
     public void loadDataCustomer() {
@@ -69,9 +70,6 @@ public class ChooseCustomersForm extends javax.swing.JFrame {
 
             model.addRow(row);
         }
-    }
-    public void search(){
-        
     }
 
 
