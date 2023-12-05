@@ -23,6 +23,7 @@ import udpm.fpt.Utitlity.DiscountCalculator;
 import udpm.fpt.component.IMG;
 import udpm.fpt.component.MessagePanel;
 import udpm.fpt.component.NewProduct;
+import udpm.fpt.component.Replenishment;
 import udpm.fpt.component.UpdateProduct;
 import udpm.fpt.main.Main;
 import udpm.fpt.model.Flavor;
@@ -65,7 +66,7 @@ public class ProductForm extends javax.swing.JPanel {
         setTxtEntryToDate();
         setNumberTexfield();
         loadComboBox();
-        loadDataAndFillTable();
+        loadDataAndFillTable(loadTableType.ALL);
     }
 
     /*-------------------Format data------------------*/
@@ -116,7 +117,8 @@ public class ProductForm extends javax.swing.JPanel {
         ((AbstractDocument) txtQuantityMax.getDocument()).setDocumentFilter(new NumberOnlyFilter());
         ((AbstractDocument) txtPriceMin.getDocument()).setDocumentFilter(new NumberOnlyFilter());
         ((AbstractDocument) txtPriceMax.getDocument()).setDocumentFilter(new NumberOnlyFilter());
-//        ((AbstractDocument) txtVolume.getDocument()).setDocumentFilter(new NumberOnlyFilter());
+        // ((AbstractDocument) txtVolume.getDocument()).setDocumentFilter(new
+        // NumberOnlyFilter());
         txtEntryDate.setText("00-00-0000");
     }
 
@@ -131,7 +133,7 @@ public class ProductForm extends javax.swing.JPanel {
 
     public void setData(String data) {
         lbId.setText(data);
-        loadDataAndFillTable();
+        loadDataAndFillTable(loadTableType.ALL);
         loadDataAndFillFlavor();
         loadDataAndFillPackagingSpecification();
     }
@@ -141,7 +143,8 @@ public class ProductForm extends javax.swing.JPanel {
         try {
             int labelWidth = lbproductgallery.getWidth();
             int labelHeight = lbproductgallery.getHeight();
-            ImageIcon originalIcon = new javax.swing.ImageIcon(Objects.requireNonNull(getClass().getResource("/ProductGallery/" + url)));
+            ImageIcon originalIcon = new javax.swing.ImageIcon(
+                    Objects.requireNonNull(getClass().getResource("/ProductGallery/" + url)));
             Image originalImage = originalIcon.getImage();
             Image scaledImage = originalImage.getScaledInstance(labelWidth, labelHeight, Image.SCALE_SMOOTH);
             ImageIcon scaledIcon = new ImageIcon(scaledImage);
@@ -171,14 +174,38 @@ public class ProductForm extends javax.swing.JPanel {
         setImange(pi.getMilk().getImg());
     }
 
-    /*-------------------------------------------Run stream processing-------------------------------------------*/
- /*1. Load to table*/
-    public void loadDataAndFillTable() {
-        CompletableFuture<List<ProductInfo>> future = this.list.loadAsync();
-        future.thenAcceptAsync(data -> {
-            SwingUtilities.invokeLater(() -> {
+    private void clearCatelogy() {
+        cbbSearchType.setSelectedIndex(0);
+        txtSearch.setText("");
+        cbbTaste.setSelectedIndex(0);
+        cbbPackagingSpecification.setSelectedIndex(0);
+        txtVolume.setText("");
+        cbbUnit.setSelectedIndex(0);
+        txtEntryDate.setText("00-00-000");
+        cbbCheckExpiry.setSelectedIndex(0);
+        txtQuantityMin.setText("0");
+        txtQuantityMax.setText("0");
+        txtPriceMin.setText("0");
+        txtPriceMax.setText("0");
+    }
 
-                updateTable(data);
+    /*-------------------------------------------Run stream processing-------------------------------------------*/
+    public enum loadTableType {
+        ALL, ACTIVE, OUTOFSTOCK, HIDDEN
+    }
+
+    /* 1. Load to table */
+    public void loadDataAndFillTable(loadTableType type) {
+        CompletableFuture<List<ProductInfo>> future = this.list.loadAsync();
+        future.thenAcceptAsync((var data) -> {
+            SwingUtilities.invokeLater(() -> {
+                switch (type) {
+                    case ALL -> updateTableAll(data);
+                    case ACTIVE -> updateTableActive(data);
+                    case OUTOFSTOCK -> updateTableOutOfStock(data);
+                    case HIDDEN -> updateTableHidden(data);
+                    default -> throw new AssertionError();
+                }
             });
         }).exceptionally(throwable -> {
             throwable.printStackTrace(System.out);
@@ -186,12 +213,12 @@ public class ProductForm extends javax.swing.JPanel {
         });
     }
 
-    private void updateTable(List<ProductInfo> data) {
+    private void updateTableAll(List<ProductInfo> data) {
         this.temp.clear();
         tblModel = (DefaultTableModel) tblProduct.getModel();
         tblModel.setRowCount(0);
         for (ProductInfo prd : data) {
-            if(!prd.getMilk().getIsDelete()){
+            if (!prd.getMilk().getIsDelete()) {
                 this.temp.add(prd);
                 Object[] rowData = {
                         prd.getMilk().getId(),
@@ -208,7 +235,73 @@ public class ProductForm extends javax.swing.JPanel {
         lbCountPorduct.setText(String.valueOf(this.temp.size()));
     }
 
-    /*2. Load to flavor*/
+    private void updateTableActive(List<ProductInfo> data) {
+        this.temp.clear();
+        tblModel = (DefaultTableModel) tblProduct.getModel();
+        tblModel.setRowCount(0);
+        for (ProductInfo prd : data) {
+            if (!prd.getMilk().getIsDelete()) {
+                this.temp.add(prd);
+                Object[] rowData = {
+                        prd.getMilk().getId(),
+                        prd.getMilk().getProduct_name(),
+                        prd.getFlavor().getTaste(),
+                        prd.getVolume() + " " + prd.getUnit().getMeasurement_unit(),
+                        prd.getMilk().getAmount(),
+                        prd.getCreate_at(),
+                        setSelectedIndex(priceUpdate(prd.getMilk().getId(), prd.getMilk().getPrice())) + " VND"
+                };
+                tblModel.addRow(rowData);
+            }
+        }
+        lbCountPorduct.setText(String.valueOf(this.temp.size()));
+    }
+
+    private void updateTableOutOfStock(List<ProductInfo> data) {
+        this.temp.clear();
+        tblModel = (DefaultTableModel) tblProduct.getModel();
+        tblModel.setRowCount(0);
+        for (ProductInfo prd : data) {
+            if (prd.getMilk().getAmount() < 1) {
+                this.temp.add(prd);
+                Object[] rowData = {
+                        prd.getMilk().getId(),
+                        prd.getMilk().getProduct_name(),
+                        prd.getFlavor().getTaste(),
+                        prd.getVolume() + " " + prd.getUnit().getMeasurement_unit(),
+                        prd.getMilk().getAmount(),
+                        prd.getCreate_at(),
+                        setSelectedIndex(priceUpdate(prd.getMilk().getId(), prd.getMilk().getPrice())) + " VND"
+                };
+                tblModel.addRow(rowData);
+            }
+        }
+        lbCountPorduct.setText(String.valueOf(this.temp.size()));
+    }
+
+    private void updateTableHidden(List<ProductInfo> data) {
+        this.temp.clear();
+        tblModel = (DefaultTableModel) tblProduct.getModel();
+        tblModel.setRowCount(0);
+        for (ProductInfo prd : data) {
+            if (prd.getMilk().getIsDelete()) {
+                this.temp.add(prd);
+                Object[] rowData = {
+                        prd.getMilk().getId(),
+                        prd.getMilk().getProduct_name(),
+                        prd.getFlavor().getTaste(),
+                        prd.getVolume() + " " + prd.getUnit().getMeasurement_unit(),
+                        prd.getMilk().getAmount(),
+                        prd.getCreate_at(),
+                        setSelectedIndex(priceUpdate(prd.getMilk().getId(), prd.getMilk().getPrice())) + " VND"
+                };
+                tblModel.addRow(rowData);
+            }
+        }
+        lbCountPorduct.setText(String.valueOf(this.temp.size()));
+    }
+
+    /* 2. Load to flavor */
     public void loadDataAndFillFlavor() {
         CompletableFuture<List<Flavor>> future = this.list.loadFlavor();
         future.thenAcceptAsync(data -> {
@@ -233,7 +326,7 @@ public class ProductForm extends javax.swing.JPanel {
         }
     }
 
-    /*3. Load to packaging specification*/
+    /* 3. Load to packaging specification */
     public void loadDataAndFillPackagingSpecification() {
         CompletableFuture<List<PackagingSpecification>> future = this.list.loadPackagingSpecification();
         future.thenAcceptAsync(data -> {
@@ -256,7 +349,7 @@ public class ProductForm extends javax.swing.JPanel {
         for (PackagingSpecification specification : data) {
             cbbModel.addElement(specification);
         }
-    }/*4. Load to unit*/
+    }/* 4. Load to unit */
 
     public void loadDataAndFillUnit() {
         CompletableFuture<List<Unit>> future = this.list.loadUnit();
@@ -284,13 +377,13 @@ public class ProductForm extends javax.swing.JPanel {
 
     private void loadTypeCheckExpiry() {
         String[] months = {
-            "Valid",
-            "Expires in 5 months",
-            "Expires in 4 months",
-            "Expires in 3 months",
-            "Expires in 2 months",
-            "Expires in 1 month",
-            "Expired"
+                "Valid",
+                "Expires in 5 months",
+                "Expires in 4 months",
+                "Expires in 3 months",
+                "Expires in 2 months",
+                "Expires in 1 month",
+                "Expired"
         };
         for (String s : months) {
             cbbCheckExpiry.addItem(s);
@@ -299,8 +392,8 @@ public class ProductForm extends javax.swing.JPanel {
 
     private void loadTypeSearch() {
         String[] type = {
-            "Product's name",
-            "Product code"
+                "Product's name",
+                "Product code"
         };
         for (String s : type) {
             cbbSearchType.addItem(s);
@@ -311,18 +404,24 @@ public class ProductForm extends javax.swing.JPanel {
         ProductInfoByCriteria dataSearch = new ProductInfoByCriteria();
         Flavor flavor = (Flavor) cbbTaste.getSelectedItem();
         Unit unit = (Unit) cbbUnit.getSelectedItem();
-        PackagingSpecification packagingSpecification = (PackagingSpecification) cbbPackagingSpecification.getSelectedItem();
+        PackagingSpecification packagingSpecification = (PackagingSpecification) cbbPackagingSpecification
+                .getSelectedItem();
         dataSearch.setProductName(txtSearch.getText().isBlank() ? null : txtSearch.getText().trim());
         assert flavor != null;
         dataSearch.setFlavor(flavor.getTaste().equals("All") ? null : flavor.getTaste().trim());
         assert packagingSpecification != null;
-        dataSearch.setPackagingType(packagingSpecification.getPackaging_type().equals("All") ? null : packagingSpecification.getPackaging_type());
+        dataSearch.setPackagingType(packagingSpecification.getPackaging_type().equals("All") ? null
+                : packagingSpecification.getPackaging_type());
         assert unit != null;
-        dataSearch.setMeasurementUnit(unit.getMeasurement_unit().equals("All") ? null : unit.getMeasurement_unit().trim());
-        dataSearch.setVolume(txtVolume.getText().trim().isBlank() ? null : Float.parseFloat(txtVolume.getText().trim()));
+        dataSearch.setMeasurementUnit(
+                unit.getMeasurement_unit().equals("All") ? null : unit.getMeasurement_unit().trim());
+        dataSearch
+                .setVolume(txtVolume.getText().trim().isBlank() ? null : Float.parseFloat(txtVolume.getText().trim()));
         dataSearch.setEntryDate(getDateFormatSQL(txtEntryDate.getText()));
-        dataSearch.setMinQuantity(txtQuantityMin.getText().isBlank() ? 0 : Integer.parseInt(txtQuantityMin.getText().trim()));
-        dataSearch.setMaxQuantity(txtQuantityMax.getText().isBlank() ? null : Integer.parseInt(txtQuantityMax.getText().trim()));
+        dataSearch.setMinQuantity(
+                txtQuantityMin.getText().isBlank() ? 0 : Integer.parseInt(txtQuantityMin.getText().trim()));
+        dataSearch.setMaxQuantity(
+                txtQuantityMax.getText().isBlank() ? null : Integer.parseInt(txtQuantityMax.getText().trim()));
         dataSearch.setMinPrice(txtPriceMin.getText().isBlank() ? 0 : Integer.parseInt(txtPriceMin.getText().trim()));
         dataSearch.setMaxPrice(txtPriceMax.getText().isBlank() ? null : Integer.parseInt(txtPriceMax.getText().trim()));
         CompletableFuture<List<ProductInfo>> future = this.list.loadASearch(dataSearch);
@@ -344,19 +443,18 @@ public class ProductForm extends javax.swing.JPanel {
         for (ProductInfo prd : data) {
             this.temp.add(prd);
             Object[] rowData = {
-                prd.getMilk().getId(),
-                prd.getMilk().getProduct_name(),
-                prd.getFlavor().getTaste(),
-                prd.getVolume() + " " + prd.getUnit().getMeasurement_unit(),
-                prd.getMilk().getAmount(),
-                prd.getCreate_at(),
-                setSelectedIndex(priceUpdate(prd.getMilk().getId(), prd.getMilk().getPrice())) + " VND"
+                    prd.getMilk().getId(),
+                    prd.getMilk().getProduct_name(),
+                    prd.getFlavor().getTaste(),
+                    prd.getVolume() + " " + prd.getUnit().getMeasurement_unit(),
+                    prd.getMilk().getAmount(),
+                    prd.getCreate_at(),
+                    setSelectedIndex(priceUpdate(prd.getMilk().getId(), prd.getMilk().getPrice())) + " VND"
             };
             tblModel.addRow(rowData);
         }
         lbCountPorduct.setText(String.valueOf(this.temp.size()));
     }
-
 
     /*-------------------------------------------Control-------------------------------------------*/
     public void delete() {
@@ -364,7 +462,7 @@ public class ProductForm extends javax.swing.JPanel {
         m.setIsDelete(true);
         if (this.list.hideRestoreProduct(m, this.user)) {
             this.temp.clear();
-            loadDataAndFillTable();
+            loadDataAndFillTable(loadTableType.ALL);
             this.main.notificationShowSUCCESS("Moved to the storage");
         }
     }
@@ -375,6 +473,7 @@ public class ProductForm extends javax.swing.JPanel {
      * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -400,10 +499,10 @@ public class ProductForm extends javax.swing.JPanel {
         tblProduct = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
         lbproductgallery = new javax.swing.JLabel();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
-        jRadioButton3 = new javax.swing.JRadioButton();
-        jRadioButton4 = new javax.swing.JRadioButton();
+        rdoAll = new javax.swing.JRadioButton();
+        rdoActive = new javax.swing.JRadioButton();
+        rdoOutOfStock = new javax.swing.JRadioButton();
+        rdoHidden = new javax.swing.JRadioButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         lbId = new javax.swing.JLabel();
@@ -440,6 +539,7 @@ public class ProductForm extends javax.swing.JPanel {
         lbCountPorduct = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         btnHidden = new udpm.fpt.swing.Button();
+        imageAvatar1 = new udpm.fpt.swing.ImageAvatar();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -522,9 +622,13 @@ public class ProductForm extends javax.swing.JPanel {
         button5.setForeground(new java.awt.Color(255, 255, 255));
         button5.setText("Retype");
         button5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        button5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                button5ActionPerformed(evt);
+            }
+        });
 
         cbbSearchType.setBorder(null);
-        cbbSearchType.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Product's name" }));
         cbbSearchType.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         cbbSearchType.setLabeText("");
 
@@ -649,22 +753,42 @@ public class ProductForm extends javax.swing.JPanel {
                 .addContainerGap())
         );
 
-        jRadioButton1.setBackground(new java.awt.Color(255, 255, 255));
-        buttonGroup1.add(jRadioButton1);
-        jRadioButton1.setSelected(true);
-        jRadioButton1.setText("All");
+        rdoAll.setBackground(new java.awt.Color(255, 255, 255));
+        buttonGroup1.add(rdoAll);
+        rdoAll.setSelected(true);
+        rdoAll.setText("All");
+        rdoAll.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                rdoAllItemStateChanged(evt);
+            }
+        });
 
-        jRadioButton2.setBackground(new java.awt.Color(255, 255, 255));
-        buttonGroup1.add(jRadioButton2);
-        jRadioButton2.setText("Active");
+        rdoActive.setBackground(new java.awt.Color(255, 255, 255));
+        buttonGroup1.add(rdoActive);
+        rdoActive.setText("Active");
+        rdoActive.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                rdoActiveItemStateChanged(evt);
+            }
+        });
 
-        jRadioButton3.setBackground(new java.awt.Color(255, 255, 255));
-        buttonGroup1.add(jRadioButton3);
-        jRadioButton3.setText("Out Of Stock");
+        rdoOutOfStock.setBackground(new java.awt.Color(255, 255, 255));
+        buttonGroup1.add(rdoOutOfStock);
+        rdoOutOfStock.setText("Out Of Stock");
+        rdoOutOfStock.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                rdoOutOfStockItemStateChanged(evt);
+            }
+        });
 
-        jRadioButton4.setBackground(new java.awt.Color(255, 255, 255));
-        buttonGroup1.add(jRadioButton4);
-        jRadioButton4.setText("Hidden");
+        rdoHidden.setBackground(new java.awt.Color(255, 255, 255));
+        buttonGroup1.add(rdoHidden);
+        rdoHidden.setText("Hidden");
+        rdoHidden.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                rdoHiddenItemStateChanged(evt);
+            }
+        });
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Info", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12), new java.awt.Color(178, 178, 178))); // NOI18N
@@ -725,7 +849,7 @@ public class ProductForm extends javax.swing.JPanel {
         jPanel3.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 40, -1, -1));
 
         lbPackagingSpecification.setText("Null");
-        jPanel3.add(lbPackagingSpecification, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 40, 80, -1));
+        jPanel3.add(lbPackagingSpecification, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 40, 80, -1));
 
         jLabel21.setText("Volume:");
         jPanel3.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 60, -1, -1));
@@ -755,7 +879,7 @@ public class ProductForm extends javax.swing.JPanel {
         jPanel3.add(jLabel29, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 140, -1, -1));
 
         lbDescrription.setText("Null");
-        jPanel3.add(lbDescrription, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 140, 150, -1));
+        jPanel3.add(lbDescrription, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 140, 150, -1));
 
         btnNew.setBackground(new java.awt.Color(102, 204, 255));
         btnNew.setForeground(new java.awt.Color(255, 255, 255));
@@ -781,6 +905,11 @@ public class ProductForm extends javax.swing.JPanel {
         btnReplenishment.setForeground(new java.awt.Color(255, 255, 255));
         btnReplenishment.setText("Replenishment");
         btnReplenishment.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnReplenishment.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReplenishmentActionPerformed(evt);
+            }
+        });
 
         lbCountPorduct.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lbCountPorduct.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -799,6 +928,8 @@ public class ProductForm extends javax.swing.JPanel {
             }
         });
 
+        imageAvatar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/cowGif.gif"))); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -811,30 +942,28 @@ public class ProductForm extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jRadioButton1)
+                                .addComponent(rdoAll)
                                 .addGap(18, 18, 18)
-                                .addComponent(jRadioButton2)
+                                .addComponent(rdoActive)
                                 .addGap(18, 18, 18)
-                                .addComponent(jRadioButton3)
+                                .addComponent(rdoOutOfStock)
                                 .addGap(18, 18, 18)
-                                .addComponent(jRadioButton4)
-                                .addGap(31, 31, 31))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(rdoHidden))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(btnNew, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(btnUpdate, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE))
+                                    .addGroup(layout.createSequentialGroup()
                                         .addComponent(lbCountPorduct, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jLabel4)
-                                        .addGap(0, 0, Short.MAX_VALUE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(btnNew, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(btnUpdate, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(btnReplenishment, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
-                                            .addComponent(btnHidden, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
+                                        .addComponent(jLabel4)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(btnReplenishment, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(btnHidden, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
+                                    .addComponent(imageAvatar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGap(31, 31, 31)
                         .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 606, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -849,10 +978,12 @@ public class ProductForm extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(lbCountPorduct, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel4))
-                                .addGap(38, 38, 38)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(lbCountPorduct, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel4))
+                                    .addComponent(imageAvatar1, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(btnReplenishment, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -864,10 +995,10 @@ public class ProductForm extends javax.swing.JPanel {
                                         .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jRadioButton1)
-                                    .addComponent(jRadioButton2)
-                                    .addComponent(jRadioButton3)
-                                    .addComponent(jRadioButton4)))
+                                    .addComponent(rdoAll)
+                                    .addComponent(rdoActive)
+                                    .addComponent(rdoOutOfStock)
+                                    .addComponent(rdoHidden)))
                             .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(21, 21, 21)
@@ -877,37 +1008,41 @@ public class ProductForm extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewActionPerformed
+    private void btnReplenishmentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReplenishmentActionPerformed
+        new Replenishment(this).setVisible(true);
+    }//GEN-LAST:event_btnReplenishmentActionPerformed
+
+    private void btnNewActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnNewActionPerformed
         NewProduct prd = new NewProduct(this, this.user);
         prd.setVisible(true);
-    }//GEN-LAST:event_btnNewActionPerformed
+    }// GEN-LAST:event_btnNewActionPerformed
 
-    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
+    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnUpdateActionPerformed
         if (tblProduct.getSelectedRow() < 0) {
             return;
         }
         ProductInfo pi = temp.get(tblProduct.getSelectedRow());
         UpdateProduct prd = new UpdateProduct(this, pi, pi.getUser(), this.user);
         prd.setVisible(true);
-    }//GEN-LAST:event_btnUpdateActionPerformed
+    }// GEN-LAST:event_btnUpdateActionPerformed
 
-    private void lbproductgalleryMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbproductgalleryMouseClicked
+    private void lbproductgalleryMouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_lbproductgalleryMouseClicked
         if (lbproductgallery.getIcon() == null) {
             new IMG("ImageNull.png").setVisible(true);
         } else {
             ProductInfo pi = this.temp.get(tblProduct.getSelectedRow());
             new IMG(pi.getMilk().getImg()).setVisible(true);
         }
-    }//GEN-LAST:event_lbproductgalleryMouseClicked
+    }// GEN-LAST:event_lbproductgalleryMouseClicked
 
-    private void tblProductMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblProductMouseClicked
+    private void tblProductMouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_tblProductMouseClicked
         try {
             setLabel();
         } catch (Exception e) {
         }
-    }//GEN-LAST:event_tblProductMouseClicked
+    }// GEN-LAST:event_tblProductMouseClicked
 
-    private void btnHiddenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHiddenActionPerformed
+    private void btnHiddenActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnHiddenActionPerformed
         if (tblProduct.getSelectedRow() < 0) {
             return;
         }
@@ -920,14 +1055,37 @@ public class ProductForm extends javax.swing.JPanel {
             }
         });
         msg.setVisible(true);
-    }//GEN-LAST:event_btnHiddenActionPerformed
+    }// GEN-LAST:event_btnHiddenActionPerformed
 
-    private void button2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button2ActionPerformed
+    private void button2ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_button2ActionPerformed
         tblModel = (DefaultTableModel) tblProduct.getModel();
         tblModel.setRowCount(0);
         loadDataAndFillSearch();
-    }//GEN-LAST:event_button2ActionPerformed
+    }// GEN-LAST:event_button2ActionPerformed
 
+    private void button5ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_button5ActionPerformed
+        clearCatelogy();
+    }// GEN-LAST:event_button5ActionPerformed
+
+    private void rdoAllItemStateChanged(java.awt.event.ItemEvent evt) {// GEN-FIRST:event_rdoAllItemStateChanged
+        if (rdoAll.isSelected())
+            loadDataAndFillTable(loadTableType.ALL);
+    }// GEN-LAST:event_rdoAllItemStateChanged
+
+    private void rdoActiveItemStateChanged(java.awt.event.ItemEvent evt) {// GEN-FIRST:event_rdoActiveItemStateChanged
+        if (rdoActive.isSelected())
+            loadDataAndFillTable(loadTableType.ACTIVE);
+    }// GEN-LAST:event_rdoActiveItemStateChanged
+
+    private void rdoOutOfStockItemStateChanged(java.awt.event.ItemEvent evt) {// GEN-FIRST:event_rdoOutOfStockItemStateChanged
+        if (rdoOutOfStock.isSelected())
+            loadDataAndFillTable(loadTableType.OUTOFSTOCK);
+    }// GEN-LAST:event_rdoOutOfStockItemStateChanged
+
+    private void rdoHiddenItemStateChanged(java.awt.event.ItemEvent evt) {// GEN-FIRST:event_rdoHiddenItemStateChanged
+        if (rdoHidden.isSelected())
+            loadDataAndFillTable(loadTableType.HIDDEN);
+    }// GEN-LAST:event_rdoHiddenItemStateChanged
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private udpm.fpt.swing.Button btnHidden;
@@ -942,6 +1100,7 @@ public class ProductForm extends javax.swing.JPanel {
     private udpm.fpt.swing.Combobox cbbSearchType;
     private udpm.fpt.swing.Combobox cbbTaste;
     private udpm.fpt.swing.Combobox cbbUnit;
+    private udpm.fpt.swing.ImageAvatar imageAvatar1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel15;
@@ -962,10 +1121,6 @@ public class ProductForm extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
-    private javax.swing.JRadioButton jRadioButton3;
-    private javax.swing.JRadioButton jRadioButton4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel lbAmount;
@@ -984,6 +1139,10 @@ public class ProductForm extends javax.swing.JPanel {
     private javax.swing.JLabel lbTaste;
     private javax.swing.JLabel lbVolume;
     private javax.swing.JLabel lbproductgallery;
+    private javax.swing.JRadioButton rdoActive;
+    private javax.swing.JRadioButton rdoAll;
+    private javax.swing.JRadioButton rdoHidden;
+    private javax.swing.JRadioButton rdoOutOfStock;
     private javax.swing.JTable tblProduct;
     private udpm.fpt.swing.TextField txtEntryDate;
     private udpm.fpt.swing.TextField txtPriceMax;

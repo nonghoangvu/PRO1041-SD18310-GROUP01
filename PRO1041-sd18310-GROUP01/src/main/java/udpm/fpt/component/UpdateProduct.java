@@ -414,6 +414,7 @@ public class UpdateProduct extends javax.swing.JFrame {
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "New Product", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14))); // NOI18N
 
+        txtBarcode.setEditable(false);
         txtBarcode.setLabelText("Barcode");
 
         txtName.setLabelText("Name");

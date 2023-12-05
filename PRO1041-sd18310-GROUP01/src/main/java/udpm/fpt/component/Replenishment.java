@@ -104,7 +104,7 @@ public class Replenishment extends javax.swing.JFrame {
 
     private void btnOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOkActionPerformed
         System.out.println("Success");
-        this.productForm.loadDataAndFillTable();
+        this.productForm.loadDataAndFillTable(ProductForm.loadTableType.ALL);
     }//GEN-LAST:event_btnOkActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
