@@ -12,7 +12,7 @@ import java.util.Optional;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.text.AbstractDocument;
-import udpm.fpt.form.DeliveryNoteFrom;
+import udpm.fpt.form.DeliveryNoteForm2;
 import udpm.fpt.model.DeliveryNote;
 import udpm.fpt.model.Status;
 import udpm.fpt.model.TransportUnit;
@@ -28,7 +28,7 @@ public class UpdateDelivery extends javax.swing.JFrame {
     /**
      * Creates new form UpdateDelivery
      */
-    public UpdateDelivery(DeliveryNoteFrom deliveryNoteFrom ,Long idPhieu, String maVanDon) {
+    public UpdateDelivery(DeliveryNoteForm2 deliveryNoteFrom ,Long idPhieu, String maVanDon) {
         initComponents();
         this.idPhieu = idPhieu;
         this.maVanDon = maVanDon;
@@ -260,6 +260,10 @@ public class UpdateDelivery extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_cbbDonViGiaoActionPerformed
 
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         if(this.updateDeliveryNote(idPhieu, maVanDon)) {
             this.dispose();
@@ -267,10 +271,6 @@ public class UpdateDelivery extends javax.swing.JFrame {
             deliveryNoteFrom.loadDataAndFillTableDeli();
         }
     }//GEN-LAST:event_btnSaveActionPerformed
-
-    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        this.dispose();
-    }//GEN-LAST:event_btnDeleteActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -308,7 +308,7 @@ public void init() {
     Service sv = new Service();
     Long idPhieu = null;
     String maVanDon = null;
-    DeliveryNoteFrom deliveryNoteFrom;
+    DeliveryNoteForm2 deliveryNoteFrom;
     public void ngayTaoDon() {
         datechooser.setTextField(txtNgayTao);
         datechooser.setDateSelectionMode(DateChooser.DateSelectionMode.SINGLE_DATE_SELECTED);

@@ -17,5 +17,5 @@ import udpm.fpt.model.BillDetails;
  */
 public interface IBillDetails_Respository extends JpaRepository<BillDetails, Integer>{
      @Query("From BillDetails Where bill_id like CONCAT('%', :idBill, '%')")
-     List<BillDetails> findAllByBill_id(@Param("idBill") String id);
+     List<BillDetails> findAllByBillid(@Param("idBill") String id);
 }
