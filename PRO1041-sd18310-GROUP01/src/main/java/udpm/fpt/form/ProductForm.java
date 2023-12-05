@@ -460,6 +460,7 @@ public class ProductForm extends javax.swing.JPanel {
         }
         lbCountPorduct.setText(String.valueOf(this.temp.size()));
     }
+
     public void loadDataAndFillSearchByBarcode() {
         ProductInfoByCriteria dataSearch = new ProductInfoByCriteria();
         Flavor flavor = (Flavor) cbbTaste.getSelectedItem();
@@ -528,6 +529,24 @@ public class ProductForm extends javax.swing.JPanel {
             loadDataAndFillTable(loadTableType.ALL);
             this.main.notificationShowSUCCESS("Moved to the storage");
         }
+    }
+
+    /*-------------------------------------------Validate-------------------------------------------*/
+    private Boolean validateSearch() {
+        if (!txtQuantityMax.getText().isBlank()) {
+            if ((!txtQuantityMin.getText().isBlank()) && Integer.parseInt(txtQuantityMax.getText()) < Integer.parseInt(txtQuantityMin.getText())) {
+                this.main.notificationShowWARNING("One side should exceed the other.");
+                txtQuantityMax.requestFocus();
+                return true;
+            }
+        } else if (!txtPriceMax.getText().isBlank()) {
+            if ((!txtPriceMin.getText().isBlank()) && Integer.parseInt(txtPriceMax.getText()) < Integer.parseInt(txtPriceMin.getText())) {
+                this.main.notificationShowWARNING("One side should exceed the other.");
+                txtPriceMax.requestFocus();
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -1123,9 +1142,11 @@ public class ProductForm extends javax.swing.JPanel {
 
     private void button2ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_button2ActionPerformed
         tblModel = (DefaultTableModel) tblProduct.getModel();
-        tblModel.setRowCount(0);
-        if(cbbSearchType.getSelectedIndex() == 0) loadDataAndFillSearch();
-        else loadDataAndFillSearchByBarcode();
+        if (!validateSearch()) {
+            tblModel.setRowCount(0);
+            if (cbbSearchType.getSelectedIndex() == 0) loadDataAndFillSearch();
+            else loadDataAndFillSearchByBarcode();
+        }
     }// GEN-LAST:event_button2ActionPerformed
 
     private void button5ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_button5ActionPerformed
