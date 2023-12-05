@@ -33,7 +33,7 @@ import udpm.fpt.repository.ITranportUnit_Respository;
  * @author PHONG PC
  */
 public class Service {
-
+    
     private final IDelivery_noteRespository delivery = getBean(IDelivery_noteRespository.class);
     private final ICustomer_Resposutory customer = getBean(ICustomer_Resposutory.class);
     private final ITranportUnit_Respository tranportUnit = getBean(ITranportUnit_Respository.class);
@@ -41,7 +41,7 @@ public class Service {
     private final IBillDetails_Respository billDetail = getBean(IBillDetails_Respository.class);
     private final IMilk_Respository milk = getBean(IMilk_Respository.class);
     private final IStatus_Respository status = getBean(IStatus_Respository.class);
-
+    
     public boolean insertDeli(DeliveryNote deli) {
         boolean check = false;
         if (delivery.save(deli) != null) {
@@ -49,22 +49,22 @@ public class Service {
         }
         return check;
     }
-
+    
     public List<Customer> findAllCustomer() {
         List<Customer> list = customer.findAll();
         return list;
     }
-
+    
     public List<Milk> findAllMilk() {
         List<Milk> list = milk.findAll();
         return list;
     }
-
+    
     public List<TransportUnit> findAllTranportsUnit() {
         List<TransportUnit> list = tranportUnit.findAll();
         return list;
     }
-
+    
     public boolean updateDeliveryNote(Long deliveryId, String maVanDon, DeliveryNote delinotupdate) {
         DeliveryNote deliveryNoteexist = delinotupdate;
         if (deliveryNoteexist != null) {
@@ -87,12 +87,12 @@ public class Service {
             return false;
         }
     }
-
+    
     public Optional<DeliveryNote> filById(Long id) {
         Optional<DeliveryNote> deli = delivery.findById(id);
         return deli;
     }
-
+    
     public boolean updateQuanlityProduct(Long id, int amout) {
         Milk m = new Milk();
         m.setId(id);
@@ -103,7 +103,7 @@ public class Service {
             return false;
         }
     }
-
+    
     public String ranDom() {
         String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         List<Character> charList = new ArrayList<>();
@@ -120,32 +120,32 @@ public class Service {
         }
         return invoiceCode.toString();
     }
-
+    
     public List<Status> findAllStatus() {
         return status.findAll();
     }
-
+    
     public String deleteLineBreak(String ten) {
         String modifiedString = ten.replaceAll("\\n", ",");
         return modifiedString;
     }
-
+    
     public String addLineBreak(String ten) {
         String modifiedString = ten.replaceAll(",", "\n");
         return modifiedString;
     }
-
+    
     public String addLineBreakInMessgase(String ten) {
         String modifiedString = ten.replaceAll(",", "<br>");
         return modifiedString;
     }
-
+    
     public CompletableFuture<List<DeliveryNote>> loadAsync() {
         return CompletableFuture.supplyAsync(() -> {
             return delivery.findAll();
         }, Executors.newCachedThreadPool());
     }
-
+    
     public CompletableFuture<List<DeliveryNote>> loadSearch(String search, int row) {
         if (row == 1) {
             return CompletableFuture.supplyAsync(() -> {
@@ -157,40 +157,45 @@ public class Service {
             }, Executors.newCachedThreadPool());
         }
     }
-
+    
     public CompletableFuture<List<BillDetails>> loadAsyncBillDetail() {
         return CompletableFuture.supplyAsync(() -> {
             return billDetail.findAll();
         }, Executors.newCachedThreadPool());
     }
-
+    
     public CompletableFuture<List<Bill>> findAllBill() {
         return CompletableFuture.supplyAsync(() -> {
             return bill.findBillByshoppingmethod();
         }, Executors.newCachedThreadPool());
     }
-
+    
     public CompletableFuture<List<BillDetails>> findAllBillDetails() {
         return CompletableFuture.supplyAsync(() -> {
             return billDetail.findAll();
         }, Executors.newCachedThreadPool());
     }
-
+    
     public CompletableFuture<List<DeliveryNote>> findBetweenDate(Date minSalary, Date maxSalary) {
         return CompletableFuture.supplyAsync(() -> {
             return delivery.findBySalaryBetween(minSalary, maxSalary);
         }, Executors.newCachedThreadPool());
     }
-
+    
     public CompletableFuture<List<DeliveryNote>> findByStatus(int idStatus) {
         return CompletableFuture.supplyAsync(() -> {
             return delivery.findByStatus(idStatus);
         }, Executors.newCachedThreadPool());
     }
-    public CompletableFuture<List<DeliveryNote>> SearchAll (String idDelivery, String Customer_name, String idStatus) {
+
+    public CompletableFuture<List<DeliveryNote>> SearchAll(String idDelivery, String Customer_name, String idStatus) {
         return CompletableFuture.supplyAsync(() -> {
             return delivery.searchAll(idDelivery, Customer_name, idStatus);
         }, Executors.newCachedThreadPool());
+    }
+
+    public Bill findBillByID(String idBill){
+        return bill.findBill(idBill);
     }
     
 }

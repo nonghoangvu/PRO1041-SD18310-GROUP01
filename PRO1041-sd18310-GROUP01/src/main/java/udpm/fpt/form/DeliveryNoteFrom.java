@@ -33,9 +33,6 @@ import udpm.fpt.swing.table.TableCustom;
 import udpm.serviceDelivery.MailSender;
 import udpm.serviceDelivery.NumberFilter;
 import udpm.serviceDelivery.Service;
-import udpm.fpt.model.Milk;
-import udpm.fpt.model.Status;
-import udpm.serviceDelivery.CustomCellRenderer;
 
 /**
  *
@@ -67,8 +64,6 @@ public class DeliveryNoteFrom extends javax.swing.JPanel {
         tblHoaDon = new javax.swing.JTable();
         jLabel3 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
-        btnTaoPhieu = new javax.swing.JButton();
-        btnHuy = new javax.swing.JButton();
         txtNgayGiao = new udpm.fpt.swing.TextField();
         txtSoLuong = new udpm.fpt.swing.TextField();
         txtTenKhachHang = new udpm.fpt.swing.TextField();
@@ -82,6 +77,8 @@ public class DeliveryNoteFrom extends javax.swing.JPanel {
         textAreaScroll2 = new udpm.fpt.swing.TextAreaScroll();
         txtGhiChu = new udpm.fpt.swing.TextArea();
         jLabel2 = new javax.swing.JLabel();
+        btnTaoPhieu = new udpm.fpt.swing.ButtonMessage();
+        btnHuy = new udpm.fpt.swing.ButtonMessage();
         jPanel16 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
         btnSearch = new javax.swing.JButton();
@@ -175,23 +172,12 @@ public class DeliveryNoteFrom extends javax.swing.JPanel {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
-                .addComponent(jScrollPaneHoaDon, javax.swing.GroupLayout.PREFERRED_SIZE, 801, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPaneHoaDon, javax.swing.GroupLayout.PREFERRED_SIZE, 438, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-
-        btnTaoPhieu.setText("Create a Delivery Note");
-        btnTaoPhieu.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        btnTaoPhieu.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnTaoPhieuActionPerformed(evt);
-            }
-        });
-
-        btnHuy.setText("Cancel");
-        btnHuy.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
         txtNgayGiao.setLabelText("Creation Date");
 
@@ -238,15 +224,9 @@ public class DeliveryNoteFrom extends javax.swing.JPanel {
                     .addComponent(txtTongTien, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(cbbDonViGiao, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(txtPhiShip, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(textAreaScroll1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(textAreaScroll1, javax.swing.GroupLayout.DEFAULT_SIZE, 495, Short.MAX_VALUE)
                     .addComponent(textAreaScroll2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(42, 42, 42)
-                .addComponent(btnTaoPhieu, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 90, Short.MAX_VALUE)
-                .addComponent(btnHuy, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(34, 34, 34))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -270,22 +250,39 @@ public class DeliveryNoteFrom extends javax.swing.JPanel {
                 .addComponent(txtPhiShip, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(textAreaScroll2, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnTaoPhieu, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnHuy, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(84, Short.MAX_VALUE))
+                .addContainerGap(146, Short.MAX_VALUE))
         );
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel2.setText("Create a delivery note");
+
+        btnTaoPhieu.setBackground(new java.awt.Color(0, 204, 255));
+        btnTaoPhieu.setForeground(new java.awt.Color(255, 255, 255));
+        btnTaoPhieu.setText("Create a Delivery Note");
+        btnTaoPhieu.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnTaoPhieu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTaoPhieuActionPerformed(evt);
+            }
+        });
+
+        btnHuy.setBackground(new java.awt.Color(255, 51, 51));
+        btnHuy.setForeground(new java.awt.Color(255, 255, 255));
+        btnHuy.setText("Cancel");
+        btnHuy.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
 
         javax.swing.GroupLayout jPanel15Layout = new javax.swing.GroupLayout(jPanel15);
         jPanel15.setLayout(jPanel15Layout);
         jPanel15Layout.setHorizontalGroup(
             jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel15Layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel15Layout.createSequentialGroup()
+                        .addGap(508, 508, 508)
+                        .addComponent(btnTaoPhieu, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(66, 66, 66)
+                        .addComponent(btnHuy, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -295,12 +292,18 @@ public class DeliveryNoteFrom extends javax.swing.JPanel {
         );
         jPanel15Layout.setVerticalGroup(
             jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel15Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel15Layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnTaoPhieu, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnHuy, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         jTabbedPane2.addTab("Create delivery note", jPanel15);
@@ -589,7 +592,7 @@ public class DeliveryNoteFrom extends javax.swing.JPanel {
                     .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(cbbSearchStatus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnSearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPaneDanhSach2)
                     .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 703, Short.MAX_VALUE))
@@ -606,7 +609,7 @@ public class DeliveryNoteFrom extends javax.swing.JPanel {
         );
         jPanel16Layout.setVerticalGroup(
             jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 850, Short.MAX_VALUE)
+            .addGap(0, 859, Short.MAX_VALUE)
             .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -624,10 +627,6 @@ public class DeliveryNoteFrom extends javax.swing.JPanel {
             .addComponent(jTabbedPane2)
         );
     }// </editor-fold>//GEN-END:initComponents
-
-    private void btnTaoPhieuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTaoPhieuActionPerformed
-        insert();
-    }//GEN-LAST:event_btnTaoPhieuActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         txtXapSep2.setText(simple.format(new Date()));
@@ -766,14 +765,18 @@ public class DeliveryNoteFrom extends javax.swing.JPanel {
                 "SUCCESS!").showNotification();
     }//GEN-LAST:event_btnBenVanChuyenActionPerformed
 
+    private void btnTaoPhieuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTaoPhieuActionPerformed
+        insert();
+    }//GEN-LAST:event_btnTaoPhieuActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBenVanChuyen;
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnDeliveryCompleted;
-    private javax.swing.JButton btnHuy;
+    private udpm.fpt.swing.ButtonMessage btnHuy;
     private javax.swing.JButton btnSearch;
-    private javax.swing.JButton btnTaoPhieu;
+    private udpm.fpt.swing.ButtonMessage btnTaoPhieu;
     private javax.swing.JButton btnUpdate;
     private udpm.fpt.swing.Combobox cbbDonViGiao;
     private udpm.fpt.swing.Combobox cbbSearchStatus;
@@ -949,8 +952,8 @@ public class DeliveryNoteFrom extends javax.swing.JPanel {
             Object[] rows = {
                 bill.getId(),
                 bill.getCustomerId() == null ? "" : bill.getCustomerId().getFullname(),
-                bill.getPaymentMethod(),
-                bill.getPaymentStatus(),
+                bill.getPayment_method(),
+                bill.getPayment_status(),
                 bill.getNotes(),
                 bill.getCreatedAt()
             };
@@ -1100,9 +1103,9 @@ public class DeliveryNoteFrom extends javax.swing.JPanel {
             new Notification(Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP,
                     "The Customer name is empty!").showNotification();
             return false;
-        } else if (txtTenSanPham.getText().isBlank()) {
+        } else if (txtTenSanPham.getText().trim().isEmpty()) {
             new Notification(Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP,
-                    "The Customer name is empty!").showNotification();
+                    "The Product is empty!").showNotification();
             return false;
         } else {
             try {
@@ -1111,8 +1114,7 @@ public class DeliveryNoteFrom extends javax.swing.JPanel {
                             "Invalid volume!").showNotification();
                     return false;
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (NumberFormatException e) {
             }
         }
         return true;
@@ -1140,10 +1142,4 @@ public class DeliveryNoteFrom extends javax.swing.JPanel {
         cbb.addElement("Huỷ giao hàng");
         cbb.addElement("Giao thành công");
     }
-
-//    public void tableRenderer() {
-//        for (int i = 0; i < tblDanhSach2.getColumnCount(); i++) {
-//            tblDanhSach2.getColumnModel().getColumn(i).setCellRenderer(new CustomCellRenderer(tblDanhSach2));
-//        }
-//    }
 }

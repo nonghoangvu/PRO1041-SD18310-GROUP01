@@ -449,6 +449,11 @@ public class UpdateProduct extends javax.swing.JFrame {
                 btnCancelMouseClicked(evt);
             }
         });
+        btnCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -673,6 +678,10 @@ public class UpdateProduct extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnCancelActionPerformed
 
     private void btnSaveMouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_btnSaveMouseClicked
         if (!isValidate()) {

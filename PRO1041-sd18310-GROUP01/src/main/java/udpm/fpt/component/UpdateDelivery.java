@@ -34,6 +34,7 @@ public class UpdateDelivery extends javax.swing.JFrame {
         this.maVanDon = maVanDon;
         this.deliveryNoteFrom = deliveryNoteFrom;
         init();
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 
     /**
