@@ -22,8 +22,8 @@ import udpm.fpt.main.Main;
 import udpm.fpt.model.Salary;
 import udpm.fpt.model.User;
 import udpm.fpt.model.UserDetails;
-import udpm.fpt.servicce.SalaryService;
-import udpm.fpt.servicce.UserService;
+import udpm.fpt.service.SalaryService;
+import udpm.fpt.service.UserService;
 
 /**
  *

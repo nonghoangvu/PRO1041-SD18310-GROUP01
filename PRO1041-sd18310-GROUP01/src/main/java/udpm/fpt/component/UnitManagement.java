@@ -12,7 +12,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import udpm.fpt.model.Unit;
 import udpm.fpt.model.User;
-import udpm.fpt.servicce.ProductService;
+import udpm.fpt.service.ProductService;
 
 /**
  *

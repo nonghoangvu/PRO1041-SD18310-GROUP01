@@ -10,7 +10,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import udpm.fpt.model.KhachHang;
-import udpm.fpt.servicce.KhachHangDao;
+import udpm.fpt.service.KhachHangDao;
 
 /**
  *

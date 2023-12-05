@@ -2,28 +2,17 @@ package udpm.fpt;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
+
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
-import udpm.fpt.Utitlity.BcryptHash;
-import udpm.fpt.model.Salary;
-import udpm.fpt.model.User;
-import udpm.fpt.model.UserDetails;
-import udpm.fpt.repository.IUser;
-import udpm.fpt.repository.IUserDetails;
-import udpm.fpt.servicce.UserService;
 
 /**
  *

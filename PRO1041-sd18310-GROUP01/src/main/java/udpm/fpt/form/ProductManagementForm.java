@@ -8,7 +8,7 @@ import com.raven.datechooser.DateChooser;
 import udpm.fpt.Utitlity.DiscountCalculator;
 import udpm.fpt.main.Main;
 import udpm.fpt.model.*;
-import udpm.fpt.servicce.ProductService;
+import udpm.fpt.service.ProductService;
 import udpm.fpt.swing.CustomCellRenderer;
 import udpm.fpt.swing.NumberOnlyFilter;
 import udpm.fpt.swing.table.TableCustom;

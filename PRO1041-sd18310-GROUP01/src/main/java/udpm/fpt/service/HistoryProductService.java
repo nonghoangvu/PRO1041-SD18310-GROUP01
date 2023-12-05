@@ -1,4 +1,4 @@
-package udpm.fpt.servicce;
+package udpm.fpt.service;
 
 import java.util.Date;
 import java.util.List;

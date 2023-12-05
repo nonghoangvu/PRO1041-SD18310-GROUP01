@@ -34,7 +34,7 @@ import udpm.fpt.model.ProductInfoByCriteria;
 import udpm.fpt.model.SaleMilk;
 import udpm.fpt.model.Unit;
 import udpm.fpt.model.User;
-import udpm.fpt.servicce.ProductService;
+import udpm.fpt.service.ProductService;
 import udpm.fpt.swing.NumberOnlyFilter;
 import udpm.fpt.swing.table.TableCustom;
 
@@ -58,6 +58,7 @@ public class ProductForm extends javax.swing.JPanel {
         this.list = new ProductService();
         this.main = main;
         initProduct();
+        rdoAll.requestFocus();
     }
 
     public void initProduct() {
