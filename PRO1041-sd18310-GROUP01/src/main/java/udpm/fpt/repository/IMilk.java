@@ -16,5 +16,5 @@ public interface IMilk extends JpaRepository<Milk, Long> {
     @Query("UPDATE Milk m SET m.isDelete = :newIsDelete WHERE m.id = :milkId")
     int updateStatus(@Param("milkId") Long milkId, @Param("newIsDelete") String newIsDelete);
 
-    public Milk findAllById(Long id);
+    public Milk findAllByBarcode(Long barcode);
 }

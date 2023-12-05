@@ -1,7 +1,12 @@
 package udpm.fpt.component;
 
+import java.util.Date;
 import javax.swing.text.AbstractDocument;
 import udpm.fpt.form.ProductForm;
+import udpm.fpt.model.Milk;
+import udpm.fpt.model.ProductInfo;
+import udpm.fpt.model.User;
+import udpm.fpt.servicce.ProductService;
 import udpm.fpt.swing.NumberOnlyFilter;
 
 /**
@@ -9,11 +14,17 @@ import udpm.fpt.swing.NumberOnlyFilter;
  * @author NONG HOANG VU
  */
 public class Replenishment extends javax.swing.JFrame {
+
     private ProductForm productForm;
-    public Replenishment(ProductForm productForm) {
+    private final ProductService list;
+    private ProductInfo getProductInfo;
+
+    public Replenishment(ProductForm perentForm, ProductInfo pi, User newUser) {
         initComponents();
         ((AbstractDocument) txtReplenishment.getDocument()).setDocumentFilter(new NumberOnlyFilter());
-        this.productForm = productForm;
+        this.productForm =  perentForm;
+        this.list = new ProductService();
+        this.getProductInfo = pi;
     }
 
     @SuppressWarnings("unchecked")
@@ -104,6 +115,20 @@ public class Replenishment extends javax.swing.JFrame {
 
     private void btnOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOkActionPerformed
         System.out.println("Success");
+        Milk milk = this.getProductInfo.getMilk();
+        ProductInfo productInfo = this.getProductInfo;
+        milk.setAmount(Integer.parseInt(txtReplenishment.getText()));
+        milk.setId(null);
+        productInfo.setId(null);
+        productInfo.setCreate_at(new Date());
+        if (this.list.insertProduct(milk, productInfo)) {
+            Notification n = new Notification(this, Notification.Type.SUCCESS, Notification.Location.DEFAULT_DESKTOP, "SUCCESS");
+            n.showNotification();
+            dispose();
+        } else {
+            Notification n = new Notification(this, Notification.Type.INFO, Notification.Location.DEFAULT_DESKTOP, "Can't replenishment");
+            n.showNotification();
+        }
         this.productForm.loadDataAndFillTable(ProductForm.loadTableType.ALL);
     }//GEN-LAST:event_btnOkActionPerformed
 

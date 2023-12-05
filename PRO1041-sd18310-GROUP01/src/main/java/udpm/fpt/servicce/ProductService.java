@@ -40,7 +40,7 @@ public class ProductService {
 
     public CompletableFuture<List<ProductInfo>> loadASearch(ProductInfoByCriteria data) {
         return CompletableFuture.supplyAsync(() -> {
-            return Collections.unmodifiableList(r.findProductInfoByCriteria(data.getProductName(), data.getFlavor(), data.getPackagingType(), data.getMeasurementUnit(), data.getVolume(), data.getEntryDate(), data.getMinQuantity(), data.getMaxQuantity(), data.getMinPrice(), data.getMaxPrice()));
+            return Collections.unmodifiableList(r.findProductInfoByCriteria(data.getProductName(), data.getFlavor(), data.getPackagingType(), data.getMeasurementUnit(), data.getVolume(), data.getEntryDate(), data.getMinQuantity(), data.getMaxQuantity(), data.getMinPrice(), data.getMaxPrice(), data.getExpiryStatus()));
         }, Executors.newCachedThreadPool());
     }
 
@@ -56,8 +56,8 @@ public class ProductService {
         }, Executors.newCachedThreadPool());
     }
 
-    public Milk getMilkByID(Long id) {
-        return iMilk.findAllById(id);
+    public Milk getMilkByBarcode(Long barcode) {
+        return iMilk.findAllByBarcode(barcode);
     }
 
     public CompletableFuture<List<Flavor>> loadFlavor() {
@@ -118,7 +118,7 @@ public class ProductService {
     }
 
     public Boolean insertProduct(Milk m, ProductInfo pi) {
-        if (iMilk.findAllById(m.getId()) == null) {
+        if (iMilk.findAllByBarcode(m.getBarcode()) == null) {
             if (r.save(pi) != null) {
                 return this.historyProduct.trackHistory("New product has been added with ID " + m.getId(), pi.getUser().getUsername(), HistoryProductService.ChangeType.NEW);
             }
