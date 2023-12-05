@@ -22,4 +22,5 @@ public class ProductInfoByCriteria {
     private Integer maxQuantity;
     private Integer minPrice;
     private Integer maxPrice;
+    private String expiryStatus;
 }

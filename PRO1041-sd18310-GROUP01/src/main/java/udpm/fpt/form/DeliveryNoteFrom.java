@@ -719,6 +719,8 @@ public class DeliveryNoteFrom extends javax.swing.JPanel {
         deliverynote.setStatus_id(5);
         sv.updateDeliveryNote(idDanhSach, maVanDon, deliverynote);
         loadDataAndFillTableDeli();
+        new Notification(Notification.Type.SUCCESS, Notification.Location.DEFAULT_DESKTOP,
+                "SUCCESS!").showNotification();
     }//GEN-LAST:event_btnDeliveryCompletedActionPerformed
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
@@ -759,6 +761,8 @@ public class DeliveryNoteFrom extends javax.swing.JPanel {
         deliverynote.setStatus_id(2);
         sv.updateDeliveryNote(idDanhSach, maVanDon, deliverynote);
         loadDataAndFillTableDeli();
+        new Notification(Notification.Type.SUCCESS, Notification.Location.DEFAULT_DESKTOP,
+                "SUCCESS!").showNotification();
     }//GEN-LAST:event_btnBenVanChuyenActionPerformed
 
     private void btnTaoPhieuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTaoPhieuActionPerformed

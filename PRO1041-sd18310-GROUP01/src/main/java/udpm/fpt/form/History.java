@@ -100,7 +100,7 @@ public class History extends javax.swing.JPanel {
 
     private void Restore() {
         ProductService productService = new ProductService();
-        Milk m = productService.getMilkByID(getId());
+        Milk m = this.temp.get(tblHistory.getSelectedRow()).getMilk();
         m.setIsDelete(false);
         if (productService.hideRestoreProduct(m, this.user)) {
             if (cbbCatelogy.getSelectedItem().equals("Archive")) {
