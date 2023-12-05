@@ -1078,8 +1078,8 @@ public class ProductManagement extends javax.swing.JPanel {
     }
 
     private void button2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button2ActionPerformed
-        SearchBarcode searchBarcode = new SearchBarcode(this);
-        searchBarcode.setVisible(true);
+//        SearchBarcode searchBarcode = new SearchBarcode(this);
+//        searchBarcode.setVisible(true);
     }//GEN-LAST:event_button2ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
