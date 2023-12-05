@@ -460,6 +460,64 @@ public class ProductForm extends javax.swing.JPanel {
         }
         lbCountPorduct.setText(String.valueOf(this.temp.size()));
     }
+    public void loadDataAndFillSearchByBarcode() {
+        ProductInfoByCriteria dataSearch = new ProductInfoByCriteria();
+        Flavor flavor = (Flavor) cbbTaste.getSelectedItem();
+        Unit unit = (Unit) cbbUnit.getSelectedItem();
+        PackagingSpecification packagingSpecification = (PackagingSpecification) cbbPackagingSpecification
+                .getSelectedItem();
+        dataSearch.setProductName(txtSearch.getText().isBlank() ? null : txtSearch.getText().trim());
+        assert flavor != null;
+        dataSearch.setFlavor(flavor.getTaste().equals("All") ? null : flavor.getTaste().trim());
+        assert packagingSpecification != null;
+        dataSearch.setPackagingType(packagingSpecification.getPackaging_type().equals("All") ? null
+                : packagingSpecification.getPackaging_type());
+        assert unit != null;
+        dataSearch.setMeasurementUnit(
+                unit.getMeasurement_unit().equals("All") ? null : unit.getMeasurement_unit().trim());
+        dataSearch
+                .setVolume(txtVolume.getText().trim().isBlank() ? null : Float.parseFloat(txtVolume.getText().trim()));
+        dataSearch.setEntryDate(getDateFormatSQL(txtEntryDate.getText()));
+        dataSearch.setMinQuantity(
+                txtQuantityMin.getText().isBlank() ? 0 : Integer.parseInt(txtQuantityMin.getText().trim()));
+        dataSearch.setMaxQuantity(
+                txtQuantityMax.getText().isBlank() ? null : Integer.parseInt(txtQuantityMax.getText().trim()));
+        dataSearch.setMinPrice(txtPriceMin.getText().isBlank() ? 0 : Integer.parseInt(txtPriceMin.getText().trim()));
+        dataSearch.setMaxPrice(txtPriceMax.getText().isBlank() ? null : Integer.parseInt(txtPriceMax.getText().trim()));
+        dataSearch.setExpiryStatus(cbbCheckExpiry.getSelectedIndex() == 0 ? null : cbbCheckExpiry.getSelectedIndex() == 1 ? "Valid" : "Expired");
+        CompletableFuture<List<ProductInfo>> future = this.list.loadASearchByBarcode(dataSearch);
+        future.thenAcceptAsync(data -> {
+            SwingUtilities.invokeLater(() -> {
+
+                updateSearchByBarcode(data);
+            });
+        }).exceptionally(throwable -> {
+            throwable.printStackTrace(System.out);
+            return null;
+        });
+    }
+
+    private void updateSearchByBarcode(List<ProductInfo> data) {
+        this.temp.clear();
+        tblModel = (DefaultTableModel) tblProduct.getModel();
+        tblModel.setRowCount(0);
+        for (ProductInfo prd : data) {
+            if (!prd.getMilk().getIsDelete()) {
+                this.temp.add(prd);
+                Object[] rowData = {
+                        prd.getMilk().getId(),
+                        prd.getMilk().getProduct_name(),
+                        prd.getFlavor().getTaste(),
+                        prd.getVolume() + " " + prd.getUnit().getMeasurement_unit(),
+                        prd.getMilk().getAmount(),
+                        prd.getCreate_at(),
+                        setSelectedIndex(priceUpdate(prd.getMilk().getId(), prd.getMilk().getPrice())) + " VND"
+                };
+                tblModel.addRow(rowData);
+            }
+        }
+        lbCountPorduct.setText(String.valueOf(this.temp.size()));
+    }
 
     /*-------------------------------------------Control-------------------------------------------*/
     public void delete() {
@@ -1066,7 +1124,8 @@ public class ProductForm extends javax.swing.JPanel {
     private void button2ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_button2ActionPerformed
         tblModel = (DefaultTableModel) tblProduct.getModel();
         tblModel.setRowCount(0);
-        loadDataAndFillSearch();
+        if(cbbSearchType.getSelectedIndex() == 0) loadDataAndFillSearch();
+        else loadDataAndFillSearchByBarcode();
     }// GEN-LAST:event_button2ActionPerformed
 
     private void button5ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_button5ActionPerformed
