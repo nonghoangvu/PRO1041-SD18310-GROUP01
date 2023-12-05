@@ -112,7 +112,7 @@ public class ProductService {
     public Boolean insertProduct(Milk m, ProductInfo pi) {
         if (iMilk.findAllByBarcode(m.getBarcode()) == null) {
             if (r.save(pi) != null) {
-                return this.historyProduct.trackHistory("New product has been added with ID " + m.getId(), pi.getUser().getUsername(), HistoryProductService.ChangeType.NEW);
+                return this.historyProduct.trackHistory("New product has been added with barcode " + m.getBarcode(), pi.getUser().getUsername(), HistoryProductService.ChangeType.NEW);
             }
         }
         return false;
@@ -165,7 +165,6 @@ public class ProductService {
 
     public List<SaleMilk> getPercentSale() {
         return this.iSaleMilk.findSalesInRange();
-//        return this.iSaleMilk.findAll();
     }
 
 }
