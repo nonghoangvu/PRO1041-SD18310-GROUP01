@@ -4,15 +4,10 @@
  */
 package udpm.fpt.form;
 
-import java.awt.Image;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowFocusListener;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.table.DefaultTableModel;
 import udpm.fpt.component.AddNewUser;
@@ -20,8 +15,7 @@ import udpm.fpt.component.UpdateUser;
 import udpm.fpt.main.Main;
 import udpm.fpt.model.User;
 import udpm.fpt.model.UserDetails;
-import udpm.fpt.repository.IUserDetails;
-import udpm.fpt.servicce.UserService;
+import udpm.fpt.service.UserService;
 import udpm.fpt.swing.table.TableCustom;
 
 /**

@@ -24,7 +24,7 @@ import udpm.fpt.model.Milk;
 import udpm.fpt.model.User;
 import udpm.fpt.repository.IBillDetails_Respository;
 import udpm.fpt.repository.IBill_Respository;
-import udpm.fpt.servicce.BillService;
+import udpm.fpt.service.BillService;
 import udpm.fpt.swing.table.TableCustom;
 
 /**

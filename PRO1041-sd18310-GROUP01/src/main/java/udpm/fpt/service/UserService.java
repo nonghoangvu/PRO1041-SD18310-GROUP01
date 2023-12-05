@@ -1,11 +1,11 @@
-package udpm.fpt.servicce;
+package udpm.fpt.service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.NoArgsConstructor;
 import udpm.fpt.model.UserDetails;
 import static udpm.fpt.Application.getBean;
-import udpm.fpt.model.User;
+
 import udpm.fpt.repository.IUser;
 import udpm.fpt.repository.IUserDetails;
 

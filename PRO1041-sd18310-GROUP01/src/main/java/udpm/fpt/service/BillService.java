@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package udpm.fpt.servicce;
+package udpm.fpt.service;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,7 +14,6 @@ import static udpm.fpt.Application.getBean;
 import udpm.fpt.model.Bill;
 import udpm.fpt.model.Customer;
 import udpm.fpt.model.Milk;
-import udpm.fpt.model.ProductInfo;
 import udpm.fpt.repository.IBillDetails_Respository;
 import udpm.fpt.repository.IBill_Respository;
 import udpm.fpt.repository.ICustomer_Resposutory;

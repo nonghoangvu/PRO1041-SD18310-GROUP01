@@ -17,7 +17,7 @@ import javax.swing.text.AbstractDocument;
 
 import udpm.fpt.main.Main;
 import udpm.fpt.model.*;
-import udpm.fpt.servicce.ProductService;
+import udpm.fpt.service.ProductService;
 import udpm.fpt.swing.CustomCellRenderer;
 import udpm.fpt.swing.NumberOnlyFilter;
 import udpm.fpt.swing.table.TableCustom;
@@ -1078,8 +1078,8 @@ public class ProductManagement extends javax.swing.JPanel {
     }
 
     private void button2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button2ActionPerformed
-        SearchBarcode searchBarcode = new SearchBarcode(this);
-        searchBarcode.setVisible(true);
+//        SearchBarcode searchBarcode = new SearchBarcode(this);
+//        searchBarcode.setVisible(true);
     }//GEN-LAST:event_button2ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

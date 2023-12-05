@@ -24,6 +24,7 @@ import udpm.fpt.component.IMG;
 import udpm.fpt.component.MessagePanel;
 import udpm.fpt.component.NewProduct;
 import udpm.fpt.component.Replenishment;
+import udpm.fpt.component.SearchBarcode;
 import udpm.fpt.component.UpdateProduct;
 import udpm.fpt.main.Main;
 import udpm.fpt.model.Flavor;
@@ -34,7 +35,7 @@ import udpm.fpt.model.ProductInfoByCriteria;
 import udpm.fpt.model.SaleMilk;
 import udpm.fpt.model.Unit;
 import udpm.fpt.model.User;
-import udpm.fpt.servicce.ProductService;
+import udpm.fpt.service.ProductService;
 import udpm.fpt.swing.NumberOnlyFilter;
 import udpm.fpt.swing.table.TableCustom;
 
@@ -58,6 +59,7 @@ public class ProductForm extends javax.swing.JPanel {
         this.list = new ProductService();
         this.main = main;
         initProduct();
+        rdoAll.requestFocus();
     }
 
     public void initProduct() {
@@ -67,6 +69,22 @@ public class ProductForm extends javax.swing.JPanel {
         setNumberTexfield();
         loadComboBox();
         loadDataAndFillTable(loadTableType.ALL);
+        setRoleControl();
+    }
+
+    /*-------------------Set role------------------*/
+    private void setRoleControl() {
+        if (this.user.getRole().equalsIgnoreCase("Admin")) {
+            btnNew.setEnabled(true);
+            btnHidden.setEnabled(true);
+            btnUpdate.setEnabled(true);
+            btnReplenishment.setEnabled(true);
+        } else {
+            btnNew.setEnabled(false);
+            btnHidden.setEnabled(false);
+            btnUpdate.setEnabled(false);
+            btnReplenishment.setEnabled(false);
+        }
     }
 
     /*-------------------Format data------------------*/
@@ -183,11 +201,23 @@ public class ProductForm extends javax.swing.JPanel {
         cbbUnit.setSelectedIndex(0);
         txtEntryDate.setText("00-00-000");
         cbbCheckExpiry.setSelectedIndex(0);
-        if (!txtQuantityMin.getText().isBlank()) txtQuantityMin.setText("0");
-        if (!txtQuantityMax.getText().isBlank()) txtQuantityMax.setText("0");
-        if (!txtPriceMin.getText().isBlank()) txtPriceMin.setText("0");
-        if (!txtPriceMax.getText().isBlank()) txtPriceMax.setText("0");
+        if (!txtQuantityMin.getText().isBlank()) {
+            txtQuantityMin.setText("0");
+        }
+        if (!txtQuantityMax.getText().isBlank()) {
+            txtQuantityMax.setText("0");
+        }
+        if (!txtPriceMin.getText().isBlank()) {
+            txtPriceMin.setText("0");
+        }
+        if (!txtPriceMax.getText().isBlank()) {
+            txtPriceMax.setText("0");
+        }
         cbbCheckExpiry.setSelectedIndex(0);
+    }
+
+    public void setBarcodeSearch(String barcode) {
+        txtSearch.setText(barcode);
     }
 
     /*-------------------------------------------Run stream processing-------------------------------------------*/
@@ -228,7 +258,7 @@ public class ProductForm extends javax.swing.JPanel {
                         prd.getMilk().getProduct_name(),
                         prd.getFlavor().getTaste(),
                         prd.getVolume() + " " + prd.getUnit().getMeasurement_unit(),
-                        prd.getMilk().getAmount(),
+                        prd.getMilk().getAmount() == 0 ? "Out of stock" : prd.getMilk().getAmount(),
                         prd.getCreate_at(),
                         setSelectedIndex(priceUpdate(prd.getMilk().getId(), prd.getMilk().getPrice())) + " VND"
                 };
@@ -251,7 +281,7 @@ public class ProductForm extends javax.swing.JPanel {
                         prd.getMilk().getProduct_name(),
                         prd.getFlavor().getTaste(),
                         prd.getVolume() + " " + prd.getUnit().getMeasurement_unit(),
-                        prd.getMilk().getAmount(),
+                        prd.getMilk().getAmount() == 0 ? "Out of stock" : prd.getMilk().getAmount(),
                         prd.getCreate_at(),
                         setSelectedIndex(priceUpdate(prd.getMilk().getId(), prd.getMilk().getPrice())) + " VND"
                 };
@@ -274,7 +304,7 @@ public class ProductForm extends javax.swing.JPanel {
                         prd.getMilk().getProduct_name(),
                         prd.getFlavor().getTaste(),
                         prd.getVolume() + " " + prd.getUnit().getMeasurement_unit(),
-                        prd.getMilk().getAmount(),
+                        prd.getMilk().getAmount() == 0 ? "Out of stock" : prd.getMilk().getAmount(),
                         prd.getCreate_at(),
                         setSelectedIndex(priceUpdate(prd.getMilk().getId(), prd.getMilk().getPrice())) + " VND"
                 };
@@ -297,7 +327,7 @@ public class ProductForm extends javax.swing.JPanel {
                         prd.getMilk().getProduct_name(),
                         prd.getFlavor().getTaste(),
                         prd.getVolume() + " " + prd.getUnit().getMeasurement_unit(),
-                        prd.getMilk().getAmount(),
+                        prd.getMilk().getAmount() == 0 ? "Out of stock" : prd.getMilk().getAmount(),
                         prd.getCreate_at(),
                         setSelectedIndex(priceUpdate(prd.getMilk().getId(), prd.getMilk().getPrice())) + " VND"
                 };
@@ -451,7 +481,7 @@ public class ProductForm extends javax.swing.JPanel {
                         prd.getMilk().getProduct_name(),
                         prd.getFlavor().getTaste(),
                         prd.getVolume() + " " + prd.getUnit().getMeasurement_unit(),
-                        prd.getMilk().getAmount(),
+                        prd.getMilk().getAmount() == 0 ? "Out of stock" : prd.getMilk().getAmount(),
                         prd.getCreate_at(),
                         setSelectedIndex(priceUpdate(prd.getMilk().getId(), prd.getMilk().getPrice())) + " VND"
                 };
@@ -460,6 +490,7 @@ public class ProductForm extends javax.swing.JPanel {
         }
         lbCountPorduct.setText(String.valueOf(this.temp.size()));
     }
+
     public void loadDataAndFillSearchByBarcode() {
         ProductInfoByCriteria dataSearch = new ProductInfoByCriteria();
         Flavor flavor = (Flavor) cbbTaste.getSelectedItem();
@@ -509,7 +540,7 @@ public class ProductForm extends javax.swing.JPanel {
                         prd.getMilk().getProduct_name(),
                         prd.getFlavor().getTaste(),
                         prd.getVolume() + " " + prd.getUnit().getMeasurement_unit(),
-                        prd.getMilk().getAmount(),
+                        prd.getMilk().getAmount() == 0 ? "Out of stock" : prd.getMilk().getAmount(),
                         prd.getCreate_at(),
                         setSelectedIndex(priceUpdate(prd.getMilk().getId(), prd.getMilk().getPrice())) + " VND"
                 };
@@ -528,6 +559,24 @@ public class ProductForm extends javax.swing.JPanel {
             loadDataAndFillTable(loadTableType.ALL);
             this.main.notificationShowSUCCESS("Moved to the storage");
         }
+    }
+
+    /*-------------------------------------------Validate-------------------------------------------*/
+    private Boolean validateSearch() {
+        if (!txtQuantityMax.getText().isBlank()) {
+            if ((!txtQuantityMin.getText().isBlank()) && Integer.parseInt(txtQuantityMax.getText()) < Integer.parseInt(txtQuantityMin.getText())) {
+                this.main.notificationShowWARNING("One side should exceed the other.");
+                txtQuantityMax.requestFocus();
+                return true;
+            }
+        } else if (!txtPriceMax.getText().isBlank()) {
+            if ((!txtPriceMin.getText().isBlank()) && Integer.parseInt(txtPriceMax.getText()) < Integer.parseInt(txtPriceMin.getText())) {
+                this.main.notificationShowWARNING("One side should exceed the other.");
+                txtPriceMax.requestFocus();
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -558,6 +607,7 @@ public class ProductForm extends javax.swing.JPanel {
         cbbPackagingSpecification = new udpm.fpt.swing.Combobox();
         cbbUnit = new udpm.fpt.swing.Combobox();
         cbbCheckExpiry = new udpm.fpt.swing.Combobox();
+        btnScanBarcode = new udpm.fpt.swing.Button();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblProduct = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
@@ -694,6 +744,11 @@ public class ProductForm extends javax.swing.JPanel {
         cbbSearchType.setBorder(null);
         cbbSearchType.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         cbbSearchType.setLabeText("");
+        cbbSearchType.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cbbSearchTypeItemStateChanged(evt);
+            }
+        });
 
         cbbTaste.setLabeText("Taste");
 
@@ -703,6 +758,14 @@ public class ProductForm extends javax.swing.JPanel {
 
         cbbCheckExpiry.setLabeText("Check Entry ");
 
+        btnScanBarcode.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/barcode-scanner.png"))); // NOI18N
+        btnScanBarcode.setToolTipText("");
+        btnScanBarcode.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnScanBarcodeActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -710,6 +773,11 @@ public class ProductForm extends javax.swing.JPanel {
                         .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addContainerGap()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addComponent(cbbSearchType, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(btnScanBarcode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(0, 0, Short.MAX_VALUE))
                                         .addComponent(jPanel5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(button2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(button5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -729,9 +797,6 @@ public class ProductForm extends javax.swing.JPanel {
                                                 .addComponent(txtEntryDate, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                                 .addComponent(cbbCheckExpiry, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addComponent(cbbSearchType, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(0, 0, Short.MAX_VALUE))
                                         .addComponent(jPanel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addContainerGap())
         );
@@ -739,7 +804,9 @@ public class ProductForm extends javax.swing.JPanel {
                 jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addComponent(cbbSearchType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(btnScanBarcode, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(cbbSearchType, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGap(18, 18, 18)
                                 .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(26, 26, 26)
@@ -754,7 +821,7 @@ public class ProductForm extends javax.swing.JPanel {
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(txtEntryDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(cbbCheckExpiry, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
                                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(30, 30, 30)
                                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1076,6 +1143,18 @@ public class ProductForm extends javax.swing.JPanel {
         new Replenishment(this, pi, this.user).setVisible(true);
     }//GEN-LAST:event_btnReplenishmentActionPerformed
 
+    private void btnScanBarcodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnScanBarcodeActionPerformed
+        SearchBarcode searchBarcode = new SearchBarcode(this);
+        searchBarcode.setVisible(true);
+    }//GEN-LAST:event_btnScanBarcodeActionPerformed
+
+    private void cbbSearchTypeItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbbSearchTypeItemStateChanged
+        if (cbbSearchType.getSelectedIndex() == 1)
+            btnScanBarcode.setEnabled(true);
+        else
+            btnScanBarcode.setEnabled(false);
+    }//GEN-LAST:event_cbbSearchTypeItemStateChanged
+
     private void btnNewActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnNewActionPerformed
         NewProduct prd = new NewProduct(this, this.user);
         prd.setVisible(true);
@@ -1091,11 +1170,14 @@ public class ProductForm extends javax.swing.JPanel {
     }// GEN-LAST:event_btnUpdateActionPerformed
 
     private void lbproductgalleryMouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_lbproductgalleryMouseClicked
-        if (lbproductgallery.getIcon() == null) {
-            new IMG("ImageNull.png").setVisible(true);
-        } else {
-            ProductInfo pi = this.temp.get(tblProduct.getSelectedRow());
-            new IMG(pi.getMilk().getImg()).setVisible(true);
+        try {
+            if (lbproductgallery.getIcon() == null) {
+                new IMG("ImageNull.png").setVisible(true);
+            } else {
+                ProductInfo pi = this.temp.get(tblProduct.getSelectedRow());
+                new IMG(pi.getMilk().getImg()).setVisible(true);
+            }
+        } catch (Exception e) {
         }
     }// GEN-LAST:event_lbproductgalleryMouseClicked
 
@@ -1123,9 +1205,14 @@ public class ProductForm extends javax.swing.JPanel {
 
     private void button2ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_button2ActionPerformed
         tblModel = (DefaultTableModel) tblProduct.getModel();
-        tblModel.setRowCount(0);
-        if(cbbSearchType.getSelectedIndex() == 0) loadDataAndFillSearch();
-        else loadDataAndFillSearchByBarcode();
+        if (!validateSearch()) {
+            tblModel.setRowCount(0);
+            if (cbbSearchType.getSelectedIndex() == 0) {
+                loadDataAndFillSearch();
+            } else {
+                loadDataAndFillSearchByBarcode();
+            }
+        }
     }// GEN-LAST:event_button2ActionPerformed
 
     private void button5ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_button5ActionPerformed
@@ -1133,29 +1220,34 @@ public class ProductForm extends javax.swing.JPanel {
     }// GEN-LAST:event_button5ActionPerformed
 
     private void rdoAllItemStateChanged(java.awt.event.ItemEvent evt) {// GEN-FIRST:event_rdoAllItemStateChanged
-        if (rdoAll.isSelected())
+        if (rdoAll.isSelected()) {
             loadDataAndFillTable(loadTableType.ALL);
+        }
     }// GEN-LAST:event_rdoAllItemStateChanged
 
     private void rdoActiveItemStateChanged(java.awt.event.ItemEvent evt) {// GEN-FIRST:event_rdoActiveItemStateChanged
-        if (rdoActive.isSelected())
+        if (rdoActive.isSelected()) {
             loadDataAndFillTable(loadTableType.ACTIVE);
+        }
     }// GEN-LAST:event_rdoActiveItemStateChanged
 
     private void rdoOutOfStockItemStateChanged(java.awt.event.ItemEvent evt) {// GEN-FIRST:event_rdoOutOfStockItemStateChanged
-        if (rdoOutOfStock.isSelected())
+        if (rdoOutOfStock.isSelected()) {
             loadDataAndFillTable(loadTableType.OUTOFSTOCK);
+        }
     }// GEN-LAST:event_rdoOutOfStockItemStateChanged
 
     private void rdoHiddenItemStateChanged(java.awt.event.ItemEvent evt) {// GEN-FIRST:event_rdoHiddenItemStateChanged
-        if (rdoHidden.isSelected())
+        if (rdoHidden.isSelected()) {
             loadDataAndFillTable(loadTableType.HIDDEN);
+        }
     }// GEN-LAST:event_rdoHiddenItemStateChanged
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private udpm.fpt.swing.Button btnHidden;
     private udpm.fpt.swing.Button btnNew;
     private udpm.fpt.swing.Button btnReplenishment;
+    private udpm.fpt.swing.Button btnScanBarcode;
     private udpm.fpt.swing.Button btnUpdate;
     private udpm.fpt.swing.Button button2;
     private udpm.fpt.swing.Button button5;

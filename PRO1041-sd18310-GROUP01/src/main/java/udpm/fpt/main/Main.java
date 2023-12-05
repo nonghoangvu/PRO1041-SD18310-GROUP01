@@ -112,11 +112,7 @@ public class Main extends javax.swing.JFrame {
                     main.show(new Home());
                 }
                 case 1 -> {
-                    if (ADMIN_ROLE.equalsIgnoreCase(this.user.getRole())) {
-                        main.show(new ProductForm(this.user, this));
-                    } else {
-                        showAccessWarning();
-                    }
+                    main.show(new ProductForm(this.user, this));
                 }
                 case 2 -> {
                     if (ADMIN_ROLE.equalsIgnoreCase(this.user.getRole())) {
@@ -182,7 +178,8 @@ public class Main extends javax.swing.JFrame {
     public void settingSize(SizeOption setSize) {
         if (null != setSize) {
             switch (setSize) {
-                case FULL_SIZE -> this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                case FULL_SIZE ->
+                    this.setExtendedState(JFrame.MAXIMIZED_BOTH);
                 case DEFAULT_SIZE -> {
                     this.setSize(1500, 850);
                     this.setLocationRelativeTo(null);

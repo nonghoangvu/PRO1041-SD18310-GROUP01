@@ -10,7 +10,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 import udpm.fpt.form.FormBill;
 import udpm.fpt.model.Customer;
-import udpm.fpt.servicce.BillService;
+import udpm.fpt.service.BillService;
 
 /**
  *

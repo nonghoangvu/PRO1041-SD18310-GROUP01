@@ -1,10 +1,10 @@
 udpm\fpt\swing\PasswordField$1.class
 udpm\fpt\form\SaleBill$2.class
 udpm\fpt\form\ProductManagementForm$1.class
-udpm\fpt\servicce\UserService.class
 udpm\fpt\component\NewProduct$8.class
 udpm\fpt\form\MainForm.class
 udpm\fpt\model\Sale_Bill1.class
+udpm\fpt\form\ProductForm$14.class
 udpm\fpt\component\UpdateProduct$7.class
 udpm\fpt\form\History$3.class
 udpm\fpt\swing\table\TableCustom$TableType.class
@@ -98,13 +98,11 @@ udpm\fpt\form\SaleBill$5.class
 udpm\fpt\model\UserDetails.class
 udpm\fpt\form\DeliveryNoteFrom$13.class
 udpm\fpt\swing\ScrollBarCustom.class
-udpm\fpt\servicce\ServiceGGM1.class
 udpm\fpt\swing\JCheckBoxCustom.class
 udpm\fpt\swing\Button$2.class
 udpm\fpt\component\Notification$Type.class
 udpm\fpt\swing\table\TableCustom.class
 udpm\fpt\component\PackagingSpecificationManagement$1.class
-udpm\fpt\servicce\KhachHangDao.class
 udpm\fpt\model\Bill.class
 udpm\fpt\swing\shadow\GraphicsUtilities.class
 udpm\fpt\test.class
@@ -122,7 +120,6 @@ udpm\fpt\form\History$1.class
 udpm\fpt\component\IMG$1.class
 udpm\fpt\repository\IBill_Respository.class
 udpm\fpt\swing\Button$1.class
-udpm\fpt\servicce\LoginService.class
 udpm\fpt\form\ProductForm$1.class
 udpm\fpt\component\UpdateUser$5.class
 udpm\fpt\form\SaleBill$10.class
@@ -136,16 +133,17 @@ udpm\fpt\model\HistoryProduct.class
 udpm\fpt\component\Menu$1.class
 udpm\fpt\Application.class
 udpm\fpt\swing\Button.class
+<<<<<<< HEAD
 udpm\fpt\component\DeliveryJFrame$1.class
 udpm\fpt\servicce\HistoryProductService$ChangeType.class
+=======
+>>>>>>> origin/main
 udpm\fpt\form\SaleBill$4.class
 udpm\fpt\form\Login$1.class
 udpm\serviceDelivery\CustomCellRenderer.class
 udpm\fpt\component\UpdateUser$7.class
 udpm\fpt\component\Menu$2.class
-udpm\fpt\servicce\HistoryProductService.class
 udpm\fpt\swing\table\TableCustom$2.class
-udpm\fpt\servicce\ServiceGGB1.class
 udpm\fpt\swing\table\TableCustom$1.class
 udpm\fpt\component\SearchBarcode$1.class
 udpm\fpt\form\Login$2.class
@@ -224,7 +222,6 @@ udpm\fpt\form\KhachHangForm$4.class
 udpm\fpt\swing\ListMenu$3.class
 udpm\fpt\Utitlity\DiscountCalculator.class
 udpm\fpt\swing\ScrollBarCustomUI$ScrollButton.class
-udpm\fpt\servicce\ProductService.class
 udpm\fpt\form\DeliveryNoteFrom$6.class
 udpm\fpt\form\ProductManagement$10.class
 udpm\fpt\form\UserForm$3.class
@@ -301,7 +298,6 @@ udpm\fpt\form\SaleMilkForm$5.class
 udpm\fpt\component\UpdateProduct$3.class
 udpm\fpt\form\SaleMilkForm$2.class
 udpm\fpt\component\ViewDelete$1.class
-udpm\fpt\servicce\SalaryService.class
 udpm\fpt\form\ProductManagementForm.class
 udpm\fpt\main\Main$1.class
 udpm\fpt\repository\IMilk_Respository.class
@@ -316,6 +312,7 @@ udpm\fpt\form\UserManagementForm$14.class
 udpm\fpt\repository\IUserDetails.class
 udpm\fpt\swing\ButtonMessage$1.class
 udpm\fpt\component\PanelAction$1.class
+udpm\fpt\form\ProductForm$15.class
 udpm\fpt\swing\Combobox$ComboUI$4.class
 udpm\fpt\swing\SpinnerUI$Editor.class
 udpm\fpt\model\Unit.class

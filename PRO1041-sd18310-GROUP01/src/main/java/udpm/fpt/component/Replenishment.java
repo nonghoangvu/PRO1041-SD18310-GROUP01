@@ -6,7 +6,7 @@ import udpm.fpt.form.ProductForm;
 import udpm.fpt.model.Milk;
 import udpm.fpt.model.ProductInfo;
 import udpm.fpt.model.User;
-import udpm.fpt.servicce.ProductService;
+import udpm.fpt.service.ProductService;
 import udpm.fpt.swing.NumberOnlyFilter;
 
 /**
