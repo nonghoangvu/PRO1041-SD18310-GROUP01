@@ -12,6 +12,7 @@ udpm\fpt\form\UserManagementForm$10.class
 udpm\fpt\swing\table\ActionButton.class
 udpm\fpt\swing\Combobox$1.class
 udpm\fpt\component\FlavorManagement.class
+udpm\fpt\form\FormBill$2.class
 udpm\fpt\component\UpdateUser$4.class
 udpm\fpt\component\AddNewUser$7.class
 udpm\fpt\form\Setting.class
@@ -29,10 +30,12 @@ udpm\fpt\config\DbMetadata.class
 udpm\fpt\component\WebCamProduct$1.class
 udpm\fpt\component\SearchBarcode.class
 udpm\fpt\form\KhachHangForm$7.class
+udpm\fpt\component\Replenishment$2.class
 udpm\fpt\swing\table\TableActionCellRender.class
 udpm\fpt\swing\shadow\ShadowRenderer.class
 udpm\fpt\component\UnitManagement.class
 udpm\fpt\model\ProductInfoByCriteria.class
+udpm\fpt\component\ChooseCustomersForm.class
 udpm\fpt\form\UserManagementForm$5.class
 udpm\fpt\repository\IBillDetails_Respository.class
 udpm\fpt\component\Notification.class
@@ -52,6 +55,7 @@ udpm\fpt\swing\TextField$3.class
 udpm\fpt\component\UpdateUser$2.class
 udpm\fpt\form\UserManagementForm$8.class
 udpm\fpt\component\UnitManagement$2.class
+udpm\fpt\component\ChooseCustomersForm$2.class
 udpm\fpt\component\NewProduct.class
 udpm\fpt\swing\table\TableHeaderCustomCellRender.class
 udpm\fpt\form\ProductForm$3.class
@@ -68,6 +72,7 @@ udpm\fpt\form\ProductManagement$5.class
 udpm\fpt\swing\PasswordField$3.class
 udpm\fpt\component\NewProduct$1.class
 udpm\fpt\repository\IProductInfo.class
+udpm\fpt\service\ProductService.class
 udpm\fpt\component\UpdateProduct$5.class
 udpm\fpt\model\User.class
 udpm\fpt\repository\IMilk.class
@@ -120,6 +125,8 @@ udpm\fpt\form\History$1.class
 udpm\fpt\component\IMG$1.class
 udpm\fpt\repository\IBill_Respository.class
 udpm\fpt\swing\Button$1.class
+udpm\fpt\service\BillService.class
+udpm\fpt\component\ChooseCustomersForm$3.class
 udpm\fpt\form\ProductForm$1.class
 udpm\fpt\component\UpdateUser$5.class
 udpm\fpt\form\SaleBill$10.class
@@ -133,13 +140,10 @@ udpm\fpt\model\HistoryProduct.class
 udpm\fpt\component\Menu$1.class
 udpm\fpt\Application.class
 udpm\fpt\swing\Button.class
-<<<<<<< HEAD
 udpm\fpt\component\DeliveryJFrame$1.class
-udpm\fpt\servicce\HistoryProductService$ChangeType.class
-=======
->>>>>>> origin/main
 udpm\fpt\form\SaleBill$4.class
 udpm\fpt\form\Login$1.class
+udpm\fpt\component\Replenishment.class
 udpm\serviceDelivery\CustomCellRenderer.class
 udpm\fpt\component\UpdateUser$7.class
 udpm\fpt\component\Menu$2.class
@@ -173,6 +177,7 @@ udpm\fpt\swing\table\TableActionCellEditor.class
 udpm\fpt\model\TransportUnit.class
 udpm\fpt\component\Header.class
 udpm\fpt\swing\ListMenu$1.class
+udpm\fpt\component\Replenishment$1.class
 udpm\fpt\model\PackagingSpecification.class
 udpm\fpt\model\Customer.class
 udpm\fpt\component\PanelAction.class
@@ -206,6 +211,7 @@ udpm\fpt\swing\PasswordField.class
 udpm\fpt\swing\table\TableCustomCellRender.class
 udpm\serviceDelivery\NumberFilter.class
 udpm\fpt\component\UpdateDelivery$1.class
+udpm\fpt\form\FormBill$3.class
 udpm\fpt\swing\TextField.class
 udpm\fpt\form\DeliveryNoteFrom$4.class
 udpm\fpt\component\UpdateDelivery.class
@@ -216,8 +222,10 @@ udpm\fpt\form\SaleBill$1.class
 udpm\fpt\swing\ModernScrollBarUI.class
 udpm\fpt\swing\Spinner.class
 udpm\fpt\form\ProductForm$6.class
+udpm\fpt\component\ChooseCustomersForm$1.class
 udpm\fpt\model\BillDetails.class
 udpm\fpt\component\Menu.class
+udpm\fpt\form\FormBill$1.class
 udpm\fpt\form\KhachHangForm$4.class
 udpm\fpt\swing\ListMenu$3.class
 udpm\fpt\Utitlity\DiscountCalculator.class
@@ -233,6 +241,7 @@ udpm\fpt\form\ProductManagement$4.class
 udpm\fpt\form\KhachHangForm$3.class
 udpm\fpt\component\UpdateProduct$6.class
 udpm\fpt\swing\PasswordField$2.class
+udpm\fpt\form\FormBill.class
 udpm\fpt\component\Notification$1$1.class
 udpm\fpt\form\ProductForm$10.class
 udpm\fpt\Utitlity\LoginInfoSerializationUtil.class
@@ -257,6 +266,7 @@ udpm\fpt\form\SaleMilkForm$1.class
 udpm\fpt\form\UserManagementForm$7.class
 udpm\fpt\component\UpdateDelivery$3.class
 udpm\fpt\component\FlavorManagement$2.class
+udpm\fpt\form\FormBill$5.class
 udpm\fpt\form\Home.class
 udpm\fpt\form\UserManagementForm$1.class
 udpm\fpt\component\MessagePanel.class
@@ -274,6 +284,7 @@ udpm\fpt\component\AddNewUser$3.class
 udpm\fpt\Utitlity\LoginInfo.class
 udpm\fpt\model\Flavor.class
 udpm\fpt\component\FlavorManagement$1.class
+udpm\fpt\form\FormBill$4.class
 udpm\fpt\swing\Combobox$ComboUI$6.class
 udpm\fpt\component\UpdateProduct$4.class
 udpm\fpt\component\UpdateUser.class
@@ -296,6 +307,7 @@ udpm\fpt\swing\table\HoverIndex.class
 udpm\fpt\component\MenuLayout$1.class
 udpm\fpt\form\SaleMilkForm$5.class
 udpm\fpt\component\UpdateProduct$3.class
+udpm\fpt\form\FormBill$6.class
 udpm\fpt\form\SaleMilkForm$2.class
 udpm\fpt\component\ViewDelete$1.class
 udpm\fpt\form\ProductManagementForm.class

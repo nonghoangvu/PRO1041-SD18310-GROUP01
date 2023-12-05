@@ -6,7 +6,7 @@ import javax.swing.JFrame;
 
 import lombok.Getter;
 import udpm.fpt.model.User;
-import udpm.fpt.servicce.UserService;
+import udpm.fpt.service.UserService;
 
 public class MainForm extends javax.swing.JPanel {
 
