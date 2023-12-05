@@ -217,6 +217,7 @@ public class ProductForm extends javax.swing.JPanel {
     private void updateTableAll(List<ProductInfo> data) {
         this.temp.clear();
         clearCatelogy();
+        rdoAll.setSelected(true);
         tblModel = (DefaultTableModel) tblProduct.getModel();
         tblModel.setRowCount(0);
         for (ProductInfo prd : data) {

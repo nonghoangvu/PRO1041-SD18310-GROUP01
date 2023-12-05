@@ -378,13 +378,13 @@ public class ProductManagement extends javax.swing.JPanel {
 
     /*-------------------------------------------Control-------------------------------------------*/
     public void delete() {
-        Milk m = this.list.getMilkByID(Long.valueOf(lbId.getText()));
-        m.setIsDelete(true);
-        if (this.list.hideRestoreProduct(m, this.user)) {
-            this.temp.clear();
-            loadDataAndFillTable();
-            this.main.notificationShowSUCCESS("Moved to the storage");
-        }
+//        Milk m = this.list.getMilkByID(Long.valueOf(lbId.getText()));
+//        m.setIsDelete(true);
+//        if (this.list.hideRestoreProduct(m, this.user)) {
+//            this.temp.clear();
+//            loadDataAndFillTable();
+//            this.main.notificationShowSUCCESS("Moved to the storage");
+//        }
     }
 
     /*-------------------------------------------Validate-------------------------------------------*/

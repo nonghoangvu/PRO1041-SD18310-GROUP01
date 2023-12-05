@@ -58,6 +58,7 @@ public interface IProductInfo extends JpaRepository<ProductInfo, Integer> {
             + "AND (p.create_at >= :entryDate OR :entryDate IS NULL) "
             + "AND (m.amount >= COALESCE(:minQuantity, (SELECT MIN(m2.amount) FROM Milk m2)) AND m.amount <= COALESCE(:maxQuantity, (SELECT MAX(m2.amount) FROM Milk m2))) "
             + "AND (m.price >= COALESCE(:minPrice, (SELECT MIN(m2.price) FROM Milk m2)) AND m.price <= COALESCE(:maxPrice, (SELECT MAX(m2.price) FROM Milk m2))) "
+            + "AND (:expiryStatus IS NULL OR (:expiryStatus = 'Expired' AND m.expiration_date < CURRENT_DATE) OR (:expiryStatus = 'Valid' AND m.expiration_date >= CURRENT_DATE))"
     )
     List<ProductInfo> findProductInfoByCriteria(
             @Param("productName") String productName,
@@ -69,6 +70,7 @@ public interface IProductInfo extends JpaRepository<ProductInfo, Integer> {
             @Param("minQuantity") Integer minQuantity,
             @Param("maxQuantity") Integer maxQuantity,
             @Param("minPrice") Integer minPrice,
-            @Param("maxPrice") Integer maxPrice
+            @Param("maxPrice") Integer maxPrice,
+            @Param("expiryStatus") String expiryStatus
     );
 }
