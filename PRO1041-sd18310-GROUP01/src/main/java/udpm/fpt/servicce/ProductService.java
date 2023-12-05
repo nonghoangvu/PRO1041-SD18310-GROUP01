@@ -44,17 +44,17 @@ public class ProductService {
         }, Executors.newCachedThreadPool());
     }
 
-    public CompletableFuture<List<ProductInfo>> loadSearch(String search) {
-        return CompletableFuture.supplyAsync(() -> {
-            return r.findProductInfo(search);
-        }, Executors.newCachedThreadPool());
-    }
+//    public CompletableFuture<List<ProductInfo>> loadSearch(String search) {
+//        return CompletableFuture.supplyAsync(() -> {
+////            return r.findProductInfo(search);
+//        }, Executors.newCachedThreadPool());
+//    }
 
-    public CompletableFuture<List<ProductInfo>> loadFilter(Integer minAmount, Integer maxAmount, Date startDate, Date endDate, String taste, String packaging_type, Integer minPrice, Integer maxPrice) {
-        return CompletableFuture.supplyAsync(() -> {
-            return r.findProductInfoFilter(minAmount, maxAmount, startDate, endDate, taste, packaging_type, minPrice, maxPrice);
-        }, Executors.newCachedThreadPool());
-    }
+//    public CompletableFuture<List<ProductInfo>> loadFilter(Integer minAmount, Integer maxAmount, Date startDate, Date endDate, String taste, String packaging_type, Integer minPrice, Integer maxPrice) {
+//        return CompletableFuture.supplyAsync(() -> {
+////            return r.findProductInfoFilter(minAmount, maxAmount, startDate, endDate, taste, packaging_type, minPrice, maxPrice);
+//        }, Executors.newCachedThreadPool());
+//    }
 
     public Milk getMilkByBarcode(Long barcode) {
         return iMilk.findAllByBarcode(barcode);

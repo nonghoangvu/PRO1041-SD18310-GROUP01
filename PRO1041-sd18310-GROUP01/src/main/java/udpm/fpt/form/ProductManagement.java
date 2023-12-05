@@ -130,17 +130,17 @@ public class ProductManagement extends javax.swing.JPanel {
         }
     }
 
-    public void loadSearch(String search) {
-        CompletableFuture<List<ProductInfo>> future = this.list.loadSearch(search);
-        future.thenAcceptAsync(data -> {
-            SwingUtilities.invokeLater(() -> {
-                updaSearch(data);
-            });
-        }).exceptionally(throwable -> {
-            throwable.printStackTrace(System.out);
-            return null;
-        });
-    }
+//    public void loadSearch(String search) {
+////        CompletableFuture<List<ProductInfo>> future = this.list.loadSearch(search);
+//        future.thenAcceptAsync(data -> {
+//            SwingUtilities.invokeLater(() -> {
+//                updaSearch(data);
+//            });
+//        }).exceptionally(throwable -> {
+//            throwable.printStackTrace(System.out);
+//            return null;
+//        });
+//    }
 
     private void updaSearch(List<ProductInfo> data) {
         this.temp.clear();
@@ -161,17 +161,17 @@ public class ProductManagement extends javax.swing.JPanel {
         }
     }
 
-    public void loadFilters(Integer minAmount, Integer maxAmount, Date startDate, Date endDate, String taste, String packaging_type, Integer minPrice, Integer maxPrice) {
-        CompletableFuture<List<ProductInfo>> future = this.list.loadFilter(minAmount, maxAmount, startDate, endDate, taste, packaging_type, minPrice, maxPrice);
-        future.thenAcceptAsync(data -> {
-            SwingUtilities.invokeLater(() -> {
-                updateFilter(data);
-            });
-        }).exceptionally(throwable -> {
-            throwable.printStackTrace(System.out);
-            return null;
-        });
-    }
+//    public void loadFilters(Integer minAmount, Integer maxAmount, Date startDate, Date endDate, String taste, String packaging_type, Integer minPrice, Integer maxPrice) {
+//        CompletableFuture<List<ProductInfo>> future = this.list.loadFilter(minAmount, maxAmount, startDate, endDate, taste, packaging_type, minPrice, maxPrice);
+//        future.thenAcceptAsync(data -> {
+//            SwingUtilities.invokeLater(() -> {
+//                updateFilter(data);
+//            });
+//        }).exceptionally(throwable -> {
+//            throwable.printStackTrace(System.out);
+//            return null;
+//        });
+//    }
 
     private void updateFilter(List<ProductInfo> data) {
         this.temp.clear();
@@ -350,7 +350,7 @@ public class ProductManagement extends javax.swing.JPanel {
                 if (search.isBlank()) {
                     loadDataAndFillTable();
                 } else {
-                    loadSearch(search);
+//                    loadSearch(search);
                 }
             }
 
@@ -360,7 +360,7 @@ public class ProductManagement extends javax.swing.JPanel {
                 if (search.isBlank()) {
                     loadDataAndFillTable();
                 } else {
-                    loadSearch(search);
+//                    loadSearch(search);
                 }
             }
 
@@ -370,7 +370,7 @@ public class ProductManagement extends javax.swing.JPanel {
                 if (search.isBlank()) {
                     loadDataAndFillTable();
                 } else {
-                    loadSearch(search);
+//                    loadSearch(search);
                 }
             }
         });
@@ -1029,7 +1029,7 @@ public class ProductManagement extends javax.swing.JPanel {
         Date endDate = getDateFormatSQL(txtExpirationDate.getText());
         String taste = cbbTaste.getSelectedItem().toString();
         String packaging_type = cbbPackagingSpecification.getSelectedItem().toString();
-        loadFilters(txtAmountFrom.getText().isBlank() ? null : Integer.valueOf(txtAmountFrom.getText()), txtAmountTo.getText().isBlank() ? null : Integer.valueOf(txtAmountTo.getText()), startDate, endDate, taste, packaging_type, txtFrom.getText().isBlank() ? null : Integer.valueOf(txtFrom.getText()), txtTo.getText().isBlank() ? null : Integer.valueOf(txtTo.getText()));
+//        loadFilters(txtAmountFrom.getText().isBlank() ? null : Integer.valueOf(txtAmountFrom.getText()), txtAmountTo.getText().isBlank() ? null : Integer.valueOf(txtAmountTo.getText()), startDate, endDate, taste, packaging_type, txtFrom.getText().isBlank() ? null : Integer.valueOf(txtFrom.getText()), txtTo.getText().isBlank() ? null : Integer.valueOf(txtTo.getText()));
     }//GEN-LAST:event_btnApplyFiltersMouseClicked
 
     private void btnNewMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnNewMouseClicked
