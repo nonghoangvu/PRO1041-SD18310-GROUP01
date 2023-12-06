@@ -60,7 +60,7 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" attributes="0">
                   <Component id="jPanel2" min="-2" pref="820" max="-2" attributes="0"/>
-                  <EmptySpace max="32767" attributes="0"/>
+                  <EmptySpace pref="45" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -113,7 +113,7 @@
                               <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="jPanel3" pref="0" max="32767" attributes="0"/>
+                                  <Component id="jPanel3" pref="186" max="32767" attributes="0"/>
                                   <Component id="jPanel7" max="32767" attributes="0"/>
                               </Group>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
@@ -136,7 +136,7 @@
               <Layout>
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jScrollPane1" pref="746" max="32767" attributes="0"/>
+                      <Component id="jScrollPane1" pref="708" max="32767" attributes="0"/>
                   </Group>
                 </DimensionLayout>
                 <DimensionLayout dim="1">
@@ -161,8 +161,8 @@
                       <Properties>
                         <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                           <Table columnCount="2" rowCount="0">
-                            <Column editable="false" title="M&#xe3; h&#xf3;a &#x111;&#x1a1;n" type="java.lang.Object"/>
-                            <Column editable="false" title="Tr&#x1ea1;ng th&#xe1;i" type="java.lang.Object"/>
+                            <Column editable="false" title="Bill code" type="java.lang.Object"/>
+                            <Column editable="false" title="Status" type="java.lang.Object"/>
                           </Table>
                         </Property>
                       </Properties>
@@ -326,11 +326,11 @@
                                       <Component id="txtCustomerName" alignment="0" max="32767" attributes="0"/>
                                       <Group type="102" alignment="1" attributes="0">
                                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                              <Component id="btnTaoHoaDon" pref="184" max="32767" attributes="0"/>
-                                              <Component id="buttonMessage2" max="32767" attributes="0"/>
+                                          <Group type="103" groupAlignment="0" attributes="0">
+                                              <Component id="buttonMessage2" alignment="1" min="-2" pref="184" max="-2" attributes="0"/>
+                                              <Component id="btnTaoHoaDon" alignment="1" min="-2" pref="184" max="-2" attributes="0"/>
                                           </Group>
-                                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
                                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                               <Component id="buttonMessage1" max="32767" attributes="0"/>
                                               <Component id="buttonMessage3" pref="185" max="32767" attributes="0"/>
@@ -373,8 +373,8 @@
                           </Group>
                           <EmptySpace max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="buttonMessage3" alignment="3" min="-2" pref="53" max="-2" attributes="0"/>
-                              <Component id="buttonMessage2" alignment="3" min="-2" pref="53" max="-2" attributes="0"/>
+                              <Component id="buttonMessage3" alignment="3" min="-2" pref="61" max="-2" attributes="0"/>
+                              <Component id="buttonMessage2" alignment="3" min="-2" pref="61" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="140" max="-2" attributes="0"/>
                       </Group>

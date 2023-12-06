@@ -114,14 +114,17 @@ public class Replenishment extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCancelActionPerformed
 
     private void btnOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOkActionPerformed
-        System.out.println("Success");
+        if(txtReplenishment.getText().isBlank()){
+            txtReplenishment.requestFocus();
+            return;
+        }
         Milk milk = this.getProductInfo.getMilk();
         ProductInfo productInfo = this.getProductInfo;
         milk.setAmount(Integer.parseInt(txtReplenishment.getText()));
         milk.setId(null);
         productInfo.setId(null);
         productInfo.setCreate_at(new Date());
-        if (this.list.insertProduct(milk, productInfo)) {
+        if (this.list.insertReplenishment(milk, productInfo)) {
             Notification n = new Notification(this, Notification.Type.SUCCESS, Notification.Location.DEFAULT_DESKTOP, "SUCCESS");
             n.showNotification();
             dispose();

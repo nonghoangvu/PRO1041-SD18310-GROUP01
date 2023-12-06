@@ -15,7 +15,7 @@ public class Home extends javax.swing.JPanel {
         chart.addLegend("B", new Color(135, 189, 245));
         chart.addLegend("C", new Color(189, 135, 245));
         chart.addLegend("D", new Color(139, 229, 222));
-        chart.addData(new ModelChart("1", new double[]{500, 200, 80, 89}));
+        chart.addData(new ModelChart("1", new double[]{1000, 2, 6, 7}));
         chart.addData(new ModelChart("2", new double[]{600, 750, 90, 150}));
         chart.addData(new ModelChart("3", new double[]{200, 350, 460, 900}));
         chart.addData(new ModelChart("4", new double[]{480, 150, 750, 700}));

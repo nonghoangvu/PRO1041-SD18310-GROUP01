@@ -43,11 +43,13 @@ public class ProductService {
             return Collections.unmodifiableList(r.findProductInfoByCriteria(data.getProductName(), data.getFlavor(), data.getPackagingType(), data.getMeasurementUnit(), data.getVolume(), data.getEntryDate(), data.getMinQuantity(), data.getMaxQuantity(), data.getMinPrice(), data.getMaxPrice(), data.getExpiryStatus()));
         }, Executors.newCachedThreadPool());
     }
+
     public CompletableFuture<List<ProductInfo>> loadASearchByBarcode(ProductInfoByCriteria data) {
         return CompletableFuture.supplyAsync(() -> {
             return Collections.unmodifiableList(r.findProductInfoByCriteriaBarcode(data.getProductName(), data.getFlavor(), data.getPackagingType(), data.getMeasurementUnit(), data.getVolume(), data.getEntryDate(), data.getMinQuantity(), data.getMaxQuantity(), data.getMinPrice(), data.getMaxPrice(), data.getExpiryStatus()));
         }, Executors.newCachedThreadPool());
     }
+
     public Milk getMilkByBarcode(Long barcode) {
         return iMilk.findAllByBarcode(barcode);
     }
@@ -114,6 +116,13 @@ public class ProductService {
             if (r.save(pi) != null) {
                 return this.historyProduct.trackHistory("New product has been added with barcode " + m.getBarcode(), pi.getUser().getUsername(), HistoryProductService.ChangeType.NEW);
             }
+        }
+        return false;
+    }
+
+    public Boolean insertReplenishment(Milk m, ProductInfo pi) {
+        if (r.save(pi) != null) {
+            return this.historyProduct.trackHistory("New product has been replenishment with barcode " + m.getBarcode(), pi.getUser().getUsername(), HistoryProductService.ChangeType.NEW);
         }
         return false;
     }
