@@ -7,9 +7,9 @@ import udpm.fpt.swing.Chart.blankchart.charts.ModelChart;
  *
  * @author NONG HOANG VU
  */
-public class Home extends javax.swing.JPanel {
+public class Dashboard extends javax.swing.JPanel {
 
-    public Home() {
+    public Dashboard() {
         initComponents();
         chart.addLegend("A", new Color(245, 189, 135));
         chart.addLegend("B", new Color(135, 189, 245));

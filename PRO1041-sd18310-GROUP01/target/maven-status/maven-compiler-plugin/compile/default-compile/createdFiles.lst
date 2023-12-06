@@ -115,6 +115,7 @@ udpm\fpt\repository\IFlavor.class
 udpm\fpt\swing\ScrollBarCustomUI$1.class
 udpm\fpt\repository\ISalary.class
 udpm\fpt\form\DeliveryNoteForm2$8.class
+udpm\fpt\form\Dashboard.class
 udpm\fpt\repository\IDelivery_noteRespository.class
 udpm\fpt\form\ProductForm$2.class
 udpm\fpt\swing\TextAreaScroll$1.class
@@ -264,7 +265,6 @@ udpm\fpt\form\UserManagementForm$7.class
 udpm\fpt\component\UpdateDelivery$3.class
 udpm\fpt\component\FlavorManagement$2.class
 udpm\fpt\form\FormBill$5.class
-udpm\fpt\form\Home.class
 udpm\fpt\form\UserManagementForm$1.class
 udpm\fpt\component\MessagePanel.class
 udpm\fpt\config\DBConnect1.class

@@ -24,11 +24,9 @@ import org.jdesktop.animation.timing.TimingTargetAdapter;
 import udpm.fpt.Utitlity.BcryptHash;
 import udpm.fpt.component.Notification;
 import udpm.fpt.form.History;
-import udpm.fpt.form.Home;
+import udpm.fpt.form.Dashboard;
 import udpm.fpt.form.Login;
-import udpm.fpt.form.ProductManagement;
 import udpm.fpt.form.Setting;
-import udpm.fpt.form.UserForm;
 import udpm.fpt.form.UserManagementForm;
 import udpm.fpt.model.User;
 
@@ -109,54 +107,51 @@ public class Main extends javax.swing.JFrame {
         menu.getMenu().addEventMenuSelected((int index) -> {
             switch (index) {
                 case 0 -> {
-                    main.show(new Home());
+                    main.show(new Dashboard());
                 }
                 case 1 -> {
-                    main.show(new ProductForm(this.user, this));
+                    main.show(new FormBill(this.user));
                 }
                 case 2 -> {
-                    if (ADMIN_ROLE.equalsIgnoreCase(this.user.getRole())) {
-                        main.show(new History(this.user, this));
-                    } else {
-                        showAccessWarning();
-                    }
+                    main.show(new ProductForm(this.user, this));
                 }
                 case 3 -> {
-                    if (ADMIN_ROLE.equalsIgnoreCase(this.user.getRole())) {
-                        main.show(new UserManagementForm(this.user, this));
-                    } else {
-                        showAccessWarning();
-                    }
-                }
-                case 4 -> {
-                    main.show(new KhachHangForm());
-                }
-                case 6 -> {
-                    main.show(new Setting(this.user, this));
-                }
-                case 7 -> {
                     main.show(new DeliveryNoteForm2(this.user, this));
                 }
-                case 8 -> {
-                    new Login().setVisible(true);
-                    this.dispose();
-                }
-                case 9 -> {
+                case 4 -> {
                     if (ADMIN_ROLE.equalsIgnoreCase(this.user.getRole())) {
                         main.show(new SaleMilkForm());
                     } else {
                         showAccessWarning();
                     }
                 }
-                case 10 -> {
+                case 5 -> {
                     if (ADMIN_ROLE.equalsIgnoreCase(this.user.getRole())) {
                         main.show(new SaleBill());
                     } else {
                         showAccessWarning();
                     }
                 }
-                case 11 -> {
-                    main.show(new FormBill(this.user));
+                case 6 -> {
+                    if (ADMIN_ROLE.equalsIgnoreCase(this.user.getRole())) {
+                        main.show(new UserManagementForm(this.user, this));
+                    } else {
+                        showAccessWarning();
+                    }
+                }
+                case 7 -> {
+                    if (ADMIN_ROLE.equalsIgnoreCase(this.user.getRole())) {
+                        main.show(new History(this.user, this));
+                    } else {
+                        showAccessWarning();
+                    }
+                }
+                case 8 -> {
+                    main.show(new Setting(this.user, this));
+                }
+                case 9 -> {
+                    new Login().setVisible(true);
+                    this.dispose();
                 }
                 default -> {
                     System.out.println("index: " + index);
@@ -168,7 +163,7 @@ public class Main extends javax.swing.JFrame {
     private void showAccessWarning() {
         Notification notification = new Notification(this, Notification.Type.WARNING, Notification.Location.TOP_RIGHT, new BcryptHash().decodeBase64("T25seSBhZG1pbmlzdHJhdG9ycyBoYXZlIGFjY2Vzcw=="));
         notification.showNotification();
-        main.show(new Home());
+        main.show(new Dashboard());
     }
 
     public enum SizeOption {
