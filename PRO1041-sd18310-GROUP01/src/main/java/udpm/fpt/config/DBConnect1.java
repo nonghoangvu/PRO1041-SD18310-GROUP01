@@ -10,11 +10,11 @@ import java.sql.*;
  * @author Thanh Dat
  */
 public class DBConnect1 {
-     public static final String HOSTNAME = "localhost";
+    public static final String HOSTNAME = "localhost";
     public static final String PORT = "1433";
     public static final String DBNAME = "THTrueMilk";
     public static final String USERNAME = "sa";
-    public static final String PASSWORD = "123";
+    public static final String PASSWORD = "Bquoc!0411!";
 
     public static java.sql.Connection getConnection() {
         // Create a variable for the connection string.
