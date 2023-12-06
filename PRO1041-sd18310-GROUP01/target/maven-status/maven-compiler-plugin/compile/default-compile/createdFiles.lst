@@ -307,6 +307,7 @@ udpm\fpt\component\UpdateProduct$3.class
 udpm\fpt\form\FormBill$6.class
 udpm\fpt\form\SaleMilkForm$2.class
 udpm\fpt\component\ViewDelete$1.class
+udpm\fpt\form\DeliveryNoteForm2$11.class
 udpm\fpt\form\ProductManagementForm.class
 udpm\fpt\main\Main$1.class
 udpm\fpt\repository\IMilk_Respository.class

@@ -83,7 +83,7 @@ public class DeliveryNote {
     public DeliveryNote() {
     }
 
-    public DeliveryNote(Date creationdate, String customer_name, String address, Integer bill_id, String waybill_number, Integer transport_unit_id, String note, Double shippingCost, Integer status_id, String sdt, String milk_name, Integer quantity, Double total_amount) {
+    public DeliveryNote(Date creationdate, String customer_name, String address, Integer bill_id, String waybill_number, Integer transport_unit_id, String note, Double shippingCost, Integer status_id, String sdt, Date estimatedtime, String milk_name, Integer quantity, Double total_amount) {
         this.creationdate = creationdate;
         this.customer_name = customer_name;
         this.address = address;
