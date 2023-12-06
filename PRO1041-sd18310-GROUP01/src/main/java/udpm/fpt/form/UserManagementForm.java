@@ -120,7 +120,7 @@ public class UserManagementForm extends javax.swing.JPanel {
         public String urlImage(Boolean get_set) {
         try {
             String currentDirectory = System.getProperty("user.dir")
-                    + "/src/main/java/Icon/";
+                    + "/src/main/java/Ava/";
             JFileChooser fileChooser = new JFileChooser(currentDirectory);
             fileChooser.showOpenDialog(null);
             File selectedFile = fileChooser.getSelectedFile();
@@ -147,10 +147,10 @@ public class UserManagementForm extends javax.swing.JPanel {
         System.out.println(avatar);
         try {
             lblAva.setIcon(new javax.swing.ImageIcon(
-                    Objects.requireNonNull(getClass().getResource("/Icon/" + avatar))));
+                    Objects.requireNonNull(getClass().getResource("/Ava/" + avatar))));
         } catch (Exception exception) {
             lblAva.setIcon(new javax.swing.ImageIcon(
-                    Objects.requireNonNull(getClass().getResource("/Icon/cow.png"))));
+                    Objects.requireNonNull(getClass().getResource("/Ava/user.png"))));
         }
     }
 
