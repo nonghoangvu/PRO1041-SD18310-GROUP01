@@ -4,11 +4,11 @@ Pasword: 123
 server: localhost
 Port: 1433
 */
-/*USE HELLO
-GO
-DROP DATABASE THTrueMilk
-GO
-*/
+-- USE master
+-- GO
+-- DROP DATABASE THTrueMilk
+-- GO
+
 CREATE DATABASE THTrueMilk
 GO
 USE THTrueMilk
