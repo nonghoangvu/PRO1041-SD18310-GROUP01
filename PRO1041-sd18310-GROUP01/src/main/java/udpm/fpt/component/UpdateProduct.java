@@ -2,6 +2,9 @@ package udpm.fpt.component;
 
 import com.raven.datechooser.DateChooser;
 import java.awt.Image;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
@@ -26,7 +29,7 @@ import udpm.fpt.model.PackagingSpecification;
 import udpm.fpt.model.ProductInfo;
 import udpm.fpt.model.Unit;
 import udpm.fpt.model.User;
-import udpm.fpt.servicce.ProductService;
+import udpm.fpt.service.ProductService;
 import udpm.fpt.swing.NumberOnlyFilter;
 
 /**
@@ -65,6 +68,12 @@ public class UpdateProduct extends javax.swing.JFrame {
                 txtAmount.setValue(0);
             }
         });
+    }
+
+    private void copyToClipboard(String text) {
+        StringSelection stringSelection = new StringSelection(text);
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        clipboard.setContents(stringSelection, null);
     }
 
     private void loadData() {
@@ -412,9 +421,15 @@ public class UpdateProduct extends javax.swing.JFrame {
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "New Product", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14))); // NOI18N
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Update Product", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14))); // NOI18N
 
+        txtBarcode.setEditable(false);
         txtBarcode.setLabelText("Barcode");
+        txtBarcode.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txtBarcodeMouseClicked(evt);
+            }
+        });
 
         txtName.setLabelText("Name");
 
@@ -672,6 +687,12 @@ public class UpdateProduct extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void txtBarcodeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtBarcodeMouseClicked
+        copyToClipboard(txtBarcode.getText());
+        new Notification(this, Notification.Type.SUCCESS, Notification.Location.DEFAULT_DESKTOP, "Barcode has been copied to clipboard")
+                .showNotification();
+    }//GEN-LAST:event_txtBarcodeMouseClicked
 
     private void btnSaveMouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_btnSaveMouseClicked
         if (!isValidate()) {

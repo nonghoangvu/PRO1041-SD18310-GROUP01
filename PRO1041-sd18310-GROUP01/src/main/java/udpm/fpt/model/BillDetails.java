@@ -41,14 +41,14 @@ public class BillDetails {
     @Column(name = "price")
     private Double price;
 
-    @Column(name = "total_amount")
-    private Double totalAmount;
-    
-    @Column(name = "staff_id")
-    private Integer staffId;
-
-    @Column(name = "sale_bill_id")
-    private Integer saleBillId;
+//    @Column(name = "total_amount")
+//    private Double totalAmount;
+//    
+//    @Column(name = "staff_id")
+//    private Integer staffId;
+//
+//    @Column(name = "sale_bill_id")
+//    private Integer saleBillId;
 
     public BillDetails() {
     }

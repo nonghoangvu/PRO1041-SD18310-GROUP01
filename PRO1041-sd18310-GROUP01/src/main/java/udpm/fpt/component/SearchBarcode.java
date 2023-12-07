@@ -19,18 +19,19 @@ import java.awt.image.BufferedImage;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
+import udpm.fpt.form.ProductForm;
 
 /**
  * @author NONG HOANG VU
  */
 public class SearchBarcode extends javax.swing.JFrame implements Runnable, ThreadFactory {
 
-    public ProductManagement postId;
+    public ProductForm postId;
     private WebcamPanel panel;
     public Webcam webcam;
     private final Executor executor = Executors.newSingleThreadExecutor(this);
 
-    public SearchBarcode(ProductManagement postId) {
+    public SearchBarcode(ProductForm postId) {
         initComponents();
         this.postId = postId;
         try {
@@ -40,7 +41,6 @@ public class SearchBarcode extends javax.swing.JFrame implements Runnable, Threa
             try {
                 this.webcam.close();
             } catch (Exception ignored) {
-                ignored.printStackTrace(System.out);
             }
             this.dispose();
         }
@@ -138,7 +138,7 @@ public class SearchBarcode extends javax.swing.JFrame implements Runnable, Threa
             }
         } else {
             String id = lbId.getText();
-            postId.setId(id);
+            postId.setBarcodeSearch(id);
             this.webcam.close();
             this.dispose();
         }

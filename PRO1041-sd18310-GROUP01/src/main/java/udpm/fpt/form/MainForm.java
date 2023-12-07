@@ -6,7 +6,7 @@ import javax.swing.JFrame;
 
 import lombok.Getter;
 import udpm.fpt.model.User;
-import udpm.fpt.servicce.UserService;
+import udpm.fpt.service.UserService;
 
 public class MainForm extends javax.swing.JPanel {
 
@@ -16,7 +16,7 @@ public class MainForm extends javax.swing.JPanel {
     public MainForm(User user) {
         this.user = user;
         initComponents();
-        show(new Home());
+        show(new Dashboard());
         header1.setUsername(this.user.getUsername());
         header1.setRole(this.user.getRole());
         header1.setAvatar(new UserService().getAvatar(this.user.getUsername()));

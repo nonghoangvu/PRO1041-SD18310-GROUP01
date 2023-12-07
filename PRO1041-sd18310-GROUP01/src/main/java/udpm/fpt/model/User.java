@@ -32,4 +32,10 @@ public class User {
     private String password;
     @Column(name = "role")
     private String role;
+
+    @Override
+    public String toString() {
+        return "User{" + "id=" + id + ", username=" + username + ", password=" + password + ", role=" + role + '}';
+    }
+    
 }

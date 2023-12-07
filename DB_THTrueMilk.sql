@@ -7,9 +7,13 @@ Port: 1433
 /*USE HELLO
 GO
 DROP DATABASE THTrueMilk
+<<<<<<< HEAD
 GO 
 
-CREATE DATABASE THTrueMilk
+=======
+GO
+*/
+/*CREATE DATABASE THTrueMilk
 GO
 USE THTrueMilk
 GO*/
@@ -217,7 +221,7 @@ CREATE TABLE [SaleMilk]
 GO
 CREATE TABLE [Bill]
 (
-    [id]                     INT PRIMARY KEY,
+    [id]                     BIGINT PRIMARY KEY,
     [customer_id]            INT,
     [payment_menthod]        NVARCHAR(50),
     [payment_status]         NVARCHAR(50),
@@ -226,26 +230,29 @@ CREATE TABLE [Bill]
     [total_amount_after_tax] MONEY,
     [notes]                  NVARCHAR(MAX),
     [created_at]             DATETIME DEFAULT GETDATE(),
+<<<<<<< HEAD
 	[shopping_method]		 NVARCHAR(MAX)
+=======
+    [staff_id]               INT,
+    [sale_bill_id]           INT,
+    [shopping_method]        NVARCHAR(250)
+>>>>>>> 676dec9fa16ed4e53ccbee3afe2322844303867f
 )
 GO
 CREATE TABLE [BillDetails]
 (
-    [id]           INT PRIMARY KEY,
-    [bill_id]      INT,
+    [id]           INT PRIMARY KEY IDENTITY(1,1),
+    [bill_id]      BIGINT,
     [milk_id]      INT,
     [service_id]   INT,
     [quantity]     INT,
     [price]        MONEY,
-    [total_amount] MONEY,
-    [staff_id]     INT,
-    [sale_bill_id] INT
 )
 GO
 CREATE TABLE [HistoryBill]
 (
     [id]              INT PRIMARY KEY,
-    [bill_id]         INT,
+    [bill_id]         BIGINT,
     [milk_id]         BIGINT,
     [customer_id]     INT,
     [staff_id]        INT,
@@ -278,7 +285,7 @@ CREATE TABLE [DeliveryNote]
     [creationdate]      DATETIME DEFAULT (GETDATE()),
     [customer_name]     NVARCHAR(50),
     [address]           NVARCHAR(50),
-    [bill_id]           INT,
+    [bill_id]           BIGINT,
     [waybill_number]    NVARCHAR(50),
     [transport_unit_id] INT,
     [note]              NVARCHAR(MAX),
@@ -342,7 +349,7 @@ GO
 ALTER TABLE [Bill]
     ADD FOREIGN KEY ([customer_id]) REFERENCES [Customer] ([id])
 GO
-ALTER TABLE [BillDetails]
+ALTER TABLE [Bill]
     ADD FOREIGN KEY ([sale_bill_id]) REFERENCES [SaleBill] ([id])
 GO
 ALTER TABLE [BillDetails]
@@ -357,7 +364,7 @@ GO
 ALTER TABLE [SaleMilk]
     ADD FOREIGN KEY ([staff_id]) REFERENCES [Users] ([id])
 GO
-ALTER TABLE [BillDetails]
+ALTER TABLE [Bill]
     ADD FOREIGN KEY ([staff_id]) REFERENCES [Users] ([id])
 GO
 ALTER TABLE [HistoryBill]

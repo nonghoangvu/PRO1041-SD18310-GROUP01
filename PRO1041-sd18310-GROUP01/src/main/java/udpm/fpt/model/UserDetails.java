@@ -76,4 +76,11 @@ public class UserDetails {
 
     @Column(name = "created_at", columnDefinition = "DATE DEFAULT CURRENT_DATE")
     private Date createdAt;
+
+    @Override
+    public String toString() {
+        return "UserDetails{" + "id=" + id + ", user=" + user + ", salary=" + salary + ", fullname=" + fullname + ", gender=" + gender + ", tel=" + tel + ", email=" + email + ", photo=" + photo + ", address=" + address + ", birthdate=" + birthdate + ", citizenId=" + citizenId + ", jobPosition=" + jobPosition + ", note=" + note + ", status=" + status + ", createdAt=" + createdAt + '}';
+    }
+    
+    
 }

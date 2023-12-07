@@ -11,7 +11,7 @@ import java.util.Locale;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import udpm.fpt.model.Sale_Bill1;
-import udpm.fpt.servicce.ServiceGGB1;
+import udpm.fpt.service.ServiceGGB1;
 
 /**
  *

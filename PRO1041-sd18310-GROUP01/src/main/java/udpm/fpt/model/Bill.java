@@ -31,16 +31,15 @@ import org.springframework.data.repository.cdi.Eager;
 @Setter
 public class Bill {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @OneToOne
     @JoinColumn (name = "customer_id")
     private Customer customerId;
     @Column(name = "payment_menthod", length = 50)
-    private String paymentMethod;
+    private String payment_method;
 
     @Column(name = "payment_status", length = 50)
-    private String paymentStatus;
+    private String payment_status;
 
     @Column(name = "coupon_id")
     private Integer couponId;
@@ -58,10 +57,16 @@ public class Bill {
     @Column(name = "created_at", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
+    
+    @Column(name = "staff_id")
+    private Integer staff_id;
+    
+    @Column(name = "sale_bill_id")
+    private Integer sale_bill_id;
+    
+    @Column(name = "shopping_method")
+    private String shopping_method;
 
     public Bill() {
-    }
-
-    
-    
+    }   
 }

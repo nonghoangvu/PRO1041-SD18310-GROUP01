@@ -12,7 +12,7 @@ import udpm.fpt.Utitlity.LoginInfo;
 import udpm.fpt.Utitlity.LoginInfoSerializationUtil;
 import udpm.fpt.component.Notification;
 import udpm.fpt.main.Main;
-import udpm.fpt.servicce.LoginService;
+import udpm.fpt.service.LoginService;
 
 /**
  * @author NONG HOANG VU

@@ -13,8 +13,8 @@ import udpm.fpt.model.HistoryProduct;
 import udpm.fpt.model.Milk;
 import udpm.fpt.model.ProductInfo;
 import udpm.fpt.model.User;
-import udpm.fpt.servicce.HistoryProductService;
-import udpm.fpt.servicce.ProductService;
+import udpm.fpt.service.HistoryProductService;
+import udpm.fpt.service.ProductService;
 import udpm.fpt.swing.table.TableActionCellEditor;
 import udpm.fpt.swing.table.TableActionCellRender;
 import udpm.fpt.swing.table.TableCustom;
@@ -100,7 +100,7 @@ public class History extends javax.swing.JPanel {
 
     private void Restore() {
         ProductService productService = new ProductService();
-        Milk m = productService.getMilkByID(getId());
+        Milk m = this.temp.get(tblHistory.getSelectedRow()).getMilk();
         m.setIsDelete(false);
         if (productService.hideRestoreProduct(m, this.user)) {
             if (cbbCatelogy.getSelectedItem().equals("Archive")) {

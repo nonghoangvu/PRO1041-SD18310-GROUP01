@@ -79,7 +79,7 @@
             </Property>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                <TitledBorder justification="2" title="New Product">
+                <TitledBorder justification="2" title="Update Product">
                   <Font PropertyName="font" name="Segoe UI" size="14" style="1"/>
                 </TitledBorder>
               </Border>
@@ -139,8 +139,12 @@
           <SubComponents>
             <Component class="udpm.fpt.swing.TextField" name="txtBarcode">
               <Properties>
+                <Property name="editable" type="boolean" value="false"/>
                 <Property name="labelText" type="java.lang.String" value="Barcode"/>
               </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="txtBarcodeMouseClicked"/>
+              </Events>
             </Component>
             <Component class="udpm.fpt.swing.TextField" name="txtName">
               <Properties>

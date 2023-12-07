@@ -22,12 +22,13 @@ public class Header extends javax.swing.JPanel {
     }
 
     public void setAvatar(String avatar) {
+        System.out.println(avatar);
         try {
             imageAvatar1.setIcon(new javax.swing.ImageIcon(
-                    Objects.requireNonNull(getClass().getResource("/Icon/icon/" + avatar))));
+                    Objects.requireNonNull(getClass().getResource("/Ava/" + avatar))));
         } catch (Exception exception) {
             imageAvatar1.setIcon(new javax.swing.ImageIcon(
-                    Objects.requireNonNull(getClass().getResource("/Icon/rubber-duck.png"))));
+                    Objects.requireNonNull(getClass().getResource("/Ava/user.png"))));
         }
     }
 

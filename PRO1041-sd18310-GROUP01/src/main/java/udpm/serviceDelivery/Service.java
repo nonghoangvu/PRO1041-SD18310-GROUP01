@@ -20,6 +20,7 @@ import udpm.fpt.model.DeliveryNote;
 import udpm.fpt.model.Milk;
 import udpm.fpt.model.Status;
 import udpm.fpt.model.TransportUnit;
+import udpm.fpt.model.User;
 import udpm.fpt.repository.IBillDetails_Respository;
 import udpm.fpt.repository.IBill_Respository;
 import udpm.fpt.repository.ICustomer_Resposutory;
@@ -27,6 +28,7 @@ import udpm.fpt.repository.IDelivery_noteRespository;
 import udpm.fpt.repository.IMilk_Respository;
 import udpm.fpt.repository.IStatus_Respository;
 import udpm.fpt.repository.ITranportUnit_Respository;
+import udpm.fpt.service.HistoryProductService;
 
 /**
  *
@@ -41,7 +43,7 @@ public class Service {
     private final IBillDetails_Respository billDetail = getBean(IBillDetails_Respository.class);
     private final IMilk_Respository milk = getBean(IMilk_Respository.class);
     private final IStatus_Respository status = getBean(IStatus_Respository.class);
-
+    private final HistoryProductService historyProduct = new HistoryProductService();
     public boolean insertDeli(DeliveryNote deli) {
         boolean check = false;
         if (delivery.save(deli) != null) {
@@ -164,9 +166,15 @@ public class Service {
         }, Executors.newCachedThreadPool());
     }
 
+    public CompletableFuture<List<BillDetails>> loadAsyncBillDetailByIdBill(String id) {
+        return CompletableFuture.supplyAsync(() -> {
+            return billDetail.findAllByBillid(id);
+        }, Executors.newCachedThreadPool());
+    }
+
     public CompletableFuture<List<Bill>> findAllBill() {
         return CompletableFuture.supplyAsync(() -> {
-            return bill.findAll();
+            return bill.findBillByshoppingmethod();
         }, Executors.newCachedThreadPool());
     }
 
@@ -187,10 +195,26 @@ public class Service {
             return delivery.findByStatus(idStatus);
         }, Executors.newCachedThreadPool());
     }
-    public CompletableFuture<List<DeliveryNote>> SearchAll (String idDelivery, String Customer_name, String idStatus) {
+
+    public CompletableFuture<List<DeliveryNote>> SearchAll(String idDelivery, String Customer_name, String idStatus) {
         return CompletableFuture.supplyAsync(() -> {
             return delivery.searchAll(idDelivery, Customer_name, idStatus);
         }, Executors.newCachedThreadPool());
     }
-    
+
+    public Bill findBillByID(String idBill) {
+        return bill.findBill(idBill);
+    }
+    public int updateBill(String status, Integer billID){
+        return this.bill.updateQuantity(status, billID);
+    }
+    public Boolean historyRemove(String message, User user) {
+            return this.historyProduct.trackHistory("The " + message, user.getUsername(), HistoryProductService.ChangeType.REMOVE);
+    }
+    public Boolean historyUpdate(String message, User user) {
+            return this.historyProduct.trackHistory("The " + message, user.getUsername(), HistoryProductService.ChangeType.UPDATE);
+    }
+    public Boolean historyInsert(String message, User user) {
+            return this.historyProduct.trackHistory("The " + message, user.getUsername(), HistoryProductService.ChangeType.NEW);
+    }
 }

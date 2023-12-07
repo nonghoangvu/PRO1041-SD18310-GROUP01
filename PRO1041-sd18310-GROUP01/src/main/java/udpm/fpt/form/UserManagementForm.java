@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -21,9 +22,9 @@ import udpm.fpt.main.Main;
 import udpm.fpt.model.Salary;
 import udpm.fpt.model.User;
 import udpm.fpt.model.UserDetails;
-import udpm.fpt.servicce.HistoryProductService;
-import udpm.fpt.servicce.SalaryService;
-import udpm.fpt.servicce.UserService;
+import udpm.fpt.service.HistoryProductService;
+import udpm.fpt.service.SalaryService;
+import udpm.fpt.service.UserService;
 import udpm.fpt.swing.table.TableCustom;
 
 /**
@@ -41,18 +42,20 @@ public class UserManagementForm extends javax.swing.JPanel {
     private final Main main;
     private String imgName = null;
     private User user;
+    private List<UserDetails> tempList;
+    private UserDetails _USER_DETAILS;
 
     public UserManagementForm(User user, Main main) {
         initComponents();
         this.user = user;
         this.main = main;
+        this.tempList = new ArrayList<>();
         TableCustom.apply(jScrollPane1, TableCustom.TableType.MULTI_LINE);
         initTable();
         loadDataToTable();
         loadDataAndFillSalary();
-        if (userService.getList().size() > 0) {
-            fillDataToFields(userService.getList().get(0));
-            tblUser.setRowSelectionInterval(0, 0);
+        if(txtUsername.getText().isBlank()){
+            txtUsername.setEditable(true);
         }
     }
 
@@ -65,8 +68,10 @@ public class UserManagementForm extends javax.swing.JPanel {
 
     public void loadDataToTable() {
         tblModel.setRowCount(0);
+        this.tempList.clear();
         int i = 1;
         for (UserDetails per : userService.getList()) {
+            this.tempList.add(per);
             tblModel.addRow(new Object[]{i++, per.getUser().getUsername(), per.getUser().getRole(), per.getFullname(), per.getJobPosition()});
         }
 
@@ -116,11 +121,29 @@ public class UserManagementForm extends javax.swing.JPanel {
             return null;
         }
     }
-    
-        public String urlImage(Boolean get_set) {
+
+    private void setImange(String url) {
+        lblAva.setText(null);
+        try {
+            int labelWidth = lblAva.getWidth();
+            int labelHeight = lblAva.getHeight();
+            ImageIcon originalIcon = new javax.swing.ImageIcon(
+                    Objects.requireNonNull(getClass().getResource("/Ava/" + url)));
+            Image originalImage = originalIcon.getImage();
+            Image scaledImage = originalImage.getScaledInstance(labelWidth, labelHeight,
+                    Image.SCALE_SMOOTH);
+            ImageIcon scaledIcon = new ImageIcon(scaledImage);
+            lblAva.setIcon(scaledIcon);
+        } catch (Exception e) {
+            lblAva.setIcon(null);
+            lblAva.setText("Image not found");
+        }
+    }
+
+    public String urlImage(Boolean get_set) {
         try {
             String currentDirectory = System.getProperty("user.dir")
-                    + "/src/main/java/Icon/";
+                    + "/src/main/java/Ava/";
             JFileChooser fileChooser = new JFileChooser(currentDirectory);
             fileChooser.showOpenDialog(null);
             File selectedFile = fileChooser.getSelectedFile();
@@ -130,7 +153,7 @@ public class UserManagementForm extends javax.swing.JPanel {
                     return selectedFile.getName();
                 }
                 Image img = ImageIO.read(selectedFile);
-//                lblAva.setText(null);
+                lblAva.setText(null);
                 lblAva.setIcon(new ImageIcon(
                         img.getScaledInstance(lblAva.getWidth(),
                                 lblAva.getHeight(),
@@ -141,17 +164,6 @@ public class UserManagementForm extends javax.swing.JPanel {
             ex.printStackTrace(System.out);
         }
         return null;
-    }
-
-    public void setAvatar(String avatar) {
-        System.out.println(avatar);
-        try {
-            lblAva.setIcon(new javax.swing.ImageIcon(
-                    Objects.requireNonNull(getClass().getResource("/Icon/" + avatar))));
-        } catch (Exception exception) {
-            lblAva.setIcon(new javax.swing.ImageIcon(
-                    Objects.requireNonNull(getClass().getResource("/Icon/cow.png"))));
-        }
     }
 
     public void fillDataToFields(UserDetails userDetails) {
@@ -178,17 +190,16 @@ public class UserManagementForm extends javax.swing.JPanel {
         txtAddress.setText(userDetails.getAddress());
         txtNote.setText(userDetails.getNote());
         lblCreatedDate.setText("Created at: " + convertDateToString(userDetails.getCreatedAt()));
-        setAvatar(userDetails.getPhoto());
-        System.out.println(userDetails.getPhoto());
+
+        this.imgName = userDetails.getPhoto();
+        setImange(this.imgName);
+        System.out.println(this.imgName);
     }
 
     //Handle event
     public void handleOnClickTable() {
-        List<UserDetails> list = userService.getList();
-        if (list.size() > 0) {
-            int index = tblUser.getSelectedRow();
-            fillDataToFields(list.get(index));
-        }
+        this._USER_DETAILS = this.tempList.get(tblUser.getSelectedRow());
+        fillDataToFields(this._USER_DETAILS);
     }
 
     //Add & updating process:
@@ -214,10 +225,16 @@ public class UserManagementForm extends javax.swing.JPanel {
             this.main.notificationShowWARNING("Birthdate is a required field and it should following the convention: yyyy-MM-dd !!!");
             txtBirthdate.requestFocus();
             return false;
-        } else if (txtPhonenumber.getText().isBlank()) {
-            this.main.notificationShowWARNING("Phone number is a required field !!!");
+        } else if (!txtPhonenumber.getText().trim().matches("^(0[0-9]{9}|84[0-9]{9})$")) {
+            this.main.notificationShowWARNING("Phone number is invalid !!!");
             txtPhonenumber.requestFocus();
             return false;
+        } else if (!txtEmail.getText().trim().isBlank()) {
+            if (!txtEmail.getText().trim().matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
+                this.main.notificationShowWARNING("Email is invalid!!!");
+                txtPhonenumber.requestFocus();
+                return false;
+            }
         }
         return true;
     }
@@ -252,17 +269,21 @@ public class UserManagementForm extends javax.swing.JPanel {
 
     public User updateUser(UserDetails preDetails) {
         User newuser = new User();
+        System.out.println("user id: " + preDetails.getUser().getId());
         newuser.setId(preDetails.getUser().getId());
         newuser.setUsername(txtUsername.getText());
-        newuser.setPassword(new BcryptHash().hashPassword(String.valueOf(txtPassword.getPassword()).trim()));
+        newuser.setPassword(String.valueOf(txtPassword.getPassword()).isBlank()
+                ? this._USER_DETAILS.getUser().getPassword()
+                : new BcryptHash().hashPassword(String.valueOf(txtPassword.getPassword()))
+        );
         newuser.setRole((rdoAdmin.isSelected() ? "Admin" : "User"));
         return newuser;
     }
 
     public UserDetails updateUserDetails(UserDetails preDetails) {
         UserDetails userDetails = new UserDetails();
-        userDetails.setId(updateUser(preDetails).getId());
-        userDetails.setUser(createNewUser());
+        userDetails.setId(preDetails.getId());
+        userDetails.setUser(updateUser(preDetails));
         userDetails.setSalary((Salary) cboSalary.getSelectedItem());
         userDetails.setGender(rdoFemale.isSelected() ? "Female" : "Male");
         userDetails.setFullname(txtFullname.getText().trim());
@@ -286,10 +307,16 @@ public class UserManagementForm extends javax.swing.JPanel {
             this.main.notificationShowWARNING("Fullname is a required field !!!");
             txtFullname.requestFocus();
             return false;
-        } else if (txtPhonenumber.getText().isBlank()) {
-            this.main.notificationShowWARNING("Phone number is a required field !!!");
+        } else if (!txtPhonenumber.getText().trim().matches("^(0[0-9]{9}|84[0-9]{9})$")) {
+            this.main.notificationShowWARNING("Phone number is invalid !!!");
             txtPhonenumber.requestFocus();
             return false;
+        } else if (!txtEmail.getText().trim().isBlank()) {
+            if (!txtEmail.getText().trim().matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
+                this.main.notificationShowWARNING("Email is invalid!!!");
+                txtPhonenumber.requestFocus();
+                return false;
+            }
         }
         return true;
     }
@@ -334,9 +361,15 @@ public class UserManagementForm extends javax.swing.JPanel {
 
     public void handleUpdate() {
         if (validateUserWhenUpdate()) {
-            if (this.userService.addNewUser(updateUserDetails(userService.getList().get(tblUser.getSelectedRow())))) {
-                this.main.notificationShowSUCCESS("Added a new employee !!!");
+
+            if (this.userService.addNewUser(updateUserDetails(this.tempList.get(tblUser.getSelectedRow())))) {
+                this.main.notificationShowSUCCESS("Updated !!!");
                 loadDataToTable();
+                historyService.trackHistory(
+                        "Updated an user named: " + updateUserDetails(this.tempList.get(tblUser.getSelectedRow())).getUser().getUsername(),
+                        this.user.getUsername(),
+                        HistoryProductService.ChangeType.UPDATE
+                );
             } else {
                 this.main.notificationShowWARNING("Failed !!!");
             }
@@ -355,7 +388,6 @@ public class UserManagementForm extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         lblCountEmployee = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
-        lblAva = new udpm.fpt.swing.ImageAvatar();
         lblFullname = new javax.swing.JLabel();
         lblJobPosition = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -386,6 +418,8 @@ public class UserManagementForm extends javax.swing.JPanel {
         lblCreatedDate = new javax.swing.JLabel();
         txtFullname = new udpm.fpt.swing.TextField();
         txtPassword = new udpm.fpt.swing.PasswordField();
+        lblAva = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
         textField2 = new udpm.fpt.swing.TextField();
 
         setBackground(new java.awt.Color(255, 255, 255));
@@ -421,12 +455,6 @@ public class UserManagementForm extends javax.swing.JPanel {
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(102, 102, 102))); // NOI18N
-
-        lblAva.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                lblAvaMouseClicked(evt);
-            }
-        });
 
         lblFullname.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblFullname.setText("Fullname");
@@ -571,9 +599,13 @@ public class UserManagementForm extends javax.swing.JPanel {
 
         txtPassword.setLabelText("Password");
         txtPassword.setShowAndHide(true);
-        txtPassword.addActionListener(new java.awt.event.ActionListener() {
+
+        lblAva.setText("jLabel2");
+
+        jButton1.setText("New");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtPasswordActionPerformed(evt);
+                jButton1ActionPerformed(evt);
             }
         });
 
@@ -635,8 +667,8 @@ public class UserManagementForm extends javax.swing.JPanel {
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(lblAva, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
+                                        .addComponent(lblAva, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                             .addComponent(lblJobPosition, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                             .addComponent(lblFullname, javax.swing.GroupLayout.DEFAULT_SIZE, 426, Short.MAX_VALUE)
@@ -644,7 +676,9 @@ public class UserManagementForm extends javax.swing.JPanel {
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(18, 18, 18)
-                                        .addComponent(buttonMessage3, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addComponent(buttonMessage3, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(66, 66, 66)
+                                        .addComponent(jButton1)))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(buttonMessage4, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addGap(17, 17, 17))
@@ -654,16 +688,16 @@ public class UserManagementForm extends javax.swing.JPanel {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(17, 17, 17)
-                        .addComponent(lblAva, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(34, 34, 34)
                         .addComponent(lblFullname)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(lblJobPosition)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblCreatedDate)))
-                .addGap(26, 26, 26)
+                        .addComponent(lblCreatedDate))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(24, 24, 24)
+                        .addComponent(lblAva, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -712,7 +746,8 @@ public class UserManagementForm extends javax.swing.JPanel {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(buttonMessage3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(buttonMessage4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(buttonMessage4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -758,7 +793,7 @@ public class UserManagementForm extends javax.swing.JPanel {
                     .addComponent(jLabel1)
                     .addComponent(lblCountEmployee))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -800,6 +835,7 @@ public class UserManagementForm extends javax.swing.JPanel {
 
     private void txtCitizenIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCitizenIDActionPerformed
         // TODO add your handling code here:
+//        teen moi != tat ca ten khac trong list || ten moi == ten cu
     }//GEN-LAST:event_txtCitizenIDActionPerformed
 
     private void buttonMessage3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonMessage3ActionPerformed
@@ -813,7 +849,7 @@ public class UserManagementForm extends javax.swing.JPanel {
     }//GEN-LAST:event_buttonMessage4ActionPerformed
 
     private void tblUserMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblUserMouseClicked
-        // TODO add your handling code here:
+        txtUsername.setEditable(false);
         handleOnClickTable();
 
     }//GEN-LAST:event_tblUserMouseClicked
@@ -827,14 +863,9 @@ public class UserManagementForm extends javax.swing.JPanel {
         addNewUser();
     }//GEN-LAST:event_btnAddActionPerformed
 
-    private void txtPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPasswordActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtPasswordActionPerformed
-
-    private void lblAvaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAvaMouseClicked
-        // TODO add your handling code here:
-        this.imgName = urlImage(false);
-    }//GEN-LAST:event_lblAvaMouseClicked
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        txtUsername.setEditable(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -844,6 +875,7 @@ public class UserManagementForm extends javax.swing.JPanel {
     private udpm.fpt.swing.ButtonMessage buttonMessage4;
     private udpm.fpt.swing.Combobox cboSalary;
     private javax.swing.ButtonGroup genderGroup;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -856,7 +888,7 @@ public class UserManagementForm extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JSeparator jSeparator1;
-    private udpm.fpt.swing.ImageAvatar lblAva;
+    private javax.swing.JLabel lblAva;
     private javax.swing.JLabel lblCountEmployee;
     private javax.swing.JLabel lblCreatedDate;
     private javax.swing.JLabel lblFullname;

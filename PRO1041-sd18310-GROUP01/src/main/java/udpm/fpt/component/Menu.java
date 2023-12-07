@@ -34,17 +34,16 @@ public class Menu extends javax.swing.JPanel {
     }
 
     private void init() {
-        listMenu1.addItem(new Model_Menu("home.png", "Home", Model_Menu.MenuType.MENU));
-        listMenu1.addItem(new Model_Menu("box.png", "Product", Model_Menu.MenuType.MENU));
-        listMenu1.addItem(new Model_Menu("history.png", "History", Model_Menu.MenuType.MENU));
-        listMenu1.addItem(new Model_Menu("division.png", "Employee", Model_Menu.MenuType.MENU));
-        listMenu1.addItem(new Model_Menu("Service01.png", "Customer", Model_Menu.MenuType.MENU));
         listMenu1.addItem(new Model_Menu("dashboard.png", "Dashboard", Model_Menu.MenuType.MENU));
-        listMenu1.addItem(new Model_Menu("gear.png", "Setting", Model_Menu.MenuType.MENU));
-        listMenu1.addItem(new Model_Menu("delivery-note.png", "Delivery", Model_Menu.MenuType.MENU));
-        listMenu1.addItem(new Model_Menu("exit.png", "Logout", Model_Menu.MenuType.MENU));
+        listMenu1.addItem(new Model_Menu("trade.png", "Sell", Model_Menu.MenuType.MENU));
+        listMenu1.addItem(new Model_Menu("add-product_1.png", "Product", Model_Menu.MenuType.MENU));
+        listMenu1.addItem(new Model_Menu("shipped.png", "Delivery", Model_Menu.MenuType.MENU));
         listMenu1.addItem(new Model_Menu("coupon.png", "SaleMilk", Model_Menu.MenuType.MENU));
         listMenu1.addItem(new Model_Menu("coupon.png", "SaleBill", Model_Menu.MenuType.MENU));
+        listMenu1.addItem(new Model_Menu("division.png", "Employee", Model_Menu.MenuType.MENU));
+        listMenu1.addItem(new Model_Menu("refresh.png", "History", Model_Menu.MenuType.MENU));
+        listMenu1.addItem(new Model_Menu("settings.png", "Setting", Model_Menu.MenuType.MENU));
+        listMenu1.addItem(new Model_Menu("logout.png", "Logout", Model_Menu.MenuType.MENU));
     }
 
     @SuppressWarnings("unchecked")

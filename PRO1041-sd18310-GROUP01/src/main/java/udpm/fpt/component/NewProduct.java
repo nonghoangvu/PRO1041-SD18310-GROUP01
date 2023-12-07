@@ -23,7 +23,7 @@ import udpm.fpt.model.PackagingSpecification;
 import udpm.fpt.model.ProductInfo;
 import udpm.fpt.model.Unit;
 import udpm.fpt.model.User;
-import udpm.fpt.servicce.ProductService;
+import udpm.fpt.service.ProductService;
 import udpm.fpt.swing.NumberOnlyFilter;
 
 /**
@@ -50,6 +50,8 @@ public class NewProduct extends javax.swing.JFrame {
     public void setTextField() {
         ((AbstractDocument) txtBarcode.getDocument()).setDocumentFilter(new NumberOnlyFilter());
         ((AbstractDocument) txtPrice.getDocument()).setDocumentFilter(new NumberOnlyFilter());
+        txtExpirationDate.setText("00-00-0000");
+        txtProductionDate.setText("00-00-0000");
         txtAmount.addChangeListener((ChangeEvent e) -> {
             int value = (int) txtAmount.getValue();
             if (value < 0) {
