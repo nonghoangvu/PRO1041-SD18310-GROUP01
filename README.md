@@ -57,7 +57,16 @@ Requirements for use: __JDK 21__
             <artifactId>jbcrypt</artifactId>
             <version>0.4</version>
         </dependency>
-    </dependencies>
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>itextpdf</artifactId>
+            <version>5.5.13</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>javax.mail</artifactId>
+            <version>1.6.2</version>
+        </dependency>
 ```
 ## Login <br>
 ![](https://raw.githubusercontent.com/vunhph33506/Document/main/Login.png)
