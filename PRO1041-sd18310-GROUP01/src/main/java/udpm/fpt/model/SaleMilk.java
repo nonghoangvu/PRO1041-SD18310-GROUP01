@@ -19,6 +19,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class SaleMilk {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
 

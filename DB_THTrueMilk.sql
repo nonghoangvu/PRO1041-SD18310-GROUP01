@@ -193,7 +193,7 @@ CREATE TABLE [DiscountUsed]
 GO
 CREATE TABLE [SaleBill]
 (
-    [id]                  INT PRIMARY KEY,
+    [id]                  INT PRIMARY KEY IDENTITY(1,1),
     [sale_event]          NVARCHAR(50),
     [discount_conditions] NVARCHAR(50),
     [percent_decrease]    INT,
@@ -205,7 +205,7 @@ CREATE TABLE [SaleBill]
 GO
 CREATE TABLE [SaleMilk]
 (
-    [id]               INT PRIMARY KEY,
+    [id]               INT PRIMARY KEY IDENTITY(1,1),
     [sale_event]       NVARCHAR(50),
     [percent_decrease] INT,
     [start_day]        DATE,
@@ -469,10 +469,10 @@ VALUES (1, 1, 'TH True Milk', 1.0, 1, N'Việt Nam', N'Thành phần sữa tươ
         1),
        (20, 1, 'TH True Milk', 1.0, 1, N'Việt Nam', N'Thành phần sữa cacao', 1, N'Mô tả sữa cacao', 2)
 
-INSERT INTO SaleMilk (id, sale_event, percent_decrease, start_day, end_day, milk_id, staff_id)
-VALUES (1, 'SALE 28-11-2023', 30, GETDATE(), '2023-12-01', 1, 1)
-INSERT INTO SaleMilk (id, sale_event, percent_decrease, start_day, end_day, milk_id, staff_id)
-VALUES (2, 'SALE 28-11-2023', 70, GETDATE(), '2023-12-01', 2, 1)
+INSERT INTO SaleMilk ( sale_event, percent_decrease, start_day, end_day, milk_id, staff_id)
+VALUES ('SALE 28-11-2023', 30, GETDATE(), '2023-12-01', 1, 1)
+INSERT INTO SaleMilk ( sale_event, percent_decrease, start_day, end_day, milk_id, staff_id)
+VALUES ('SALE 28-11-2023', 70, GETDATE(), '2023-12-01', 2, 1)
 --Bug--
 INSERT INTO [CustomerType] ([id], [customer])
 VALUES (1, N'Regular');
@@ -554,3 +554,4 @@ SELECT * FROM SaleMilk
 SELECT * FROM Users
 SELECT * FROM MILK INNER JOIN PRODUCTINFO ON MILK.ID = PRODUCTINFO.MILK_ID
 */
+--Select * from Users
