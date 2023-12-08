@@ -120,36 +120,29 @@ public class Main extends javax.swing.JFrame {
                 }
                 case 4 -> {
                     if (ADMIN_ROLE.equalsIgnoreCase(this.user.getRole())) {
-                        main.show(new SaleMilkForm());
+                        main.show(new SaleFinal(this.user));
                     } else {
                         showAccessWarning();
                     }
                 }
                 case 5 -> {
                     if (ADMIN_ROLE.equalsIgnoreCase(this.user.getRole())) {
-                        main.show(new SaleBill());
+                        main.show(new UserManagementForm(this.user, this));
                     } else {
                         showAccessWarning();
                     }
                 }
                 case 6 -> {
                     if (ADMIN_ROLE.equalsIgnoreCase(this.user.getRole())) {
-                        main.show(new UserManagementForm(this.user, this));
-                    } else {
-                        showAccessWarning();
-                    }
-                }
-                case 7 -> {
-                    if (ADMIN_ROLE.equalsIgnoreCase(this.user.getRole())) {
                         main.show(new History(this.user, this));
                     } else {
                         showAccessWarning();
                     }
                 }
-                case 8 -> {
+                case 7 -> {
                     main.show(new Setting(this.user, this));
                 }
-                case 9 -> {
+                case 8 -> {
                     new Login().setVisible(true);
                     this.dispose();
                 }
