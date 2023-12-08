@@ -13,6 +13,7 @@ import java.util.concurrent.CompletableFuture;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.AbstractDocument;
 import static udpm.fpt.Application.getBean;
 import udpm.fpt.component.ChooseCustomersForm;
 import udpm.fpt.component.DeliveryJFrame;
@@ -27,6 +28,7 @@ import udpm.fpt.repository.IBillDetails_Respository;
 import udpm.fpt.repository.IBill_Respository;
 import udpm.fpt.service.BillService;
 import udpm.fpt.swing.table.TableCustom;
+import udpm.serviceDelivery.NumberFilter;
 
 /**
  *
@@ -57,6 +59,7 @@ public final class FormBill extends javax.swing.JPanel {
         TableCustom.apply(jScrollPane2, TableCustom.TableType.DEFAULT);
         TableCustom.apply(jScrollPane3, TableCustom.TableType.DEFAULT);
         TableCustom.apply(jScrollPane1, TableCustom.TableType.DEFAULT);
+        OnlyNumberTextField();
     }
 
     public void setCustomer(Customer ct) {
@@ -155,6 +158,10 @@ public final class FormBill extends javax.swing.JPanel {
         txtNote.setText("");
     }
 
+    public void OnlyNumberTextField() {
+        ((AbstractDocument) txtMoneyPaid.getDocument()).setDocumentFilter(new NumberFilter());
+    }
+
     public boolean insert(String shoppingMethod) {
         if (tblBill.getSelectedRow() == -1) {
             new Notification(Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP,
@@ -237,9 +244,11 @@ public final class FormBill extends javax.swing.JPanel {
         txtCustomerName = new udpm.fpt.swing.TextField();
         buttonMessage1 = new udpm.fpt.swing.ButtonMessage();
         btnTaoHoaDon = new udpm.fpt.swing.ButtonMessage();
-        buttonMessage2 = new udpm.fpt.swing.ButtonMessage();
+        btnPay = new udpm.fpt.swing.ButtonMessage();
         btnChooseCustomer = new udpm.fpt.swing.Button();
         buttonMessage3 = new udpm.fpt.swing.ButtonMessage();
+        txtTotalAmount = new udpm.fpt.swing.TextField();
+        txtMoneyPaid = new udpm.fpt.swing.TextField();
         jPanel7 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
 
@@ -397,6 +406,7 @@ public final class FormBill extends javax.swing.JPanel {
         txtNote.setRows(5);
         textAreaScroll1.setViewportView(txtNote);
 
+        txtIDCustomer.setEditable(false);
         txtIDCustomer.setLabelText("id customer");
 
         txtCustomerName.setLabelText("Customer name");
@@ -421,13 +431,13 @@ public final class FormBill extends javax.swing.JPanel {
             }
         });
 
-        buttonMessage2.setBackground(new java.awt.Color(0, 204, 51));
-        buttonMessage2.setForeground(new java.awt.Color(255, 255, 255));
-        buttonMessage2.setText(" Pay");
-        buttonMessage2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        buttonMessage2.addActionListener(new java.awt.event.ActionListener() {
+        btnPay.setBackground(new java.awt.Color(0, 204, 51));
+        btnPay.setForeground(new java.awt.Color(255, 255, 255));
+        btnPay.setText(" Pay");
+        btnPay.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnPay.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonMessage2ActionPerformed(evt);
+                btnPayActionPerformed(evt);
             }
         });
 
@@ -451,6 +461,11 @@ public final class FormBill extends javax.swing.JPanel {
             }
         });
 
+        txtTotalAmount.setEditable(false);
+        txtTotalAmount.setLabelText("Total Amount");
+
+        txtMoneyPaid.setLabelText("Amount paid by the customer");
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
@@ -458,28 +473,28 @@ public final class FormBill extends javax.swing.JPanel {
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel6Layout.createSequentialGroup()
+                    .addComponent(cbbPaymentMethods, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(textAreaScroll1, javax.swing.GroupLayout.DEFAULT_SIZE, 450, Short.MAX_VALUE)
+                    .addComponent(txtIDCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtCustomerName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cbbPaymentMethods, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(textAreaScroll1, javax.swing.GroupLayout.DEFAULT_SIZE, 450, Short.MAX_VALUE)
-                            .addComponent(txtIDCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtCustomerName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(buttonMessage2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btnTaoHoaDon, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(buttonMessage1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(buttonMessage3, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE))
-                                .addGap(32, 32, 32)))
-                        .addContainerGap())
+                            .addComponent(btnPay, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnTaoHoaDon, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(buttonMessage1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(buttonMessage3, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE))
+                        .addGap(32, 32, 32))
+                    .addComponent(txtTotalAmount, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel4)
                             .addComponent(btnChooseCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(txtMoneyPaid, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -494,16 +509,20 @@ public final class FormBill extends javax.swing.JPanel {
                 .addComponent(txtCustomerName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(52, 52, 52)
                 .addComponent(cbbPaymentMethods, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(67, 67, 67)
+                .addGap(29, 29, 29)
+                .addComponent(txtTotalAmount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(23, 23, 23)
+                .addComponent(txtMoneyPaid, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(textAreaScroll1, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(125, 125, 125)
+                .addGap(35, 35, 35)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnTaoHoaDon, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(buttonMessage1, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(buttonMessage3, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(buttonMessage2, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnPay, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(140, 140, 140))
         );
 
@@ -592,8 +611,22 @@ public final class FormBill extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void tblBillMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblBillMouseClicked
+
+        int selectedBill = tblBill.getSelectedRow();
+        if (selectedBill == -1) {
+            return;
+        }
+        int selectedHoaDon = tblBill.getSelectedRow();
+        Integer maHoaDon = Integer.valueOf(tblBill.getValueAt(selectedHoaDon, 0).toString());
+        double total = 0;
+        for (BillDetails h : HDCT_REPO) {
+            if (h.getBill_id().getId().equals(maHoaDon)) {
+                total += h.getPrice() * h.getQuantity();
+                txtTotalAmount.setText(String.valueOf(total));
+                txtMoneyPaid.setText(String.valueOf(total));
+            }
+        }
         int selectedRow = tblBill.getSelectedRow();
-        Integer maHoaDon = Integer.valueOf(tblBill.getValueAt(selectedRow, 0).toString());
         loadHoaDonChiTiet(maHoaDon);
     }//GEN-LAST:event_tblBillMouseClicked
 
@@ -621,12 +654,18 @@ public final class FormBill extends javax.swing.JPanel {
         hdct.setPrice(Double.valueOf(sp.getPrice()));
         hdct.setQuantity(1);
         boolean isNotExisted = true;
-        double toTal = 0;
-        for (BillDetails h : HDCT_REPO) {
-            if (h.getBill_id().getId().equals(maHoaDon) && h.getMilk_id().getId().equals(maSanPham)) {
-                h.setQuantity(h.getQuantity() + hdct.getQuantity());
-                isNotExisted = false;
-                break;
+        double total = 0;
+        if (sp.getAmount() <= 0) {
+                new Notification(Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP,
+                        "The product is out of stock!").showNotification();
+                return;
+        } else {
+            for (BillDetails h : HDCT_REPO) {
+                if (h.getBill_id().getId().equals(maHoaDon) && h.getMilk_id().getId().equals(maSanPham)) {
+                    h.setQuantity(h.getQuantity() + hdct.getQuantity());
+                    isNotExisted = false;
+                    break;
+                }
             }
         }
 
@@ -638,7 +677,13 @@ public final class FormBill extends javax.swing.JPanel {
         if (isNotExisted) {
             HDCT_REPO.add(hdct);
         }
-
+        for (BillDetails h : HDCT_REPO) {
+            if (h.getBill_id().getId().equals(maHoaDon)) {
+                total += h.getPrice() * h.getQuantity();
+                txtTotalAmount.setText(String.valueOf(total));
+                txtMoneyPaid.setText(String.valueOf(total));
+            }
+        }
         loadSanPham(SAN_PHAM_REPO);
         loadHoaDonChiTiet(maHoaDon);
     }//GEN-LAST:event_tblProductMouseClicked
@@ -665,8 +710,11 @@ public final class FormBill extends javax.swing.JPanel {
                 iterator.remove();
             }
         }
+        txtMoneyPaid.setText("");
+        txtTotalAmount.setText("");
         loadHoaDon(HOA_DON_REPO);
         loadHoaDonChiTiet(100);
+        loadAndFillMilk();
     }//GEN-LAST:event_buttonMessage1ActionPerformed
 
     private void btnTaoHoaDonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTaoHoaDonActionPerformed
@@ -692,11 +740,18 @@ public final class FormBill extends javax.swing.JPanel {
         choose.setVisible(true);
     }//GEN-LAST:event_btnChooseCustomerActionPerformed
 
-    private void buttonMessage2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonMessage2ActionPerformed
-        if (this.insert("directly")) {
-            this.resetLable();
+    private void btnPayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPayActionPerformed
+        double totalAmount = Double.valueOf(txtTotalAmount.getText());
+        double moneyPaid = Double.valueOf(txtMoneyPaid.getText());
+        if (totalAmount > moneyPaid) {
+            if (this.insert("directly")) {
+                this.resetLable();
+            }
+        } else {
+            new Notification(Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP,
+                    "Payment is not enough!").showNotification();
         }
-    }//GEN-LAST:event_buttonMessage2ActionPerformed
+    }//GEN-LAST:event_btnPayActionPerformed
 
     private void buttonMessage3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonMessage3ActionPerformed
         if (txtIDCustomer.getText().trim().isEmpty() || txtCustomerName.getText().trim().isEmpty()) {
@@ -718,9 +773,9 @@ public final class FormBill extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private udpm.fpt.swing.Button btnChooseCustomer;
+    private udpm.fpt.swing.ButtonMessage btnPay;
     private udpm.fpt.swing.ButtonMessage btnTaoHoaDon;
     private udpm.fpt.swing.ButtonMessage buttonMessage1;
-    private udpm.fpt.swing.ButtonMessage buttonMessage2;
     private udpm.fpt.swing.ButtonMessage buttonMessage3;
     private udpm.fpt.swing.Combobox cbbPaymentMethods;
     private javax.swing.JLabel jLabel1;
@@ -743,7 +798,9 @@ public final class FormBill extends javax.swing.JPanel {
     private udpm.fpt.swing.TextAreaScroll textAreaScroll1;
     private udpm.fpt.swing.TextField txtCustomerName;
     private udpm.fpt.swing.TextField txtIDCustomer;
+    private udpm.fpt.swing.TextField txtMoneyPaid;
     private udpm.fpt.swing.TextArea txtNote;
+    private udpm.fpt.swing.TextField txtTotalAmount;
     // End of variables declaration//GEN-END:variables
 
 }

@@ -272,11 +272,7 @@ udpm\fpt\component\AddNewUser$4.class
 udpm\fpt\form\SaleFinal$2.class
 udpm\fpt\form\DeliveryNoteForm2$10.class
 udpm\fpt\form\FormBill$10.class
-<<<<<<< HEAD
-udpm\fpt\main\Main$3.class
-=======
 udpm\fpt\form\SaleFinal$3.class
->>>>>>> f34c7c01be071429459660f49ad58e909f1f248a
 udpm\fpt\repository\ICustomer_Resposutory.class
 udpm\fpt\component\Notification$2.class
 udpm\fpt\service\SaleMilkService.class
@@ -338,7 +334,6 @@ udpm\fpt\form\UserManagementForm$3.class
 udpm\fpt\repository\ISaleMilk.class
 udpm\fpt\component\UpdateProduct$1.class
 udpm\fpt\component\ViewDelete$2.class
-udpm\fpt\form\ProductForm$17.class
 udpm\fpt\swing\TextArea$2.class
 udpm\fpt\form\FormBill$7.class
 udpm\fpt\component\AddNewUser$5.class
