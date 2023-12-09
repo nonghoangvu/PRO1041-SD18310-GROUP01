@@ -27,10 +27,9 @@ C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROU
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\swing\GraphicsUtilities.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\model\Bill.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\component\PanelAction.java
-C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\model\Sale_Milk1.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\component\NewProduct.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\component\IMG.java
-C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\service\ServiceGGM1.java
+C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\progressindicator\ProgressIndicator.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\service\KhachHangDao.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\swing\SpinnerUI.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\component\WebCamProduct.java
@@ -38,6 +37,7 @@ C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROU
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\main\Main.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\repository\IMilk.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\swing\Chart\blankchart\charts\ChartMain.java
+C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\progressindicator\EventSliderAnimatorChanged.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\form\DeliveryNoteForm2.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\component\UpdateUser.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\component\Profile.java
@@ -54,11 +54,11 @@ C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROU
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\event\EventMenuSelected.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\form\ProductManagementForm.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\repository\ISaleMilk.java
-C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\form\SaleBill.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\swing\table\TableCustom.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\model\PackagingSpecification.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\swing\table\HoverIndex.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\component\DeliveryJFrame.java
+C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\form\SaleFinal.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\model\Model_Menu.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\swing\ModernScrollBarUI.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\Utitlity\BcryptHash.java
@@ -83,6 +83,7 @@ C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROU
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROUP01\src\main\java\udpm\serviceDelivery\NumberFilter.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\swing\TextAreaScroll.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\Application.java
+C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\service\SaleMilkService.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROUP01\src\main\java\udpm\serviceDelivery\Service.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\repository\IPackagingSpecification.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROUP01\src\main\java\udpm\serviceDelivery\CustomCellRenderer.java
@@ -93,19 +94,18 @@ C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROU
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\service\HistoryProductService.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\component\UpdateDelivery.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\Utitlity\DiscountCalculator.java
-C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\form\SaleMilkForm.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\Utitlity\LoginInfo.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\model\UserDetails.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\swing\table\TableCustomCellRender.java
-C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\model\Sale_Bill1.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\form\UserForm.java
+C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\model\SaleBill1.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\swing\shadow\GraphicsUtilities.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\form\Login.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\model\Flavor.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\swing\Chart\blankchart\NiceScale.java
+C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\progressindicator\PanelSlider.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\swing\Chart\blankchart\charts\ModelChart.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\model\ProductInfoByCriteria.java
-C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\service\ServiceGGB1.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\component\ChooseCustomersForm.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\swing\ScrollBar.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\config\JPAConfig.java
@@ -126,6 +126,8 @@ C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROU
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\repository\ISalary.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\config\DBConnect1.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\component\Menu.java
+C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROUP01\src\main\java\udpm\serviceDelivery\PanelTest.java
+C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\repository\ISaleBill.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\component\FlavorManagement.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\config\DbMetadata.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\component\AddNewUser.java
@@ -140,3 +142,4 @@ C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROU
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\form\Setting.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\swing\TextField.java
 C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\repository\IUserDetails.java
+C:\Users\laptop msi\Documents\GitHub\PRO1041-SD18310-GROUP1\PRO1041-sd18310-GROUP01\src\main\java\udpm\fpt\service\SaleBillService.java
