@@ -15,6 +15,8 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
+import udpm.fpt.component.Notification;
+import udpm.fpt.main.Main;
 import udpm.fpt.model.Milk;
 import udpm.fpt.model.SaleBill1;
 import udpm.fpt.model.SaleMilk;
@@ -43,6 +45,7 @@ public class SaleFinal extends javax.swing.JPanel {
     private DateChooser dcem = new DateChooser();
     private DateChooser dcsbill = new DateChooser();
     private DateChooser dcsmilk = new DateChooser();
+    Main main;
 
     public SaleFinal(User user) {
         this.user = user;
@@ -144,18 +147,22 @@ public class SaleFinal extends javax.swing.JPanel {
 //        sb.setUser(this.user);
         return sb;
     }
-    
+
     public boolean checkiforB() {
         if (txtname.getText().isBlank()) {
-            JOptionPane.showMessageDialog(this, "Vui lòng nhập thông tin");
+            new Notification(Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP,
+                    "Information can't be empty").showNotification();
             return false;
         } else if (txtdc.getText().isBlank()) {
-            JOptionPane.showMessageDialog(this, "Vui lòng nhập thông tin");
+            new Notification(Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP,
+                    "Information can't be empty").showNotification();
         } else if (txtptg.getText().isBlank()) {
-            JOptionPane.showMessageDialog(this, "Vui lòng nhập thông tin");
+            new Notification(Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP,
+                    "Information can't be empty").showNotification();
             return false;
         } else if (Double.valueOf(txtptg.getText()) > 100) {
-            JOptionPane.showMessageDialog(this, "Vui lòng ko nhập quá 100");
+            new Notification(Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP,
+                    "Can't over 100").showNotification();
             return false;
         }
         return true;
@@ -283,16 +290,20 @@ public class SaleFinal extends javax.swing.JPanel {
 
     public boolean checkifoM() {
         if (txtNAME.getText().isBlank()) {
-            JOptionPane.showMessageDialog(this, "Vui lòng nhập thông tin");
+            new Notification(Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP,
+                    "Information can't be empty").showNotification();
             return false;
         } else if (txtPTG.getText().isBlank()) {
-            JOptionPane.showMessageDialog(this, "Vui lòng nhập thông tin");
+            new Notification(Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP,
+                    "Information can't be empty").showNotification();
             return false;
         } else if (Double.valueOf(txtPTG.getText()) > 100) {
-            JOptionPane.showMessageDialog(this, "Vui lòng ko nhập quá 100");
+            new Notification(Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP,
+                    "Can't over 100").showNotification();
             return false;
         } else if (txtMID.getText().isBlank()) {
-            JOptionPane.showMessageDialog(this, "Vui lòng nhập thông tin");
+            new Notification(Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP,
+                    "Information can't be empty").showNotification();
         }
         return true;
     }
@@ -487,32 +498,36 @@ public class SaleFinal extends javax.swing.JPanel {
                 .addGap(10, 10, 10)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(btnADD, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnDELETE, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnUPDATE, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(txtSEARCH, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
-                            .addComponent(txtsd, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtptg, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtdc, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtname, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txted, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(28, 28, 28)
-                        .addComponent(btnSEARCH, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(50, 50, 50)
-                        .addComponent(btnCLEAR, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnresetbill, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 935, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5))
-                .addGap(24, 24, 24))
-            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addComponent(btnADD, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnDELETE, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnUPDATE, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(txtSEARCH, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
+                                    .addComponent(txtsd, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(txtptg, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(txtdc, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(txtname, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(txted, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(28, 28, 28)
+                                .addComponent(btnSEARCH, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addGap(50, 50, 50)
+                                .addComponent(btnCLEAR, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnresetbill, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 935, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel5))
+                        .addGap(24, 24, 24))))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -549,7 +564,7 @@ public class SaleFinal extends javax.swing.JPanel {
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 443, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(171, Short.MAX_VALUE))
+                .addContainerGap(177, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Sale Bill", jPanel4);
@@ -705,10 +720,10 @@ public class SaleFinal extends javax.swing.JPanel {
                                 .addComponent(btnclear, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(btnresetmilk, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 56, Short.MAX_VALUE)))
+                        .addGap(0, 47, Short.MAX_VALUE)))
                 .addGap(16, 16, 16)
                 .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(135, 135, 135)
+                .addGap(132, 132, 132)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 833, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -716,7 +731,10 @@ public class SaleFinal extends javax.swing.JPanel {
                     .addComponent(jLabel3)
                     .addComponent(jLabel4))
                 .addGap(26, 26, 26))
-            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -769,13 +787,16 @@ public class SaleFinal extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jTabbedPane1)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 760, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 12, Short.MAX_VALUE))
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 766, Short.MAX_VALUE)
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -783,9 +804,11 @@ public class SaleFinal extends javax.swing.JPanel {
         if (this.checkiforB()) {
             SaleBill1 sb1 = getSaleBill1();
             if (sbs.addNew(sb1)) {
-                JOptionPane.showMessageDialog(this, "Thêm thành công");
+                new Notification(Notification.Type.SUCCESS, Notification.Location.DEFAULT_DESKTOP,
+                        "Add Success!").showNotification();
             } else {
-                JOptionPane.showMessageDialog(this, "Thêm thất bại");
+                new Notification(Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP,
+                        "Add Fail!").showNotification();
             }
             this.loadTableB();
         }
@@ -799,9 +822,11 @@ public class SaleFinal extends javax.swing.JPanel {
         if (this.checkifoM()) {
             SaleMilk sm = getSaleMilk();
             if (sms.addNew(sm)) {
-                JOptionPane.showMessageDialog(this, "Thêm thành công");
+                new Notification(Notification.Type.SUCCESS, Notification.Location.DEFAULT_DESKTOP,
+                        "Add Success!").showNotification();
             } else {
-                JOptionPane.showMessageDialog(this, "Thêm thất bại");
+                new Notification(Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP,
+                        "Add Fail!").showNotification();
             }
             this.loadTableM();
             this.loadDataAndFillTable();
@@ -832,25 +857,33 @@ public class SaleFinal extends javax.swing.JPanel {
 
     private void btnDELETEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDELETEActionPerformed
         int row = tblbill1.getSelectedRow();
-        if(row<0){
+        if (row < 0) {
             return;
         }
         boolean sb = sbs.deleteBill(Integer.valueOf(tblbill1.getValueAt(row, 0).toString()));
         if (sb) {
-            JOptionPane.showMessageDialog(this, "Xóa thành công");
+            new Notification(Notification.Type.SUCCESS, Notification.Location.DEFAULT_DESKTOP,
+                    "Delete Success!").showNotification();
         } else {
-            JOptionPane.showMessageDialog(this, "Xóa thất bại");
+            new Notification(Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP,
+                    "Delete Fail!").showNotification();
         }
         this.loadTableB();
     }//GEN-LAST:event_btnDELETEActionPerformed
 
     private void btnUPDATEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUPDATEActionPerformed
+        int row = tblbill1.getSelectedRow();
+        if (row < 0) {
+            return;
+        }
         if (this.checkiforB()) {
             SaleBill1 sb1 = updateSaleBill1();
             if (sbs.updateBill(sb1)) {
-                JOptionPane.showMessageDialog(this, "Sửa thành công");
+                new Notification(Notification.Type.SUCCESS, Notification.Location.DEFAULT_DESKTOP,
+                        "Update Success!").showNotification();
             } else {
-                JOptionPane.showMessageDialog(this, "Sửa thất bại");
+                new Notification(Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP,
+                        "Update Fail!").showNotification();
             }
             this.loadTableB();
         }
@@ -874,28 +907,36 @@ public class SaleFinal extends javax.swing.JPanel {
     }//GEN-LAST:event_btnresetbillActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        
+
         int row = tblSaleMilk.getSelectedRow();
-        if(row<0){
+        if (row < 0) {
             return;
         }
         boolean sm = sms.deleteMilk(Integer.valueOf(tblSaleMilk.getValueAt(row, 0).toString()));
         if (sm) {
-            JOptionPane.showMessageDialog(this, "Xóa thành công");
+            new Notification(Notification.Type.SUCCESS, Notification.Location.DEFAULT_DESKTOP,
+                    "Delete Success!").showNotification();
         } else {
-            JOptionPane.showMessageDialog(this, "Xóa thất bại");
+            new Notification(Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP,
+                    "Delete Fail!").showNotification();
         }
         this.loadTableM();
-        
+
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
+        int row = tblSaleMilk.getSelectedRow();
+        if (row < 0) {
+            return;
+        }
         if (this.checkifoM()) {
             SaleMilk sm = updateMilk();
             if (sms.updateMilk(sm)) {
-                JOptionPane.showMessageDialog(this, "Sửa thành công");
+                new Notification(Notification.Type.SUCCESS, Notification.Location.DEFAULT_DESKTOP,
+                        "Update Success!").showNotification();
             } else {
-                JOptionPane.showMessageDialog(this, "Sửa thất bại");
+                new Notification(Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP,
+                        "Update Fail!").showNotification();
             }
             this.loadTableM();
     }//GEN-LAST:event_btnUpdateActionPerformed
@@ -910,7 +951,7 @@ public class SaleFinal extends javax.swing.JPanel {
     }//GEN-LAST:event_btnclearActionPerformed
 
     private void btnresetmilkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnresetmilkActionPerformed
-       loadTableM();
+        loadTableM();
     }//GEN-LAST:event_btnresetmilkActionPerformed
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
@@ -933,7 +974,7 @@ public class SaleFinal extends javax.swing.JPanel {
     private void txtedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtedActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtedActionPerformed
-    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private udpm.fpt.swing.Button btnADD;
