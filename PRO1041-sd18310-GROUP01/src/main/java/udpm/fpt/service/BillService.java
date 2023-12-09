@@ -14,11 +14,13 @@ import static udpm.fpt.Application.getBean;
 import udpm.fpt.model.Bill;
 import udpm.fpt.model.Customer;
 import udpm.fpt.model.Milk;
+import udpm.fpt.model.SaleBill1;
 import udpm.fpt.repository.IBillDetails_Respository;
 import udpm.fpt.repository.IBill_Respository;
 import udpm.fpt.repository.ICustomer_Resposutory;
 import udpm.fpt.repository.IMilk;
 import udpm.fpt.repository.IMilk_Respository;
+import udpm.fpt.repository.ISaleBill;
 
 /**
  *
@@ -31,6 +33,7 @@ public class BillService {
     IMilk_Respository milk = getBean(IMilk_Respository.class);
     ICustomer_Resposutory customer = getBean(ICustomer_Resposutory.class);
     IMilk milkss = getBean(IMilk.class);
+    ISaleBill saleBill =getBean(ISaleBill.class);
     public CompletableFuture<List<Milk>> loadMilk() {
         return CompletableFuture.supplyAsync(() -> {
             return milk.findAll();
@@ -78,5 +81,10 @@ public class BillService {
     }
     public int updateProduct(int amout, Long id){
         return milkss.updateQuantity(amout, id);
+    }
+    public CompletableFuture<List<SaleBill1>> findAllSaleBill() {
+        return CompletableFuture.supplyAsync(() -> {
+            return saleBill.findAll();
+        }, Executors.newCachedThreadPool());
     }
 }

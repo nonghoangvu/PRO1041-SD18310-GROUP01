@@ -23,6 +23,7 @@ import udpm.fpt.model.Bill;
 import udpm.fpt.model.BillDetails;
 import udpm.fpt.model.Customer;
 import udpm.fpt.model.Milk;
+import udpm.fpt.model.SaleBill1;
 import udpm.fpt.model.User;
 import udpm.fpt.repository.IBillDetails_Respository;
 import udpm.fpt.repository.IBill_Respository;
@@ -42,6 +43,7 @@ public final class FormBill extends javax.swing.JPanel {
     private final List<BillDetails> HDCT_REPO = new ArrayList();
     IBill_Respository bill = getBean(IBill_Respository.class);
     IBillDetails_Respository billDetail = getBean(IBillDetails_Respository.class);
+    private List<SaleBill1> saleBillList = new ArrayList<>();
     User user;
     Main main;
 
@@ -59,7 +61,9 @@ public final class FormBill extends javax.swing.JPanel {
         TableCustom.apply(jScrollPane2, TableCustom.TableType.DEFAULT);
         TableCustom.apply(jScrollPane3, TableCustom.TableType.DEFAULT);
         TableCustom.apply(jScrollPane1, TableCustom.TableType.DEFAULT);
+        TableCustom.apply(jScrollPane5, TableCustom.TableType.DEFAULT);
         OnlyNumberTextField();
+        loadAndFillSaleBill();
     }
 
     public void setCustomer(Customer ct) {
@@ -84,6 +88,33 @@ public final class FormBill extends javax.swing.JPanel {
 
             model.addRow(row);
         }
+    }
+
+    private void loadSaleBill(List<SaleBill1> saleBill) {
+        DefaultTableModel model = (DefaultTableModel) tblSaleBill.getModel();
+        model.setRowCount(0);
+        for (SaleBill1 sanPham : saleBill) {
+            Object[] row = new Object[]{
+                sanPham.getId(),
+                sanPham.getSaleEvent(),
+                sanPham.getDiscountConditions(),
+                sanPham.getPercentDecrease(),};
+
+            model.addRow(row);
+        }
+    }
+
+    public void loadAndFillSaleBill() {
+        CompletableFuture<List<SaleBill1>> future = this.sv.findAllSaleBill();
+        future.thenAcceptAsync(data -> {
+            SwingUtilities.invokeLater(() -> {
+                this.loadSaleBill(data);
+                this.saleBillList = data;
+            });
+        }).exceptionally(throwable -> {
+            throwable.printStackTrace(System.out);
+            return null;
+        });
     }
 
     private void loadHoaDon(List<Bill> list) {
@@ -173,7 +204,6 @@ public final class FormBill extends javax.swing.JPanel {
             return false;
         }
         Integer maHoaDon = Integer.valueOf(tblBill.getValueAt(selectedRow, 0).toString());
-        double total = 0;
         boolean check = true;
         for (Bill hd : HOA_DON_REPO) {
             if (hd.getId().equals(maHoaDon)) {
@@ -193,8 +223,7 @@ public final class FormBill extends javax.swing.JPanel {
                     return false;
                 }
                 for (int i = 0; i < tblShoppingCart.getRowCount(); i++) {
-                    total += Double.parseDouble(tblShoppingCart.getValueAt(i, 4).toString());
-                    hd.setTotalAmountAfterTax(total);
+                    hd.setTotalAmountAfterTax(Double.valueOf(txtMoneyPaid.getText()));
                 }
                 bill.save(hd);
                 break;
@@ -210,8 +239,6 @@ public final class FormBill extends javax.swing.JPanel {
                     sv.updateProduct(ct.getQuantity(), ct.getMilk_id().getId());
                 }
             }
-            new Notification(Notification.Type.SUCCESS, Notification.Location.DEFAULT_DESKTOP,
-                    "Success!").showNotification();
         }
         loadHoaDon(HOA_DON_REPO);
 
@@ -250,7 +277,11 @@ public final class FormBill extends javax.swing.JPanel {
         txtTotalAmount = new udpm.fpt.swing.TextField();
         txtMoneyPaid = new udpm.fpt.swing.TextField();
         jPanel7 = new javax.swing.JPanel();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        tblSaleBill = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
 
         setPreferredSize(new java.awt.Dimension(1489, 880));
 
@@ -289,8 +320,8 @@ public final class FormBill extends javax.swing.JPanel {
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 475, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 258, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 517, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -353,19 +384,19 @@ public final class FormBill extends javax.swing.JPanel {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 1010, Short.MAX_VALUE)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
                             .addComponent(jLabel3))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane3))
                 .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -373,7 +404,7 @@ public final class FormBill extends javax.swing.JPanel {
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addContainerGap(108, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -466,7 +497,8 @@ public final class FormBill extends javax.swing.JPanel {
         txtTotalAmount.setEditable(false);
         txtTotalAmount.setLabelText("Total Amount");
 
-        txtMoneyPaid.setLabelText("Amount paid by the customer");
+        txtMoneyPaid.setEditable(false);
+        txtMoneyPaid.setLabelText("The amount customers have to pay");
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -511,9 +543,9 @@ public final class FormBill extends javax.swing.JPanel {
                 .addComponent(txtCustomerName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(52, 52, 52)
                 .addComponent(cbbPaymentMethods, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29)
+                .addGap(26, 26, 26)
                 .addComponent(txtTotalAmount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(23, 23, 23)
+                .addGap(26, 26, 26)
                 .addComponent(txtMoneyPaid, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(textAreaScroll1, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -528,18 +560,51 @@ public final class FormBill extends javax.swing.JPanel {
                 .addGap(140, 140, 140))
         );
 
+        jPanel7.setBackground(new java.awt.Color(255, 255, 255));
+
+        tblSaleBill.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID", "Name", "Discount conditions", "Percent decrease"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tblSaleBill.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblSaleBillMouseClicked(evt);
+            }
+        });
+        jScrollPane5.setViewportView(tblSaleBill);
+
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 258, Short.MAX_VALUE)
+            .addGap(0, 504, Short.MAX_VALUE)
+            .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 504, Short.MAX_VALUE))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 186, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
         jLabel2.setText("Pending Invoice");
+
+        jLabel6.setText("Sale event for bill");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -551,13 +616,18 @@ public final class FormBill extends javax.swing.JPanel {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(jLabel2)
-                                .addGap(0, 0, Short.MAX_VALUE)))))
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel6)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel5)))
+                        .addGap(16, 16, 16)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -571,10 +641,13 @@ public final class FormBill extends javax.swing.JPanel {
                         .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 809, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel2)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel6))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 186, Short.MAX_VALUE)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
@@ -598,9 +671,9 @@ public final class FormBill extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1489, Short.MAX_VALUE)
+            .addGap(0, 1561, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 1489, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 1561, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -658,9 +731,9 @@ public final class FormBill extends javax.swing.JPanel {
         boolean isNotExisted = true;
         double total = 0;
         if (sp.getAmount() <= 0) {
-                new Notification(Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP,
-                        "The product is out of stock!").showNotification();
-                return;
+            new Notification(Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP,
+                    "The product is out of stock!").showNotification();
+            return;
         } else {
             for (BillDetails h : HDCT_REPO) {
                 if (h.getBill_id().getId().equals(maHoaDon) && h.getMilk_id().getId().equals(maSanPham)) {
@@ -743,15 +816,10 @@ public final class FormBill extends javax.swing.JPanel {
     }//GEN-LAST:event_btnChooseCustomerActionPerformed
 
     private void btnPayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPayActionPerformed
-        double totalAmount = Double.valueOf(txtTotalAmount.getText());
-        double moneyPaid = Double.valueOf(txtMoneyPaid.getText());
-        if (totalAmount > moneyPaid) {
-            if (this.insert("directly")) {
-                this.resetLable();
-            }
-        } else {
-            new Notification(Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP,
-                    "Payment is not enough!").showNotification();
+        if (this.insert("directly")) {
+            this.resetLable();
+            new Notification(Notification.Type.SUCCESS, Notification.Location.DEFAULT_DESKTOP,
+                    "Success!").showNotification();
         }
     }//GEN-LAST:event_btnPayActionPerformed
 
@@ -766,11 +834,37 @@ public final class FormBill extends javax.swing.JPanel {
         System.out.println(idHoaDon);
         if (this.insert("delivery")) {
             System.out.println(idHoaDon);
-            DeliveryJFrame delivery = new DeliveryJFrame(idHoaDon);
+            DeliveryJFrame delivery = new DeliveryJFrame(idHoaDon, user, txtMoneyPaid.getText());
             delivery.setVisible(true);
             this.resetLable();
         }
     }//GEN-LAST:event_buttonMessage3ActionPerformed
+
+    private void tblSaleBillMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblSaleBillMouseClicked
+        int row = tblSaleBill.getSelectedRow();
+        if (txtTotalAmount.getText().trim().isEmpty() || row == -1) {
+            return;
+        }
+        String totalAmount2 = txtTotalAmount.getText();
+        String theamountcustomershavetopay = txtMoneyPaid.getText();
+        if (totalAmount2.equalsIgnoreCase(theamountcustomershavetopay)) {
+            double totalAmount = Double.valueOf(txtTotalAmount.getText());
+            double totalCustomer = Double.valueOf(txtMoneyPaid.getText());
+            if (saleBillList != null) {
+                for (SaleBill1 sb : saleBillList) {
+                    if (Double.parseDouble(sb.getDiscountConditions()) <= totalAmount) {
+                        totalAmount = totalAmount - (totalAmount * sb.getPercentDecrease() / 100);
+                        txtMoneyPaid.setText(String.valueOf(totalAmount));
+                        break;
+                    }
+                }
+            }
+        }else{
+            new Notification(Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP,
+                    "WARNING!").showNotification();
+            return;
+        }
+    }//GEN-LAST:event_tblSaleBillMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -784,6 +878,8 @@ public final class FormBill extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -794,8 +890,10 @@ public final class FormBill extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JTable tblBill;
     private javax.swing.JTable tblProduct;
+    private javax.swing.JTable tblSaleBill;
     private javax.swing.JTable tblShoppingCart;
     private udpm.fpt.swing.TextAreaScroll textAreaScroll1;
     private udpm.fpt.swing.TextField txtCustomerName;

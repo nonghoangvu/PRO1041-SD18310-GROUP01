@@ -7,6 +7,8 @@ package udpm.fpt.component;
 import com.raven.datechooser.DateChooser;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -18,6 +20,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.text.AbstractDocument;
 import udpm.fpt.model.BillDetails;
 import udpm.fpt.model.DeliveryNote;
+import udpm.fpt.model.User;
 import udpm.serviceDelivery.MailSender;
 import udpm.serviceDelivery.NumberFilter;
 import udpm.serviceDelivery.Service;
@@ -33,8 +36,10 @@ public class DeliveryJFrame extends javax.swing.JFrame {
      *
      * @param idBill
      */
-    public DeliveryJFrame(String idBill) {
+    public DeliveryJFrame(String idBill, User user, String total) {
         initComponents();
+        this.user = user;
+        this.totalAmount = Double.parseDouble(total);
         setCCbox();
         this.idHoaDon = Integer.valueOf(idBill);
         init();
@@ -276,7 +281,8 @@ public class DeliveryJFrame extends javax.swing.JFrame {
     private String maVanDon = null;
     private final Service sv = new Service();
     private DateChooser dateChooser = new DateChooser();
-
+    private User user;
+    private double totalAmount =0;
     public void init() {
         this.setLocationRelativeTo(null);
         loadDataAndFillTableBill(String.valueOf(idHoaDon));
@@ -287,6 +293,17 @@ public class DeliveryJFrame extends javax.swing.JFrame {
     }
 
     private Boolean isValidate() {
+        String dateString1 = txtEstimatedDeliveryDate.getText();
+        String dateString2 = simple.format(new Date());
+        LocalDate date1 = LocalDate.parse(dateString1, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+        LocalDate date2 = LocalDate.parse(dateString2, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+        LocalDate date2PlusOneDay = date2.plusDays(1);
+        // So sánh ngày
+        if (date1.isEqual(date2PlusOneDay) || date1.isBefore(date2PlusOneDay)) {
+            new Notification(Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP, "Estimated delivery date must be 1 day greater than today!")
+                    .showNotification();
+            return false;
+        }
         if (txtDiaChi.getText().isBlank()) {
             new Notification(Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP, "The ID is empty!")
                     .showNotification();
@@ -341,6 +358,7 @@ public class DeliveryJFrame extends javax.swing.JFrame {
                         maVanDon, donviGiao, ghiChu,
                         Double.valueOf(tienPhi), 1, SDT, simple.parse(txtEstimatedDeliveryDate.getText()), tenSanPham,
                         Integer.valueOf(soLuong), Double.valueOf(tongTien)))) {
+                    sv.historyInsert("Delivery slip has been added", user);
                     new Notification(Notification.Type.SUCCESS, Notification.Location.DEFAULT_DESKTOP,
                             "Add success!").showNotification();
                     sv.updateQuanlityProduct(idSanPham, Integer.parseInt(soLuong));
@@ -393,13 +411,15 @@ public class DeliveryJFrame extends javax.swing.JFrame {
         txtTenKhachHang.setText(b.getBill_id().getCustomerId().getFullname());
         txtDiaChi.setText(b.getBill_id().getCustomerId().getAddress());
         txtSDT.setText(b.getBill_id().getCustomerId().getPhone());
-        txtTongTien.setText(String.valueOf(b.getPrice()));
         txtTenSanPham.setText("");
         txtPhiShip.setText("18.000");
+        txtTongTien.setText(String.valueOf(totalAmount));
         int soLuong = 0;
         for (BillDetails getbillDetail : billDetail) {
             if (Objects.equals(getbillDetail.getBill_id().getId(), idHoaDon)) {
                 txtTenSanPham.append(getbillDetail.getMilk_id() == null ? "" : getbillDetail.getMilk_id().getProduct_name() + "\n");
+                totalAmount += getbillDetail.getPrice();
+
                 if (getbillDetail.getMilk_id() != null) {
                     this.idSanPham = getbillDetail.getMilk_id().getId();
                 }

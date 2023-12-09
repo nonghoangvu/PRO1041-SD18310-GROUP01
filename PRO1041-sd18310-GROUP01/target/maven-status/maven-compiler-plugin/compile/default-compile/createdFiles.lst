@@ -53,6 +53,7 @@ udpm\fpt\swing\TextField$3.class
 udpm\fpt\component\UpdateUser$2.class
 udpm\fpt\form\UserManagementForm$8.class
 udpm\fpt\component\UnitManagement$2.class
+udpm\fpt\form\FormBill$12.class
 udpm\fpt\component\ChooseCustomersForm$2.class
 udpm\fpt\component\NewProduct.class
 udpm\fpt\swing\table\TableHeaderCustomCellRender.class
@@ -170,6 +171,7 @@ udpm\fpt\form\KhachHangForm$6.class
 udpm\fpt\swing\table\TableActionCellEditor.class
 udpm\fpt\model\TransportUnit.class
 udpm\fpt\component\Header.class
+udpm\fpt\form\FormBill$13.class
 udpm\fpt\component\Replenishment$1.class
 udpm\fpt\model\PackagingSpecification.class
 udpm\fpt\model\Customer.class
