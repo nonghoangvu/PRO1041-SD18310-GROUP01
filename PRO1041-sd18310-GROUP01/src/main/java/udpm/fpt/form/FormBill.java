@@ -4,6 +4,8 @@
  */
 package udpm.fpt.form;
 
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -11,6 +13,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.AbstractDocument;
@@ -64,6 +67,7 @@ public final class FormBill extends javax.swing.JPanel {
         TableCustom.apply(jScrollPane5, TableCustom.TableType.DEFAULT);
         OnlyNumberTextField();
         loadAndFillSaleBill();
+        excessMoney();
     }
 
     public void setCustomer(Customer ct) {
@@ -186,11 +190,14 @@ public final class FormBill extends javax.swing.JPanel {
     public void resetLable() {
         txtCustomerName.setText("");
         txtIDCustomer.setText("");
-        txtNote.setText("");
+        txtTheAmountTheCustomerGives.setText("");
+        txtMoneyPaid.setText("");
+        txtExcessMoney.setText("");
     }
 
     public void OnlyNumberTextField() {
         ((AbstractDocument) txtMoneyPaid.getDocument()).setDocumentFilter(new NumberFilter());
+        ((AbstractDocument) txtTheAmountTheCustomerGives.getDocument()).setDocumentFilter(new NumberFilter());
     }
 
     public boolean insert(String shoppingMethod) {
@@ -209,7 +216,7 @@ public final class FormBill extends javax.swing.JPanel {
             if (hd.getId().equals(maHoaDon)) {
                 hd.setPayment_status("Paid");
                 hd.setShopping_method(shoppingMethod);
-                hd.setNotes(txtNote.getText());
+                hd.setNotes("");
                 hd.setStaff_id(user.getId());
                 if (shoppingMethod.equals("delivery")) {
                     Customer sc = new Customer();
@@ -265,8 +272,6 @@ public final class FormBill extends javax.swing.JPanel {
         jPanel6 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         cbbPaymentMethods = new udpm.fpt.swing.Combobox();
-        textAreaScroll1 = new udpm.fpt.swing.TextAreaScroll();
-        txtNote = new udpm.fpt.swing.TextArea();
         txtIDCustomer = new udpm.fpt.swing.TextField();
         txtCustomerName = new udpm.fpt.swing.TextField();
         buttonMessage1 = new udpm.fpt.swing.ButtonMessage();
@@ -276,6 +281,8 @@ public final class FormBill extends javax.swing.JPanel {
         buttonMessage3 = new udpm.fpt.swing.ButtonMessage();
         txtTotalAmount = new udpm.fpt.swing.TextField();
         txtMoneyPaid = new udpm.fpt.swing.TextField();
+        txtTheAmountTheCustomerGives = new udpm.fpt.swing.TextField();
+        txtExcessMoney = new udpm.fpt.swing.TextField();
         jPanel7 = new javax.swing.JPanel();
         jScrollPane5 = new javax.swing.JScrollPane();
         tblSaleBill = new javax.swing.JTable();
@@ -432,13 +439,6 @@ public final class FormBill extends javax.swing.JPanel {
             }
         });
 
-        textAreaScroll1.setBackground(new java.awt.Color(255, 255, 255));
-        textAreaScroll1.setLabelText("Note");
-
-        txtNote.setColumns(20);
-        txtNote.setRows(5);
-        textAreaScroll1.setViewportView(txtNote);
-
         txtIDCustomer.setEditable(false);
         txtIDCustomer.setLabelText("id customer");
 
@@ -500,56 +500,68 @@ public final class FormBill extends javax.swing.JPanel {
         txtMoneyPaid.setEditable(false);
         txtMoneyPaid.setLabelText("The amount customers have to pay");
 
+        txtTheAmountTheCustomerGives.setLabelText("The amount the customer gives");
+
+        txtExcessMoney.setEditable(false);
+        txtExcessMoney.setLabelText("Excess money");
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(cbbPaymentMethods, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(textAreaScroll1, javax.swing.GroupLayout.DEFAULT_SIZE, 450, Short.MAX_VALUE)
-                    .addComponent(txtIDCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtCustomerName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnPay, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnTaoHoaDon, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(buttonMessage1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(buttonMessage3, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE))
-                        .addGap(32, 32, 32))
-                    .addComponent(txtTotalAmount, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4)
-                            .addComponent(btnChooseCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap()
+                        .addComponent(btnChooseCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(txtMoneyPaid, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtExcessMoney, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtTheAmountTheCustomerGives, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(cbbPaymentMethods, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtIDCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtCustomerName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtTotalAmount, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addGap(0, 396, Short.MAX_VALUE))
+                            .addComponent(txtMoneyPaid, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnPay, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnTaoHoaDon, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(buttonMessage1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(buttonMessage3, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(43, 43, 43))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel4)
-                .addGap(53, 53, 53)
+                .addGap(18, 18, 18)
                 .addComponent(btnChooseCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(txtIDCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(49, 49, 49)
-                .addComponent(txtCustomerName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(52, 52, 52)
-                .addComponent(cbbPaymentMethods, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26)
-                .addComponent(txtTotalAmount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26)
-                .addComponent(txtMoneyPaid, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(textAreaScroll1, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(35, 35, 35)
+                .addComponent(txtCustomerName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(cbbPaymentMethods, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(34, 34, 34)
+                .addComponent(txtTotalAmount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(36, 36, 36)
+                .addComponent(txtMoneyPaid, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(32, 32, 32)
+                .addComponent(txtTheAmountTheCustomerGives, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(38, 38, 38)
+                .addComponent(txtExcessMoney, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnTaoHoaDon, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(buttonMessage1, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -557,7 +569,7 @@ public final class FormBill extends javax.swing.JPanel {
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(buttonMessage3, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnPay, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(140, 140, 140))
+                .addGap(162, 162, 162))
         );
 
         jPanel7.setBackground(new java.awt.Color(255, 255, 255));
@@ -581,6 +593,9 @@ public final class FormBill extends javax.swing.JPanel {
         tblSaleBill.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblSaleBillMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                tblSaleBillMouseEntered(evt);
             }
         });
         jScrollPane5.setViewportView(tblSaleBill);
@@ -619,7 +634,7 @@ public final class FormBill extends javax.swing.JPanel {
                             .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(jLabel2)
-                                .addGap(0, 0, Short.MAX_VALUE)))
+                                .addGap(0, 373, Short.MAX_VALUE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -638,9 +653,6 @@ public final class FormBill extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 809, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
                             .addComponent(jLabel5)
@@ -650,7 +662,10 @@ public final class FormBill extends javax.swing.JPanel {
                             .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 844, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -671,9 +686,9 @@ public final class FormBill extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1561, Short.MAX_VALUE)
+            .addGap(0, 1489, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 1561, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 1489, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -699,6 +714,7 @@ public final class FormBill extends javax.swing.JPanel {
                 total += h.getPrice() * h.getQuantity();
                 txtTotalAmount.setText(String.valueOf(total));
                 txtMoneyPaid.setText(String.valueOf(total));
+                txtTheAmountTheCustomerGives.setText(String.valueOf(total));
             }
         }
         int selectedRow = tblBill.getSelectedRow();
@@ -757,6 +773,12 @@ public final class FormBill extends javax.swing.JPanel {
                 total += h.getPrice() * h.getQuantity();
                 txtTotalAmount.setText(String.valueOf(total));
                 txtMoneyPaid.setText(String.valueOf(total));
+                txtTheAmountTheCustomerGives.setText(String.valueOf(total));
+                double moneyPaid = Double.parseDouble(txtMoneyPaid.getText());
+                double theAmountTheCustomerGives = Double.parseDouble(txtTheAmountTheCustomerGives.getText());
+                if (moneyPaid < theAmountTheCustomerGives) {
+                    txtExcessMoney.setText(String.valueOf(theAmountTheCustomerGives - moneyPaid));
+                }
             }
         }
         loadSanPham(SAN_PHAM_REPO);
@@ -859,12 +881,21 @@ public final class FormBill extends javax.swing.JPanel {
                     }
                 }
             }
-        }else{
+            double moneyPaid = Double.parseDouble(txtMoneyPaid.getText());
+            double theAmountTheCustomerGives = Double.parseDouble(txtTheAmountTheCustomerGives.getText());
+            if (moneyPaid < theAmountTheCustomerGives) {
+                txtExcessMoney.setText(String.valueOf(theAmountTheCustomerGives - moneyPaid));
+            }
+        } else {
             new Notification(Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP,
                     "WARNING!").showNotification();
             return;
         }
     }//GEN-LAST:event_tblSaleBillMouseClicked
+
+    private void tblSaleBillMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblSaleBillMouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tblSaleBillMouseEntered
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -895,12 +926,45 @@ public final class FormBill extends javax.swing.JPanel {
     private javax.swing.JTable tblProduct;
     private javax.swing.JTable tblSaleBill;
     private javax.swing.JTable tblShoppingCart;
-    private udpm.fpt.swing.TextAreaScroll textAreaScroll1;
     private udpm.fpt.swing.TextField txtCustomerName;
+    private udpm.fpt.swing.TextField txtExcessMoney;
     private udpm.fpt.swing.TextField txtIDCustomer;
     private udpm.fpt.swing.TextField txtMoneyPaid;
-    private udpm.fpt.swing.TextArea txtNote;
+    private udpm.fpt.swing.TextField txtTheAmountTheCustomerGives;
     private udpm.fpt.swing.TextField txtTotalAmount;
     // End of variables declaration//GEN-END:variables
+    public void excessMoney() {
+        txtTheAmountTheCustomerGives.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+            }
 
+            @Override
+            public void keyPressed(KeyEvent e) {
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                // Gọi phương thức để tự động tính toán khi người dùng nhập
+                calculateChange();
+            }
+        });
+
+        // Phương thức để tự động tính toán tiền thừa
+        // Được gọi từ sự kiện nhấn phím Enter trong ô txtKhachDua       
+    }
+
+    private void calculateChange() {
+        try {
+            // Lấy giá trị từ các ô JTextField
+            double tongTien = Double.parseDouble(txtMoneyPaid.getText());
+            double khachDua = Double.parseDouble(txtTheAmountTheCustomerGives.getText());
+
+            // Tính toán và hiển thị tiền thừa
+            double tienThua = khachDua - tongTien;
+            txtExcessMoney.setText(String.valueOf(tienThua));
+        } catch (NumberFormatException ex) {
+            System.out.println("lỗi");
+        }
+    }
 }

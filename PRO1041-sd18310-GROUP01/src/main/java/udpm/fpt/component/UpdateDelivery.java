@@ -7,6 +7,8 @@ package udpm.fpt.component;
 import com.raven.datechooser.DateChooser;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -423,6 +425,17 @@ public class UpdateDelivery extends javax.swing.JFrame {
     }
 
     private Boolean isValidate() {
+        String dateString1 = txtEstimatedDeliveryDate.getText();
+        String dateString2 = txtNgayTao.getText();
+        LocalDate date1 = LocalDate.parse(dateString1, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+        LocalDate date2 = LocalDate.parse(dateString2, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+        LocalDate date2PlusOneDay = date2.plusDays(1);
+        // So sánh ngày
+        if (date1.isEqual(date2PlusOneDay) || date1.isBefore(date2PlusOneDay)) {
+            new Notification(Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP, "Estimated delivery date must be 1 day greater than today!")
+                    .showNotification();
+            return false;
+        }
         if (txtDiaChi.getText().isBlank()) {
             new Notification(Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP, "The Address is empty!")
                     .showNotification();
