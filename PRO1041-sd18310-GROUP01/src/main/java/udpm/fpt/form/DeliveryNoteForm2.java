@@ -8,6 +8,8 @@ import com.raven.datechooser.DateBetween;
 import com.raven.datechooser.DateChooser;
 import com.raven.datechooser.listener.DateChooserAction;
 import com.raven.datechooser.listener.DateChooserAdapter;
+import java.awt.Color;
+import java.awt.Component;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -30,6 +32,7 @@ import udpm.fpt.repository.IDelivery_noteRespository;
 import udpm.fpt.swing.table.TableCustom;
 import udpm.serviceDelivery.MailSender;
 import udpm.serviceDelivery.NumberFilter;
+import udpm.serviceDelivery.PanelTest;
 import udpm.serviceDelivery.Service;
 
 /**
@@ -85,6 +88,7 @@ public class DeliveryNoteForm2 extends javax.swing.JPanel {
         btnUpdate = new udpm.fpt.swing.ButtonMessage();
         jLabel1 = new javax.swing.JLabel();
         lblpaymentStatus = new javax.swing.JLabel();
+        buttonMessage1 = new udpm.fpt.swing.ButtonMessage();
         txtXapSep = new udpm.fpt.swing.TextField();
         cbbTimKiem = new udpm.fpt.swing.Combobox();
         txtTimKiem = new udpm.fpt.swing.TextField();
@@ -93,6 +97,7 @@ public class DeliveryNoteForm2 extends javax.swing.JPanel {
         tblDanhSach2 = new javax.swing.JTable();
         btnSearch = new udpm.fpt.swing.ButtonMessage();
         jButton3 = new udpm.fpt.swing.ButtonMessage();
+        progressIndicator1 = new udpm.fpt.progressindicator.ProgressIndicator();
 
         setPreferredSize(new java.awt.Dimension(1527, 824));
 
@@ -187,6 +192,16 @@ public class DeliveryNoteForm2 extends javax.swing.JPanel {
         jLabel1.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
         jLabel1.setText("payment_status:");
 
+        buttonMessage1.setBackground(new java.awt.Color(0, 153, 255));
+        buttonMessage1.setForeground(new java.awt.Color(255, 255, 255));
+        buttonMessage1.setText("Delivery");
+        buttonMessage1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        buttonMessage1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonMessage1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -252,8 +267,10 @@ public class DeliveryNoteForm2 extends javax.swing.JPanel {
                     .addComponent(jLabel18)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(btnBenVanChuyen, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(0, 0, Short.MAX_VALUE))
+                        .addComponent(btnBenVanChuyen, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(buttonMessage1, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(0, 275, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -283,13 +300,13 @@ public class DeliveryNoteForm2 extends javax.swing.JPanel {
                         .addComponent(lblpaymentStatus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel6)
+                    .addComponent(lbTienCOD, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(jLabel6)
-                        .addGap(29, 29, 29)
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtLoaiVanChuyen, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel29))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel29)
+                        .addGap(18, 18, 18)
                         .addComponent(jLabel27)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -301,9 +318,11 @@ public class DeliveryNoteForm2 extends javax.swing.JPanel {
                             .addComponent(jLabel28))
                         .addGap(9, 9, 9))
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(lbTienCOD, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtLoaiVanChuyen, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addComponent(btnBenVanChuyen, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnBenVanChuyen, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(buttonMessage1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -371,6 +390,20 @@ public class DeliveryNoteForm2 extends javax.swing.JPanel {
             }
         });
 
+        progressIndicator1.setBackground(new java.awt.Color(255, 255, 255));
+        progressIndicator1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 80, 1, 80));
+        progressIndicator1.setForeground(new java.awt.Color(246, 242, 242));
+        progressIndicator1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        progressIndicator1.setModel(new javax.swing.AbstractListModel() {
+            String[] strings = { "Đang chuẩn bị", "Đã bàn giao", "Đang giao hàng", "Giao thành công" };
+            public int getSize() { return strings.length; }
+            public Object getElementAt(int i) { return strings[i]; }
+        });
+        progressIndicator1.setProgress(1.0F);
+        progressIndicator1.setProgressColorGradient(new java.awt.Color(153, 0, 51));
+        progressIndicator1.setProgressFill(true);
+        progressIndicator1.setProgressSpaceLabel(6);
+
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
@@ -383,8 +416,9 @@ public class DeliveryNoteForm2 extends javax.swing.JPanel {
                         .addGap(34, 34, 34)
                         .addComponent(cbbTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtTimKiem, javax.swing.GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE))
-                    .addComponent(jScrollPaneHoaDon))
+                        .addComponent(txtTimKiem, javax.swing.GroupLayout.DEFAULT_SIZE, 389, Short.MAX_VALUE))
+                    .addComponent(jScrollPaneHoaDon)
+                    .addComponent(progressIndicator1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -410,9 +444,12 @@ public class DeliveryNoteForm2 extends javax.swing.JPanel {
                     .addComponent(btnSearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(36, 36, 36)
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPaneHoaDon))
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addComponent(jScrollPaneHoaDon, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(progressIndicator1, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -455,6 +492,8 @@ public class DeliveryNoteForm2 extends javax.swing.JPanel {
         deliverynote.setStatus_id(2);
         sv.updateDeliveryNote(idDanhSach, maVanDon, deliverynote);
         loadDataAndFillTableDeli();
+        progressIndicator1.setProgress(0);
+        this.main.notificationShowSUCCESS("SUCCESS!");
     }//GEN-LAST:event_btnBenVanChuyenActionPerformed
 
     private void btnDeliveryCompletedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeliveryCompletedActionPerformed
@@ -469,10 +508,16 @@ public class DeliveryNoteForm2 extends javax.swing.JPanel {
         sv.updateDeliveryNote(idDanhSach, maVanDon, deliverynote);
         sv.updateBill("Paid", deliverynote.getBill_id());
         loadDataAndFillTableDeli();
+        progressIndicator1.setProgress(0);
+        this.main.notificationShowSUCCESS("SUCCESS!");
+
     }//GEN-LAST:event_btnDeliveryCompletedActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        this.deleteDeli();
+        if (this.deleteDeli()) {
+            progressIndicator1.setProgress(0);
+            this.main.notificationShowSUCCESS("SUCCESS!");
+        }
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
@@ -485,7 +530,6 @@ public class DeliveryNoteForm2 extends javax.swing.JPanel {
         UpdateDelivery update = new UpdateDelivery(this, idDanhSach, maVanDon, user, main);
         update.setFrom(list);
         update.setVisible(true);
-        
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
@@ -514,6 +558,20 @@ public class DeliveryNoteForm2 extends javax.swing.JPanel {
         loadDataAndFillTableDeli();
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    private void buttonMessage1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonMessage1ActionPerformed
+        int row = tblDanhSach2.getSelectedRow();
+        if (row == -1) {
+            return;
+        }
+        Long idDanhSach = Long.valueOf(tblDanhSach2.getValueAt(row, 0).toString());
+        Optional<DeliveryNote> list = sv.filById(idDanhSach);
+        DeliveryNote deliverynote = list.get();
+        deliverynote.setStatus_id(3);
+        sv.updateDeliveryNote(idDanhSach, maVanDon, deliverynote);
+        loadDataAndFillTableDeli();
+        this.main.notificationShowSUCCESS("SUCCESS!");
+    }//GEN-LAST:event_buttonMessage1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private udpm.fpt.swing.ButtonMessage btnBenVanChuyen;
@@ -521,6 +579,7 @@ public class DeliveryNoteForm2 extends javax.swing.JPanel {
     private udpm.fpt.swing.ButtonMessage btnDeliveryCompleted;
     private udpm.fpt.swing.ButtonMessage btnSearch;
     private udpm.fpt.swing.ButtonMessage btnUpdate;
+    private udpm.fpt.swing.ButtonMessage buttonMessage1;
     private udpm.fpt.swing.Combobox cbbSearchStatus;
     private udpm.fpt.swing.Combobox cbbTimKiem;
     private udpm.fpt.swing.ButtonMessage jButton3;
@@ -548,6 +607,7 @@ public class DeliveryNoteForm2 extends javax.swing.JPanel {
     private javax.swing.JLabel lbTenKhachHang;
     private javax.swing.JLabel lbTienCOD;
     private javax.swing.JLabel lblpaymentStatus;
+    private udpm.fpt.progressindicator.ProgressIndicator progressIndicator1;
     private javax.swing.JTable tblDanhSach2;
     private javax.swing.JLabel txtLoaiVanChuyen;
     private udpm.fpt.swing.TextField txtTimKiem;
@@ -564,6 +624,7 @@ public class DeliveryNoteForm2 extends javax.swing.JPanel {
     private final Service sv = new Service();
     private User user;
     private Main main;
+
     public void dateChooser() {
         datechooser.setTextField(txtXapSep);
         datechooser.setDateSelectionMode(DateChooser.DateSelectionMode.BETWEEN_DATE_SELECTED);
@@ -629,17 +690,19 @@ public class DeliveryNoteForm2 extends javax.swing.JPanel {
         }
     }
 
-    public void deleteDeli() {
+    public boolean deleteDeli() {
         int row = tblDanhSach2.getSelectedRow();
         if (row == -1) {
-            return;
+            return false;
         }
         int hoi = JOptionPane.showConfirmDialog(this, "Bạn muốn xóa phiếu này", "error", JOptionPane.YES_NO_OPTION);
         if (hoi == JOptionPane.YES_OPTION) {
             Long id = Long.valueOf(tblDanhSach2.getValueAt(row, 0).toString());
             delivery.deleteById(id);
             loadDataAndFillTableDeli();
+            return true;
         }
+        return false;
     }
 
     public void loadSearch(String search, int row) {
@@ -673,10 +736,22 @@ public class DeliveryNoteForm2 extends javax.swing.JPanel {
                 lbSanPham.setText(sv.addLineBreak(dl.getMilk_name()));
                 lbDiaChi.setText(dl.getAddress());
                 lbGhiChu.setText(dl.getNote());
-                lbNgayXuatKho.setText(dl.getEstimatedtime()==null? "" : simple.format(dl.getEstimatedtime()));
+                lbNgayXuatKho.setText(dl.getEstimatedtime() == null ? "" : simple.format(dl.getEstimatedtime()));
                 txtLoaiVanChuyen.setText(dl.getTransport_unit_id2().getTransportUnitName());
                 maVanDon = dl.getWaybill_number();
                 lblpaymentStatus.setText(dl.getBill_id2().getPayment_status());
+                if (dl.getStatus_id2().getStatusName().equals("Đang chuẩn bị")) {
+                    progressIndicator1.setProgress(0);
+                } else if (dl.getStatus_id2().getStatusName().equals("Bàn giao cho bên vận chuyển")) {
+                    progressIndicator1.setProgress(1);
+                } else if (dl.getStatus_id2().getStatusName().equals("Đang giao hàng")) {
+                    progressIndicator1.setProgress(2);
+                } else if (dl.getStatus_id2().getStatusName().equals("Giao thành công")) {
+                    progressIndicator1.setProgress(3);
+                } else if (dl.getStatus_id2().getStatusName().equals("Huỷ giao hàng")) {
+                    progressIndicator1.setProgress(-1);
+                    progressIndicator1.setOpaque(true);
+                }
             }
         }
     }
@@ -704,9 +779,9 @@ public class DeliveryNoteForm2 extends javax.swing.JPanel {
         DefaultComboBoxModel cbb = (DefaultComboBoxModel) cbbSearchStatus.getModel();
         cbb.removeAllElements();
         cbb.addElement("Tất cả");
-        cbb.addElement("Chờ giao hàng");
+        cbb.addElement("Đang chuẩn bị");
+        cbb.addElement("Bàn giao cho bên vận chuyển");
         cbb.addElement("Đang giao hàng");
-        cbb.addElement("Đã giao hàng");
         cbb.addElement("Huỷ giao hàng");
         cbb.addElement("Giao thành công");
     }

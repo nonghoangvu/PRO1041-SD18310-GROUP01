@@ -15,9 +15,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.SwingUtilities;
+import javax.swing.text.AbstractDocument;
 import udpm.fpt.model.BillDetails;
 import udpm.fpt.model.DeliveryNote;
 import udpm.serviceDelivery.MailSender;
+import udpm.serviceDelivery.NumberFilter;
 import udpm.serviceDelivery.Service;
 
 /**
@@ -28,6 +30,7 @@ public class DeliveryJFrame extends javax.swing.JFrame {
 
     /**
      * Creates new form DeliveryJFrame
+     *
      * @param idBill
      */
     public DeliveryJFrame(String idBill) {
@@ -35,7 +38,7 @@ public class DeliveryJFrame extends javax.swing.JFrame {
         setCCbox();
         this.idHoaDon = Integer.valueOf(idBill);
         init();
-        
+
     }
 
     /**
@@ -63,10 +66,10 @@ public class DeliveryJFrame extends javax.swing.JFrame {
         btnTaoPhieu = new udpm.fpt.swing.ButtonMessage();
         btnHuy = new udpm.fpt.swing.ButtonMessage();
         txtEstimatedDeliveryDate = new udpm.fpt.swing.TextField();
+        textField1 = new udpm.fpt.swing.TextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
-        setPreferredSize(new java.awt.Dimension(887, 517));
 
         jPanel15.setBackground(new java.awt.Color(255, 255, 255));
         jPanel15.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Create a delivery note", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 18))); // NOI18N
@@ -81,9 +84,15 @@ public class DeliveryJFrame extends javax.swing.JFrame {
 
         txtSDT.setLabelText("Phone Number");
 
+        txtTongTien.setEditable(false);
         txtTongTien.setLabelText("Cash on Delivery");
 
         cbbDonViGiao.setLabeText("Shipping Type");
+        cbbDonViGiao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbbDonViGiaoActionPerformed(evt);
+            }
+        });
 
         txtPhiShip.setLabelText("Shipping Cost");
 
@@ -123,6 +132,8 @@ public class DeliveryJFrame extends javax.swing.JFrame {
 
         txtEstimatedDeliveryDate.setLabelText(" Estimated delivery date");
 
+        textField1.setLabelText("Weight");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -137,15 +148,16 @@ public class DeliveryJFrame extends javax.swing.JFrame {
                         .addComponent(btnTaoPhieu, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(btnHuy, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(txtTenKhachHang, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(txtTenKhachHang, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(textField1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(35, 35, 35)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtSoLuong, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtEstimatedDeliveryDate, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtPhiShip, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtDiaChi, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtSDT, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(textAreaScroll2, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtSoLuong, javax.swing.GroupLayout.DEFAULT_SIZE, 370, Short.MAX_VALUE)
+                    .addComponent(txtPhiShip, javax.swing.GroupLayout.DEFAULT_SIZE, 370, Short.MAX_VALUE)
+                    .addComponent(txtDiaChi, javax.swing.GroupLayout.DEFAULT_SIZE, 370, Short.MAX_VALUE)
+                    .addComponent(txtSDT, javax.swing.GroupLayout.DEFAULT_SIZE, 370, Short.MAX_VALUE)
+                    .addComponent(txtEstimatedDeliveryDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(textAreaScroll2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -167,25 +179,25 @@ public class DeliveryJFrame extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtTongTien, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(btnHuy, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btnTaoPhieu, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addComponent(txtSoLuong, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(txtEstimatedDeliveryDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(cbbDonViGiao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(29, 29, 29)
-                                .addComponent(textAreaScroll2, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(48, 48, 48))))
+                        .addComponent(txtTongTien, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(txtSoLuong, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(27, 27, 27)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(cbbDonViGiao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtEstimatedDeliveryDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnHuy, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnTaoPhieu, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                            .addComponent(textField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(104, 104, 104)))
+                    .addComponent(textAreaScroll2, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(48, 48, 48))
         );
 
         javax.swing.GroupLayout jPanel15Layout = new javax.swing.GroupLayout(jPanel15);
@@ -211,7 +223,7 @@ public class DeliveryJFrame extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 519, Short.MAX_VALUE)
+            .addGap(0, 577, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(jPanel15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -220,7 +232,7 @@ public class DeliveryJFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnTaoPhieuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTaoPhieuActionPerformed
-        if(insert()){
+        if (insert()) {
             this.dispose();
         }
     }//GEN-LAST:event_btnTaoPhieuActionPerformed
@@ -228,6 +240,14 @@ public class DeliveryJFrame extends javax.swing.JFrame {
     private void btnHuyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHuyActionPerformed
         this.dispose();
     }//GEN-LAST:event_btnHuyActionPerformed
+
+    private void cbbDonViGiaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbDonViGiaoActionPerformed
+        if (cbbDonViGiao.getSelectedIndex() == 1) {
+            txtPhiShip.setText("20.000");
+        } else {
+            txtPhiShip.setText("25.000");
+        }
+    }//GEN-LAST:event_cbbDonViGiaoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -238,6 +258,7 @@ public class DeliveryJFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private udpm.fpt.swing.TextAreaScroll textAreaScroll1;
     private udpm.fpt.swing.TextAreaScroll textAreaScroll2;
+    private udpm.fpt.swing.TextField textField1;
     private udpm.fpt.swing.TextField txtDiaChi;
     private udpm.fpt.swing.TextField txtEstimatedDeliveryDate;
     private udpm.fpt.swing.TextArea txtGhiChu;
@@ -255,13 +276,16 @@ public class DeliveryJFrame extends javax.swing.JFrame {
     private String maVanDon = null;
     private final Service sv = new Service();
     private DateChooser dateChooser = new DateChooser();
+
     public void init() {
         this.setLocationRelativeTo(null);
         loadDataAndFillTableBill(String.valueOf(idHoaDon));
         dateChooser.setTextField(txtEstimatedDeliveryDate);
         dateChooser.setDateSelectionMode(DateChooser.DateSelectionMode.SINGLE_DATE_SELECTED);
         dateChooser.setLabelCurrentDayVisible(false);
+        OnlyNumberTextField();
     }
+
     private Boolean isValidate() {
         if (txtDiaChi.getText().isBlank()) {
             new Notification(Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP, "The ID is empty!")
@@ -352,7 +376,8 @@ public class DeliveryJFrame extends javax.swing.JFrame {
             return null;
         });
     }
-    public void setCCbox(){
+
+    public void setCCbox() {
         DefaultComboBoxModel model = (DefaultComboBoxModel) this.cbbDonViGiao.getModel();
         model.removeAllElements();
         model.addElement("Express Delivery");
@@ -361,27 +386,32 @@ public class DeliveryJFrame extends javax.swing.JFrame {
         model.addElement("Swift Couriers");
         model.addElement("Quick Dispatch");
     }
+
     public void setFrom(List<BillDetails> list) {
-            List<BillDetails> billDetail = list;
-            BillDetails b = list.get(0);
-            txtTenKhachHang.setText(b.getBill_id().getCustomerId().getFullname());
-            txtDiaChi.setText(b.getBill_id().getCustomerId().getAddress());
-            txtSDT.setText(b.getBill_id().getCustomerId().getPhone());
-            txtTongTien.setText(String.valueOf(b.getPrice()));
-            txtTenSanPham.setText("");
-            if (cbbDonViGiao.getSelectedIndex() == 0) {
-                txtPhiShip.setText("18.000");
-            }
-            int soLuong = 0;
-            for (BillDetails getbillDetail : billDetail) {
-                if (Objects.equals(getbillDetail.getBill_id().getId(), idHoaDon)) {
-                    txtTenSanPham.append(getbillDetail.getMilk_id() == null ? "" : getbillDetail.getMilk_id().getProduct_name() + "\n");
-                    if (getbillDetail.getMilk_id() != null) {
-                        this.idSanPham = getbillDetail.getMilk_id().getId();
-                    }
-                    soLuong = soLuong + getbillDetail.getQuantity();
+        List<BillDetails> billDetail = list;
+        BillDetails b = list.get(0);
+        txtTenKhachHang.setText(b.getBill_id().getCustomerId().getFullname());
+        txtDiaChi.setText(b.getBill_id().getCustomerId().getAddress());
+        txtSDT.setText(b.getBill_id().getCustomerId().getPhone());
+        txtTongTien.setText(String.valueOf(b.getPrice()));
+        txtTenSanPham.setText("");
+        txtPhiShip.setText("18.000");
+        int soLuong = 0;
+        for (BillDetails getbillDetail : billDetail) {
+            if (Objects.equals(getbillDetail.getBill_id().getId(), idHoaDon)) {
+                txtTenSanPham.append(getbillDetail.getMilk_id() == null ? "" : getbillDetail.getMilk_id().getProduct_name() + "\n");
+                if (getbillDetail.getMilk_id() != null) {
+                    this.idSanPham = getbillDetail.getMilk_id().getId();
                 }
+                soLuong = soLuong + getbillDetail.getQuantity();
             }
-            txtSoLuong.setText(String.valueOf(soLuong));
+        }
+        txtSoLuong.setText(String.valueOf(soLuong));
+    }
+
+    public void OnlyNumberTextField() {
+        ((AbstractDocument) txtPhiShip.getDocument()).setDocumentFilter(new NumberFilter());
+        ((AbstractDocument) txtSoLuong.getDocument()).setDocumentFilter(new NumberFilter());
+        ((AbstractDocument) txtTongTien.getDocument()).setDocumentFilter(new NumberFilter());
     }
 }

@@ -318,28 +318,24 @@
                       <Group type="102" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" attributes="0">
+                              <Component id="cbbPaymentMethods" alignment="0" max="32767" attributes="0"/>
+                              <Component id="textAreaScroll1" alignment="0" pref="450" max="32767" attributes="0"/>
+                              <Component id="txtIDCustomer" max="32767" attributes="0"/>
+                              <Component id="txtCustomerName" alignment="0" max="32767" attributes="0"/>
+                              <Group type="102" alignment="1" attributes="0">
+                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="cbbPaymentMethods" alignment="0" max="32767" attributes="0"/>
-                                      <Component id="textAreaScroll1" alignment="0" pref="450" max="32767" attributes="0"/>
-                                      <Component id="txtIDCustomer" max="32767" attributes="0"/>
-                                      <Component id="txtCustomerName" alignment="0" max="32767" attributes="0"/>
-                                      <Group type="102" alignment="1" attributes="0">
-                                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                                          <Group type="103" groupAlignment="0" attributes="0">
-                                              <Component id="buttonMessage2" alignment="1" min="-2" pref="184" max="-2" attributes="0"/>
-                                              <Component id="btnTaoHoaDon" alignment="1" min="-2" pref="184" max="-2" attributes="0"/>
-                                          </Group>
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                              <Component id="buttonMessage1" max="32767" attributes="0"/>
-                                              <Component id="buttonMessage3" pref="185" max="32767" attributes="0"/>
-                                          </Group>
-                                          <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
-                                      </Group>
+                                      <Component id="btnPay" alignment="1" min="-2" pref="184" max="-2" attributes="0"/>
+                                      <Component id="btnTaoHoaDon" alignment="1" min="-2" pref="184" max="-2" attributes="0"/>
                                   </Group>
                                   <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                      <Component id="buttonMessage1" max="32767" attributes="0"/>
+                                      <Component id="buttonMessage3" pref="185" max="32767" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
                               </Group>
+                              <Component id="txtTotalAmount" alignment="0" max="32767" attributes="0"/>
                               <Group type="102" attributes="0">
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
@@ -347,7 +343,9 @@
                                   </Group>
                                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                               </Group>
+                              <Component id="txtMoneyPaid" alignment="0" max="32767" attributes="0"/>
                           </Group>
+                          <EmptySpace max="-2" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -364,9 +362,13 @@
                           <Component id="txtCustomerName" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="52" max="-2" attributes="0"/>
                           <Component id="cbbPaymentMethods" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="67" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
+                          <Component id="txtTotalAmount" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
+                          <Component id="txtMoneyPaid" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="textAreaScroll1" min="-2" pref="67" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="125" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="btnTaoHoaDon" alignment="3" min="-2" pref="61" max="-2" attributes="0"/>
                               <Component id="buttonMessage1" alignment="3" min="-2" pref="61" max="-2" attributes="0"/>
@@ -374,7 +376,7 @@
                           <EmptySpace max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="buttonMessage3" alignment="3" min="-2" pref="61" max="-2" attributes="0"/>
-                              <Component id="buttonMessage2" alignment="3" min="-2" pref="61" max="-2" attributes="0"/>
+                              <Component id="btnPay" alignment="3" min="-2" pref="61" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="140" max="-2" attributes="0"/>
                       </Group>
@@ -415,6 +417,7 @@
                 </Container>
                 <Component class="udpm.fpt.swing.TextField" name="txtIDCustomer">
                   <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
                     <Property name="labelText" type="java.lang.String" value="id customer"/>
                   </Properties>
                 </Component>
@@ -457,7 +460,7 @@
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnTaoHoaDonActionPerformed"/>
                   </Events>
                 </Component>
-                <Component class="udpm.fpt.swing.ButtonMessage" name="buttonMessage2">
+                <Component class="udpm.fpt.swing.ButtonMessage" name="btnPay">
                   <Properties>
                     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="33" green="cc" red="0" type="rgb"/>
@@ -471,7 +474,7 @@
                     </Property>
                   </Properties>
                   <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonMessage2ActionPerformed"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnPayActionPerformed"/>
                   </Events>
                 </Component>
                 <Component class="udpm.fpt.swing.Button" name="btnChooseCustomer">
@@ -507,6 +510,17 @@
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonMessage3ActionPerformed"/>
                   </Events>
+                </Component>
+                <Component class="udpm.fpt.swing.TextField" name="txtTotalAmount">
+                  <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
+                    <Property name="labelText" type="java.lang.String" value="Total Amount"/>
+                  </Properties>
+                </Component>
+                <Component class="udpm.fpt.swing.TextField" name="txtMoneyPaid">
+                  <Properties>
+                    <Property name="labelText" type="java.lang.String" value="Amount paid by the customer"/>
+                  </Properties>
                 </Component>
               </SubComponents>
             </Container>

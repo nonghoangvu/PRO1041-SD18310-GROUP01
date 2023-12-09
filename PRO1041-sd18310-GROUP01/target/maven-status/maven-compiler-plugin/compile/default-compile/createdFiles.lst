@@ -26,6 +26,7 @@ udpm\fpt\config\DbMetadata.class
 udpm\fpt\component\WebCamProduct$1.class
 udpm\fpt\component\SearchBarcode.class
 udpm\fpt\form\KhachHangForm$7.class
+udpm\fpt\form\DeliveryNoteForm2$13.class
 udpm\fpt\component\Replenishment$2.class
 udpm\fpt\swing\table\TableActionCellRender.class
 udpm\fpt\swing\shadow\ShadowRenderer.class
@@ -79,6 +80,7 @@ udpm\fpt\component\PackagingSpecificationManagement$2.class
 udpm\fpt\swing\ButtonMessage.class
 udpm\fpt\component\NewProduct$3.class
 udpm\fpt\swing\table\TextAreaCellRenderer.class
+udpm\fpt\progressindicator\ProgressIndicator.class
 udpm\fpt\component\AddNewUser.class
 udpm\fpt\form\SaleFinal$6.class
 udpm\fpt\form\ProductForm$5.class
@@ -129,6 +131,7 @@ udpm\fpt\form\ProductForm$1.class
 udpm\fpt\component\UpdateUser$5.class
 udpm\serviceDelivery\MailSender$1.class
 udpm\fpt\component\UpdateUser$8.class
+udpm\fpt\progressindicator\PanelSlider$1.class
 udpm\fpt\form\ProductManagement$Type.class
 udpm\fpt\form\Login$3.class
 udpm\fpt\component\ViewDelete.class
@@ -142,6 +145,7 @@ udpm\fpt\component\Replenishment.class
 udpm\serviceDelivery\CustomCellRenderer.class
 udpm\fpt\component\UpdateUser$7.class
 udpm\fpt\component\Menu$2.class
+udpm\fpt\component\DeliveryJFrame$3.class
 udpm\fpt\swing\table\TableCustom$2.class
 udpm\fpt\swing\table\TableCustom$1.class
 udpm\fpt\component\SearchBarcode$1.class
@@ -205,9 +209,11 @@ udpm\fpt\swing\TextField$2.class
 udpm\fpt\form\DeliveryNoteForm2.class
 udpm\fpt\event\TableActionEvent.class
 udpm\fpt\form\SaleFinal.class
+udpm\fpt\form\DeliveryNoteForm2$12.class
 udpm\fpt\swing\ModernScrollBarUI$InvisibleScrollBarButton.class
 udpm\fpt\swing\PasswordField.class
 udpm\fpt\swing\table\TableCustomCellRender.class
+udpm\fpt\progressindicator\PanelSlider$2.class
 udpm\serviceDelivery\NumberFilter.class
 udpm\fpt\component\UpdateDelivery$1.class
 udpm\fpt\form\FormBill$3.class
@@ -219,6 +225,7 @@ udpm\fpt\component\Header$2.class
 udpm\fpt\component\NewProduct$4.class
 udpm\fpt\swing\ModernScrollBarUI.class
 udpm\fpt\swing\Spinner.class
+udpm\fpt\progressindicator\EventSliderAnimatorChanged.class
 udpm\fpt\form\ProductForm$6.class
 udpm\fpt\component\ChooseCustomersForm$1.class
 udpm\fpt\model\BillDetails.class
@@ -254,6 +261,7 @@ udpm\fpt\swing\Combobox$ComboUI$5.class
 udpm\fpt\swing\table\ActionButton$1.class
 udpm\fpt\form\DeliveryNoteForm2$3.class
 udpm\fpt\form\SaleFinal$10.class
+udpm\fpt\progressindicator\PanelSlider.class
 udpm\serviceDelivery\MailSender.class
 udpm\fpt\form\ProductForm$7.class
 udpm\fpt\component\NewProduct$5.class
@@ -272,7 +280,10 @@ udpm\fpt\component\AddNewUser$4.class
 udpm\fpt\form\SaleFinal$2.class
 udpm\fpt\form\DeliveryNoteForm2$10.class
 udpm\fpt\form\FormBill$10.class
+<<<<<<< HEAD
 udpm\fpt\main\Main$3.class
+=======
+>>>>>>> 0c8eede359cc5bf4c61c86c16fc2f70e4ef6bcf4
 udpm\fpt\form\SaleFinal$3.class
 udpm\fpt\repository\ICustomer_Resposutory.class
 udpm\fpt\component\Notification$2.class
@@ -308,6 +319,7 @@ udpm\fpt\component\MenuLayout$1.class
 udpm\fpt\component\UpdateProduct$3.class
 udpm\fpt\form\FormBill$6.class
 udpm\fpt\component\ViewDelete$1.class
+udpm\serviceDelivery\PanelTest.class
 udpm\fpt\form\SaleFinal$1.class
 udpm\fpt\form\DeliveryNoteForm2$11.class
 udpm\fpt\form\ProductManagementForm.class
@@ -319,6 +331,7 @@ udpm\fpt\swing\Combobox$ComboUI$1.class
 udpm\fpt\form\UserManagementForm$17.class
 udpm\fpt\component\MenuLayout.class
 udpm\fpt\form\UserForm.class
+udpm\fpt\progressindicator\ProgressIndicator$1.class
 udpm\fpt\form\UserManagementForm$14.class
 udpm\fpt\repository\IUserDetails.class
 udpm\fpt\swing\ButtonMessage$1.class
@@ -339,7 +352,6 @@ udpm\fpt\form\UserManagementForm$3.class
 udpm\fpt\repository\ISaleMilk.class
 udpm\fpt\component\UpdateProduct$1.class
 udpm\fpt\component\ViewDelete$2.class
-udpm\fpt\form\ProductForm$17.class
 udpm\fpt\swing\TextArea$2.class
 udpm\fpt\form\FormBill$7.class
 udpm\fpt\form\UserManagementForm$20.class
@@ -347,3 +359,4 @@ udpm\fpt\component\AddNewUser$5.class
 udpm\fpt\component\PackagingSpecificationManagement.class
 udpm\fpt\component\PanelAction$3.class
 udpm\fpt\form\UserManagementForm$2.class
+udpm\fpt\progressindicator\PanelSlider$SliderType.class

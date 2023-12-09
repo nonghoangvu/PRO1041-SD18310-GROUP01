@@ -86,8 +86,8 @@ public final class ChooseCustomersForm extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblCustomer = new javax.swing.JTable();
         txtSearchCustomer = new udpm.fpt.swing.TextField();
-        btnChon = new javax.swing.JButton();
-        btnC = new javax.swing.JButton();
+        btnC = new udpm.fpt.swing.ButtonMessage();
+        btnChon = new udpm.fpt.swing.ButtonMessage();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -110,17 +110,23 @@ public final class ChooseCustomersForm extends javax.swing.JFrame {
             }
         });
 
-        btnChon.setText("Chọn");
-        btnChon.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnChonActionPerformed(evt);
-            }
-        });
-
-        btnC.setText("Tìm");
+        btnC.setBackground(new java.awt.Color(0, 153, 255));
+        btnC.setForeground(new java.awt.Color(255, 255, 255));
+        btnC.setText("Search");
+        btnC.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnC.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCActionPerformed(evt);
+            }
+        });
+
+        btnChon.setBackground(new java.awt.Color(0, 153, 255));
+        btnChon.setForeground(new java.awt.Color(255, 255, 255));
+        btnChon.setText("Select");
+        btnChon.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnChon.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnChonActionPerformed(evt);
             }
         });
 
@@ -131,24 +137,24 @@ public final class ChooseCustomersForm extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(16, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 568, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(txtSearchCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnC, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(btnC)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnChon))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 568, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnChon, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(txtSearchCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnC, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnChon, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 359, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -167,8 +173,17 @@ public final class ChooseCustomersForm extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void txtSearchCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchCustomerActionPerformed
+        
+    }//GEN-LAST:event_txtSearchCustomerActionPerformed
+
+    private void btnCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCActionPerformed
+        String name = txtSearchCustomer.getText();
+        SearchCustomer(name);
+    }//GEN-LAST:event_btnCActionPerformed
+
     private void btnChonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChonActionPerformed
-        int row = tblCustomer.getSelectedRow();
+       int row = tblCustomer.getSelectedRow();
         if (row == -1) {
             return;
         }
@@ -179,19 +194,10 @@ public final class ChooseCustomersForm extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnChonActionPerformed
 
-    private void txtSearchCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchCustomerActionPerformed
-        
-    }//GEN-LAST:event_txtSearchCustomerActionPerformed
-
-    private void btnCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCActionPerformed
-        String name = txtSearchCustomer.getText();
-        SearchCustomer(name);
-    }//GEN-LAST:event_btnCActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnC;
-    private javax.swing.JButton btnChon;
+    private udpm.fpt.swing.ButtonMessage btnC;
+    private udpm.fpt.swing.ButtonMessage btnChon;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblCustomer;
