@@ -4,6 +4,8 @@
  */
 package udpm.fpt.form;
 
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
@@ -67,6 +69,8 @@ public final class FormBill extends javax.swing.JPanel {
         TableCustom.apply(jScrollPane5, TableCustom.TableType.DEFAULT);
         OnlyNumberTextField();
         loadAndFillSaleBill();
+        txtExcessMoney.setText("0");
+        theAmountTheCustomerGives();
         excessMoney();
     }
 
@@ -726,6 +730,7 @@ public final class FormBill extends javax.swing.JPanel {
     }//GEN-LAST:event_tblShoppingCartMouseClicked
 
     private void tblProductMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblProductMouseClicked
+        txtExcessMoney.setText("");
         int selectedProduct = tblProduct.getSelectedRow();
         int selectedBill = tblBill.getSelectedRow();
         if (selectedProduct == -1 || selectedBill == -1) {
@@ -838,6 +843,12 @@ public final class FormBill extends javax.swing.JPanel {
     }//GEN-LAST:event_btnChooseCustomerActionPerformed
 
     private void btnPayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPayActionPerformed
+        double excessMoney = Double.valueOf(txtExcessMoney.getText());
+        if (excessMoney < 0) {
+            new Notification(Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP,
+                    "Error!").showNotification();
+            return;
+        }
         if (this.insert("directly")) {
             this.resetLable();
             new Notification(Notification.Type.SUCCESS, Notification.Location.DEFAULT_DESKTOP,
@@ -955,16 +966,38 @@ public final class FormBill extends javax.swing.JPanel {
     }
 
     private void calculateChange() {
-        try {
-            // Lấy giá trị từ các ô JTextField
-            double tongTien = Double.parseDouble(txtMoneyPaid.getText());
-            double khachDua = Double.parseDouble(txtTheAmountTheCustomerGives.getText());
+        if (txtTheAmountTheCustomerGives.getText() != null) {
+            try {
+                // Lấy giá trị từ các ô JTextField
+                double tongTien = Double.parseDouble(txtMoneyPaid.getText());
+                double khachDua = Double.parseDouble(txtTheAmountTheCustomerGives.getText());
 
-            // Tính toán và hiển thị tiền thừa
-            double tienThua = khachDua - tongTien;
-            txtExcessMoney.setText(String.valueOf(tienThua));
-        } catch (NumberFormatException ex) {
-            System.out.println("lỗi");
+                // Tính toán và hiển thị tiền thừa
+                double tienThua = khachDua - tongTien;
+                txtExcessMoney.setText(String.valueOf(tienThua));
+            } catch (NumberFormatException ex) {
+
+            }
         }
+    }
+
+    public void theAmountTheCustomerGives() {
+        txtTheAmountTheCustomerGives.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                // Khi nhận được focus, kiểm tra xem nếu là giá trị mặc định, thì xóa nó.
+                if (txtTheAmountTheCustomerGives.getText().equals("")) {
+                    txtTheAmountTheCustomerGives.setText("0");
+                }
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                // Khi mất focus và trống rỗng, thiết lập giá trị mặc định.
+                if (txtTheAmountTheCustomerGives.getText().isEmpty()) {
+                    txtTheAmountTheCustomerGives.setText("0");
+                }
+            }
+        });
     }
 }
