@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 import static udpm.fpt.Application.getBean;
 
 import udpm.fpt.model.Salary;
+import udpm.fpt.model.UserDetails;
 import udpm.fpt.repository.ISalary;
 
 /**
@@ -21,11 +22,12 @@ public class SalaryService {
 
     private final ISalary iSalary = getBean(ISalary.class);
 
-//    public List<Salary> getList() {
-//        return iSalary.findAll().stream()
-//                .filter(user -> user.getStatus().equalsIgnoreCase("Active"))
-//                .collect(Collectors.toList());
-//    }
+    public List<Salary> getSalaryList() {
+        return this.iSalary.findAll().stream()
+                .filter(user -> user.getStatus().equalsIgnoreCase("Active"))
+                .collect(Collectors.toList());
+    }
+
     public CompletableFuture<List<Salary>> getList() {
         return CompletableFuture.supplyAsync(() -> {
             List<Salary> all = this.iSalary.findAll().stream()
@@ -33,6 +35,18 @@ public class SalaryService {
                     .collect(Collectors.toList());
             return all;
         }, Executors.newCachedThreadPool());
+    }
+    
+    public boolean addNewSalary(Salary obj) {
+        return this.iSalary.save(obj) != null;
+    }
+    
+    public void deleteSalary(Salary obj) {
+        this.iSalary.delete(obj);
+    }
+    
+    public boolean updateSalary(Salary obj) {
+        return this.iSalary.save(obj) != null;
     }
 
 }

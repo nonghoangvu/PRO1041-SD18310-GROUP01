@@ -79,7 +79,7 @@ public class UserDetails {
 
     @Override
     public String toString() {
-        return "UserDetails{" + "id=" + id + ", user=" + user + ", salary=" + salary + ", fullname=" + fullname + ", gender=" + gender + ", tel=" + tel + ", email=" + email + ", photo=" + photo + ", address=" + address + ", birthdate=" + birthdate + ", citizenId=" + citizenId + ", jobPosition=" + jobPosition + ", note=" + note + ", status=" + status + ", createdAt=" + createdAt + '}';
+        return "\nUserDetails{" + "id=" + id + ", user=" + user + ", salary=" + salary + ", fullname=" + fullname + ", gender=" + gender + ", tel=" + tel + ", email=" + email + ", photo=" + photo + ", address=" + address + ", birthdate=" + birthdate + ", citizenId=" + citizenId + ", jobPosition=" + jobPosition + ", note=" + note + ", status=" + status + ", createdAt=" + createdAt + '}';
     }
     
     

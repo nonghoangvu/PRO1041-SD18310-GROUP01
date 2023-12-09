@@ -3,6 +3,7 @@ package udpm.fpt.form;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.AbstractDocument;
 import udpm.fpt.Utitlity.BcryptHash;
 import udpm.fpt.main.Main;
 import udpm.fpt.model.Salary;
@@ -25,6 +27,7 @@ import udpm.fpt.model.UserDetails;
 import udpm.fpt.service.HistoryProductService;
 import udpm.fpt.service.SalaryService;
 import udpm.fpt.service.UserService;
+import udpm.fpt.swing.NumberOnlyFilter;
 import udpm.fpt.swing.table.TableCustom;
 
 /**
@@ -34,6 +37,7 @@ import udpm.fpt.swing.table.TableCustom;
 public class UserManagementForm extends javax.swing.JPanel {
 
     DefaultTableModel tblModel = new DefaultTableModel();
+    DefaultTableModel tblModelSalary = new DefaultTableModel();
 
     UserService userService = new UserService();
     SalaryService salaryService = new SalaryService();
@@ -51,12 +55,22 @@ public class UserManagementForm extends javax.swing.JPanel {
         this.main = main;
         this.tempList = new ArrayList<>();
         TableCustom.apply(jScrollPane1, TableCustom.TableType.MULTI_LINE);
+        TableCustom.apply(jScrollPane4, TableCustom.TableType.MULTI_LINE);
+        ((AbstractDocument) txtPhonenumber.getDocument()).setDocumentFilter(new NumberOnlyFilter());
+        ((AbstractDocument) txtCitizenID.getDocument()).setDocumentFilter(new NumberOnlyFilter());
+        ((AbstractDocument) txtAmount.getDocument()).setDocumentFilter(new NumberOnlyFilter());
         initTable();
         loadDataToTable();
+        loadSalaryToTable();
         loadDataAndFillSalary();
-        if(txtUsername.getText().isBlank()){
+        if (txtUsername.getText().isBlank()) {
             txtUsername.setEditable(true);
         }
+    }
+
+    private String fmMoney(int number) {
+        DecimalFormat decimalFormat = new DecimalFormat("#,###");
+        return decimalFormat.format(number);
     }
 
     //Initialize UI
@@ -64,6 +78,10 @@ public class UserManagementForm extends javax.swing.JPanel {
         tblUser.setModel(tblModel);
         String[] title = new String[]{"", "Username", "Role", "Fullname", "Job position"};
         tblModel.setColumnIdentifiers(title);
+
+        tblSalary.setModel(tblModelSalary);
+        String[] anotherTitle = new String[]{"", "Type of salary", "Amount"};
+        tblModelSalary.setColumnIdentifiers(anotherTitle);
     }
 
     public void loadDataToTable() {
@@ -76,6 +94,36 @@ public class UserManagementForm extends javax.swing.JPanel {
         }
 
         lblCountEmployee.setText(((i - 1) == 0 || (i - 1) == 1) ? ((i - 1) + " result") : ((i - 1) + " results"));
+    }
+
+    public void loadSalaryToTable() {
+        tblModelSalary.setRowCount(0);
+        int i = 1;
+        for (Salary per : salaryService.getSalaryList()) {
+            tblModelSalary.addRow(new Object[]{i++, per.getSalaryType(), fmMoney(per.getSalaryAmount())});
+        }
+        lblCountSalary.setText(((i - 1) == 0 || (i - 1) == 1) ? ((i - 1) + " result") : ((i - 1) + " results"));
+    }
+
+    public void loadSpecificList(List<UserDetails> list) {
+        tblModel.setRowCount(0);
+//        this.tempList.clear();
+        int i = 1;
+        for (UserDetails per : list) {
+//            this.tempList.add(per);
+            tblModel.addRow(new Object[]{i++, per.getUser().getUsername(), per.getUser().getRole(), per.getFullname(), per.getJobPosition()});
+        }
+
+        lblCountEmployee.setText(((i - 1) == 0 || (i - 1) == 1) ? ((i - 1) + " result") : ((i - 1) + " results"));
+    }
+
+    public void handleSearching() {
+        String query = txtQuery.getText().trim();
+        System.out.println(query);
+        this.tempList.clear();
+        this.tempList = userService.filterEmployee(query);
+        loadSpecificList(this.tempList);
+        System.out.println(this.tempList);
     }
 
     private void updateSalary(List<Salary> data) {
@@ -200,6 +248,11 @@ public class UserManagementForm extends javax.swing.JPanel {
     public void handleOnClickTable() {
         this._USER_DETAILS = this.tempList.get(tblUser.getSelectedRow());
         fillDataToFields(this._USER_DETAILS);
+    }
+
+    public void fillSalaryToFields(Salary obj) {
+        txtTypeOfSalary.setText(obj.getSalaryType());
+        txtAmount.setText(String.valueOf(obj.getSalaryAmount()));
     }
 
     //Add & updating process:
@@ -361,7 +414,6 @@ public class UserManagementForm extends javax.swing.JPanel {
 
     public void handleUpdate() {
         if (validateUserWhenUpdate()) {
-
             if (this.userService.addNewUser(updateUserDetails(this.tempList.get(tblUser.getSelectedRow())))) {
                 this.main.notificationShowSUCCESS("Updated !!!");
                 loadDataToTable();
@@ -376,6 +428,124 @@ public class UserManagementForm extends javax.swing.JPanel {
         }
     }
 
+    public boolean validateSalary() {
+        if (txtTypeOfSalary.getText().trim().isBlank()) {
+            this.main.notificationShowWARNING("Type of salary is a required field !!!");
+            txtFullname.requestFocus();
+            return false;
+        } else if (txtAmount.getText().trim().isBlank()) {
+            this.main.notificationShowWARNING("The amount of salary/wage is a required field !!!");
+            txtAmount.requestFocus();
+            return false;
+        } else if (!txtAmount.getText().trim().isBlank()) {
+            try {
+                int amount = Integer.parseInt(txtAmount.getText().trim());
+                if (amount < 21000) {
+                    this.main.notificationShowWARNING("The amount of wage is too low, must be more than 21.000d/h");
+                    txtAmount.requestFocus();
+                    return false;
+                }
+            } catch (Exception e) {
+                this.main.notificationShowWARNING("Invaliding amount of wage");
+                txtAmount.requestFocus();
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public Integer convertStrToNum(String str) {
+        Integer num = null;
+        try {
+            num = Integer.parseInt(str);
+        } catch (Exception e) {
+            System.err.println(e);
+        }
+
+        return num;
+    }
+
+    public Salary createSalary() {
+        Salary salary = new Salary();
+        salary.setSalaryAmount(convertStrToNum(txtAmount.getText().trim()));
+        salary.setSalaryType(txtTypeOfSalary.getText().trim());
+        salary.setStatus("Active");
+        return salary;
+    }
+
+    public Salary createSalary4Update(Salary pre) {
+        Salary salary = new Salary();
+        salary.setId(pre.getId());
+        salary.setSalaryAmount(convertStrToNum(txtAmount.getText().trim()));
+        salary.setSalaryType(txtTypeOfSalary.getText().trim());
+        salary.setStatus("Active");
+        return salary;
+    }
+
+    public void addNewSalary() {
+        if (validateSalary()) {
+            if (this.salaryService.addNewSalary(createSalary())) {
+                this.main.notificationShowSUCCESS("Added a new salary type !!!");
+                historyService.trackHistory(
+                        "Added new salary type named: " + createSalary().getSalaryType(),
+                        this.user.getUsername(),
+                        HistoryProductService.ChangeType.NEW
+                );
+                loadSalaryToTable();
+                loadDataAndFillSalary();
+            } else {
+                this.main.notificationShowWARNING("Failed !!!");
+            }
+        }
+    }
+
+    public void handleUpdateSalary() {
+        if (validateSalary()) {
+            if (this.salaryService.addNewSalary(createSalary4Update(salaryService.getSalaryList().get(tblSalary.getSelectedRow())))) {
+                this.main.notificationShowSUCCESS("Updated !!!");
+                loadSalaryToTable();
+                loadDataAndFillSalary();
+                historyService.trackHistory(
+                        "Updated an salary titled: " + createSalary4Update(salaryService.getSalaryList().get(tblSalary.getSelectedRow())).getSalaryType(),
+                        this.user.getUsername(),
+                        HistoryProductService.ChangeType.UPDATE
+                );
+            } else {
+                this.main.notificationShowWARNING("Failed !!!");
+            }
+        }
+    }
+
+    public void handleDeleteSalary() {
+        boolean isContain = false;
+        int index = tblSalary.getSelectedRow();
+        if (index >= 0) {
+            Salary targetDelete = salaryService.getSalaryList().get(tblSalary.getSelectedRow());
+            List<UserDetails> userList = userService.getList();
+            for (UserDetails per : userList) {
+                if (per.getSalary().equals(targetDelete)) {
+                    this.main.notificationShowWARNING("Must change all employee are using this salary before delete it!!!");
+                    isContain = true;
+                }
+            }
+            if (!isContain) {
+                int dialogButton = JOptionPane.YES_NO_OPTION;
+                int dialogResult = JOptionPane.showConfirmDialog(this, "Are you sure to delete this type of salary", "Warning !!!", dialogButton);
+                if (dialogResult == 0) {
+                    salaryService.deleteSalary(targetDelete);
+                        loadDataAndFillSalary();
+                        loadSalaryToTable();
+                    historyService.trackHistory(
+                            "Deleted the salary type named: " + createSalary().getSalaryType() + " " + fmMoney(createSalary().getSalaryAmount()),
+                            this.user.getUsername(),
+                            HistoryProductService.ChangeType.REMOVE
+                    );
+
+                }
+            }
+        }
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -384,7 +554,7 @@ public class UserManagementForm extends javax.swing.JPanel {
         roleGroup = new javax.swing.ButtonGroup();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblUser = new javax.swing.JTable();
-        buttonMessage1 = new udpm.fpt.swing.ButtonMessage();
+        btnSearch = new udpm.fpt.swing.ButtonMessage();
         jLabel1 = new javax.swing.JLabel();
         lblCountEmployee = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
@@ -419,8 +589,16 @@ public class UserManagementForm extends javax.swing.JPanel {
         txtFullname = new udpm.fpt.swing.TextField();
         txtPassword = new udpm.fpt.swing.PasswordField();
         lblAva = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        textField2 = new udpm.fpt.swing.TextField();
+        txtQuery = new udpm.fpt.swing.TextField();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        tblSalary = new javax.swing.JTable();
+        jLabel2 = new javax.swing.JLabel();
+        lblCountSalary = new javax.swing.JLabel();
+        txtAmount = new udpm.fpt.swing.TextField();
+        txtTypeOfSalary = new udpm.fpt.swing.TextField();
+        btnUpdateUser = new udpm.fpt.swing.ButtonMessage();
+        btnAddSalary = new udpm.fpt.swing.ButtonMessage();
+        buttonMessage5 = new udpm.fpt.swing.ButtonMessage();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -442,10 +620,15 @@ public class UserManagementForm extends javax.swing.JPanel {
         });
         jScrollPane1.setViewportView(tblUser);
 
-        buttonMessage1.setBackground(new java.awt.Color(0, 84, 166));
-        buttonMessage1.setForeground(new java.awt.Color(255, 255, 255));
-        buttonMessage1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/search.png"))); // NOI18N
-        buttonMessage1.setText("Search");
+        btnSearch.setBackground(new java.awt.Color(0, 84, 166));
+        btnSearch.setForeground(new java.awt.Color(255, 255, 255));
+        btnSearch.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/search.png"))); // NOI18N
+        btnSearch.setText("Search");
+        btnSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchActionPerformed(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel1.setText("Employee");
@@ -602,13 +785,6 @@ public class UserManagementForm extends javax.swing.JPanel {
 
         lblAva.setText("jLabel2");
 
-        jButton1.setText("New");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -676,9 +852,7 @@ public class UserManagementForm extends javax.swing.JPanel {
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(18, 18, 18)
-                                        .addComponent(buttonMessage3, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(66, 66, 66)
-                                        .addComponent(jButton1)))
+                                        .addComponent(buttonMessage3, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(buttonMessage4, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addGap(17, 17, 17))
@@ -746,15 +920,81 @@ public class UserManagementForm extends javax.swing.JPanel {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(buttonMessage3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(buttonMessage4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(buttonMessage4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
-        textField2.setLabelText("Search by username or fullname");
-        textField2.addActionListener(new java.awt.event.ActionListener() {
+        txtQuery.setLabelText("Search by username or fullname");
+        txtQuery.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                textField2ActionPerformed(evt);
+                txtQueryActionPerformed(evt);
+            }
+        });
+
+        tblSalary.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        tblSalary.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblSalaryMouseClicked(evt);
+            }
+        });
+        jScrollPane4.setViewportView(tblSalary);
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabel2.setText("Type of Salary");
+
+        lblCountSalary.setForeground(new java.awt.Color(102, 102, 102));
+        lblCountSalary.setText(" ");
+
+        txtAmount.setLabelText("Amount");
+        txtAmount.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtAmountActionPerformed(evt);
+            }
+        });
+
+        txtTypeOfSalary.setLabelText("Type of salary");
+        txtTypeOfSalary.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtTypeOfSalaryActionPerformed(evt);
+            }
+        });
+
+        btnUpdateUser.setBackground(new java.awt.Color(0, 84, 166));
+        btnUpdateUser.setForeground(new java.awt.Color(255, 255, 255));
+        btnUpdateUser.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/plus.png"))); // NOI18N
+        btnUpdateUser.setText("Update salary");
+        btnUpdateUser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateUserActionPerformed(evt);
+            }
+        });
+
+        btnAddSalary.setBackground(new java.awt.Color(0, 84, 166));
+        btnAddSalary.setForeground(new java.awt.Color(255, 255, 255));
+        btnAddSalary.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/plus.png"))); // NOI18N
+        btnAddSalary.setText("Add new type");
+        btnAddSalary.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddSalaryActionPerformed(evt);
+            }
+        });
+
+        buttonMessage5.setBackground(new java.awt.Color(204, 51, 0));
+        buttonMessage5.setForeground(new java.awt.Color(255, 255, 255));
+        buttonMessage5.setText("Delete this salary");
+        buttonMessage5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonMessage5ActionPerformed(evt);
             }
         });
 
@@ -768,36 +1008,70 @@ public class UserManagementForm extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(26, 26, 26)
-                                .addComponent(lblCountEmployee, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(txtTypeOfSalary, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(textField2, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(42, 42, 42)
-                                .addComponent(buttonMessage1, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 155, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1))
-                .addGap(26, 26, 26)
+                                .addComponent(btnAddSalary, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnUpdateUser, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(buttonMessage5, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 84, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel2)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(lblCountSalary, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel1)
+                                        .addGap(26, 26, 26)
+                                        .addComponent(lblCountEmployee, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(txtQuery, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(42, 42, 42)
+                                        .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(26, 26, 26)))
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(30, 30, 30))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(40, 40, 40)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(buttonMessage1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(textField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(lblCountEmployee))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 150, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtQuery, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(lblCountEmployee))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(36, 36, 36)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(lblCountSalary))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtTypeOfSalary, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtAmount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(56, 56, 56)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnUpdateUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(buttonMessage5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnAddSalary, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 140, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -805,9 +1079,9 @@ public class UserManagementForm extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtUsernameActionPerformed
 
-    private void textField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textField2ActionPerformed
+    private void txtQueryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtQueryActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_textField2ActionPerformed
+    }//GEN-LAST:event_txtQueryActionPerformed
 
     private void txtJobPositionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtJobPositionActionPerformed
         // TODO add your handling code here:
@@ -863,20 +1137,54 @@ public class UserManagementForm extends javax.swing.JPanel {
         addNewUser();
     }//GEN-LAST:event_btnAddActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        txtUsername.setEditable(true);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+        // TODO add your handling code here:
+        handleSearching();
+    }//GEN-LAST:event_btnSearchActionPerformed
+
+    private void txtAmountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtAmountActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtAmountActionPerformed
+
+    private void txtTypeOfSalaryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTypeOfSalaryActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtTypeOfSalaryActionPerformed
+
+    private void btnUpdateUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateUserActionPerformed
+        // TODO add your handling code here:
+        handleUpdateSalary();
+    }//GEN-LAST:event_btnUpdateUserActionPerformed
+
+    private void btnAddSalaryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddSalaryActionPerformed
+        // TODO add your handling code here:
+        addNewSalary();
+    }//GEN-LAST:event_btnAddSalaryActionPerformed
+
+    private void buttonMessage5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonMessage5ActionPerformed
+        // TODO add your handling code here:
+        handleDeleteSalary();
+
+    }//GEN-LAST:event_buttonMessage5ActionPerformed
+
+    private void tblSalaryMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblSalaryMouseClicked
+        // TODO add your handling code here:
+        List<Salary> list = salaryService.getSalaryList();
+        fillSalaryToFields(list.get(tblSalary.getSelectedRow()));
+    }//GEN-LAST:event_tblSalaryMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private udpm.fpt.swing.ButtonMessage btnAdd;
-    private udpm.fpt.swing.ButtonMessage buttonMessage1;
+    private udpm.fpt.swing.ButtonMessage btnAddSalary;
+    private udpm.fpt.swing.ButtonMessage btnSearch;
+    private udpm.fpt.swing.ButtonMessage btnUpdateUser;
     private udpm.fpt.swing.ButtonMessage buttonMessage3;
     private udpm.fpt.swing.ButtonMessage buttonMessage4;
+    private udpm.fpt.swing.ButtonMessage buttonMessage5;
     private udpm.fpt.swing.Combobox cboSalary;
     private javax.swing.ButtonGroup genderGroup;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -887,9 +1195,11 @@ public class UserManagementForm extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel lblAva;
     private javax.swing.JLabel lblCountEmployee;
+    private javax.swing.JLabel lblCountSalary;
     private javax.swing.JLabel lblCreatedDate;
     private javax.swing.JLabel lblFullname;
     private javax.swing.JLabel lblJobPosition;
@@ -898,9 +1208,10 @@ public class UserManagementForm extends javax.swing.JPanel {
     private javax.swing.JRadioButton rdoMale;
     private javax.swing.JRadioButton rdoUser;
     private javax.swing.ButtonGroup roleGroup;
+    private javax.swing.JTable tblSalary;
     private javax.swing.JTable tblUser;
-    private udpm.fpt.swing.TextField textField2;
     private javax.swing.JTextArea txtAddress;
+    private udpm.fpt.swing.TextField txtAmount;
     private udpm.fpt.swing.TextField txtBirthdate;
     private udpm.fpt.swing.TextField txtCitizenID;
     private udpm.fpt.swing.TextField txtEmail;
@@ -909,6 +1220,8 @@ public class UserManagementForm extends javax.swing.JPanel {
     private javax.swing.JTextArea txtNote;
     private udpm.fpt.swing.PasswordField txtPassword;
     private udpm.fpt.swing.TextField txtPhonenumber;
+    private udpm.fpt.swing.TextField txtQuery;
+    private udpm.fpt.swing.TextField txtTypeOfSalary;
     private udpm.fpt.swing.TextField txtUsername;
     // End of variables declaration//GEN-END:variables
 }

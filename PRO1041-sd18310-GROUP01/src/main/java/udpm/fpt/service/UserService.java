@@ -27,22 +27,22 @@ public class UserService {
     public boolean addNewUser(UserDetails userDetails) {
         return this.iUserDetails.save(userDetails) != null;
     }
-    
+
     public boolean uniquedUsername(String username) {
         boolean isContain = false;
         List<UserDetails> list = this.getList();
-        for(UserDetails obj : list) {
-            if(obj.getUser().getUsername().equals(username)) {
+        for (UserDetails obj : list) {
+            if (obj.getUser().getUsername().equals(username)) {
                 isContain = true;
             }
         }
         return isContain;
     }
-    
+
     public boolean deleteNewUser(UserDetails userDetails) {
         return this.iUserDetails.save(userDetails) != null;
     }
-    
+
     public boolean updateUser(UserDetails userDetails) {
         return this.iUserDetails.save(userDetails) != null;
     }
@@ -53,5 +53,9 @@ public class UserService {
         } catch (Exception exception) {
             return null;
         }
+    }
+
+    public List<UserDetails> filterEmployee(String userQuery) {
+        return iUserDetails.findByQuery(userQuery);
     }
 }
