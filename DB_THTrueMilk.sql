@@ -4,28 +4,15 @@ Pasword: 123
 server: localhost
 Port: 1433
 */
-<<<<<<< HEAD
-/*USE HELLO
+USE master
 GO
 DROP DATABASE THTrueMilk
-<<<<<<< HEAD
-GO 
-
-=======
 GO
-*/
-/*CREATE DATABASE THTrueMilk
-=======
--- USE master
--- GO
--- DROP DATABASE THTrueMilk
--- GO
 
 CREATE DATABASE THTrueMilk
->>>>>>> f34c7c01be071429459660f49ad58e909f1f248a
 GO
 USE THTrueMilk
-GO*/
+GO
 CREATE TABLE [Milk]
 (
     [id]              BIGINT IDENTITY (1,1) PRIMARY KEY,
@@ -239,13 +226,9 @@ CREATE TABLE [Bill]
     [total_amount_after_tax] MONEY,
     [notes]                  NVARCHAR(MAX),
     [created_at]             DATETIME DEFAULT GETDATE(),
-<<<<<<< HEAD
-	[shopping_method]		 NVARCHAR(MAX)
-=======
+	[shopping_method]		 NVARCHAR(MAX),
     [staff_id]               INT,
     [sale_bill_id]           INT,
-    [shopping_method]        NVARCHAR(250)
->>>>>>> 676dec9fa16ed4e53ccbee3afe2322844303867f
 )
 GO
 CREATE TABLE [BillDetails]
