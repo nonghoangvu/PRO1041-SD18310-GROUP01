@@ -1,11 +1,14 @@
 package udpm.fpt.form;
 
+import com.raven.datechooser.DateChooser;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -66,6 +69,7 @@ public class UserManagementForm extends javax.swing.JPanel {
         if (txtUsername.getText().isBlank()) {
             txtUsername.setEditable(true);
         }
+        setProductionDate();
     }
 
     private String fmMoney(int number) {
@@ -96,6 +100,20 @@ public class UserManagementForm extends javax.swing.JPanel {
         lblCountEmployee.setText(((i - 1) == 0 || (i - 1) == 1) ? ((i - 1) + " result") : ((i - 1) + " results"));
     }
 
+    private void setProductionDate() {
+        DateChooser dateChooser = new DateChooser();
+        dateChooser.setDateSelectionMode(DateChooser.DateSelectionMode.SINGLE_DATE_SELECTED);
+        dateChooser.setLabelCurrentDayVisible(false);
+        dateChooser.setDateFormat(new SimpleDateFormat("yyyy-MM-dd"));
+        dateChooser.setTextField(txtBirthdate);
+    }
+
+//    public String removeTimeUsingDateTimeFormatter(String inputDate) {
+//        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
+//        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+//        LocalDateTime dateTime = LocalDateTime.parse(inputDate, inputFormatter);
+//        return dateTime.format(outputFormatter);
+//    }
     public void loadSalaryToTable() {
         tblModelSalary.setRowCount(0);
         int i = 1;
@@ -289,6 +307,11 @@ public class UserManagementForm extends javax.swing.JPanel {
                 return false;
             }
         }
+        if (dateFM(txtBirthdate.getText()).compareTo(new Date()) > 0) {
+            this.main.notificationShowWARNING("Birthdate is invalid!!!");
+            txtBirthdate.requestFocus();
+            return false;
+        }
         return true;
     }
 
@@ -322,6 +345,7 @@ public class UserManagementForm extends javax.swing.JPanel {
 
     public User updateUser(UserDetails preDetails) {
         User newuser = new User();
+
         System.out.println("user id: " + preDetails.getUser().getId());
         newuser.setId(preDetails.getUser().getId());
         newuser.setUsername(txtUsername.getText());
@@ -331,6 +355,7 @@ public class UserManagementForm extends javax.swing.JPanel {
         );
         newuser.setRole((rdoAdmin.isSelected() ? "Admin" : "User"));
         return newuser;
+
     }
 
     public UserDetails updateUserDetails(UserDetails preDetails) {
@@ -354,8 +379,25 @@ public class UserManagementForm extends javax.swing.JPanel {
         return userDetails;
     }
 
-    public boolean validateUserWhenUpdate() {
+    public boolean validateUserWhenUpdate(int index) {
         //Username and passw can't change
+        if (txtUsername.getText().trim().isBlank() || txtUsername.getText().trim().length() < 5) {
+            this.main.notificationShowWARNING("Username can't blank and must have more than 5 char");
+            txtUsername.requestFocus();
+            return false;
+        }
+        if (!txtUsername.getText().trim().isBlank()) {
+            List<UserDetails> list = userService.getList();
+            for (UserDetails per : list) {
+                if (!per.getUser().getUsername().equalsIgnoreCase(txtUsername.getText().trim())
+                        || txtUsername.getText().trim().equalsIgnoreCase(list.get(index).getUser().getUsername())) {
+                } else {
+                    this.main.notificationShowWARNING("Username has contained");
+                    return false;
+                }
+            }
+        }
+
         if (txtFullname.getText().trim().isBlank()) {
             this.main.notificationShowWARNING("Fullname is a required field !!!");
             txtFullname.requestFocus();
@@ -371,6 +413,12 @@ public class UserManagementForm extends javax.swing.JPanel {
                 return false;
             }
         }
+        if (dateFM(txtBirthdate.getText()).compareTo(new Date()) > 0) {
+            this.main.notificationShowWARNING("Birthdate is invalid!!!");
+            txtBirthdate.requestFocus();
+            return false;
+        }
+
         return true;
     }
 
@@ -392,12 +440,15 @@ public class UserManagementForm extends javax.swing.JPanel {
     }
 
     public void handleDelete() {
+        int index = tblUser.getSelectedRow();
+        if (index < 0) {
+            return;
+        }
         int dialogButton = JOptionPane.YES_NO_OPTION;
         int dialogResult = JOptionPane.showConfirmDialog(this, "If you delete this user, the relative activities of this user will be saved", "Warning !!!", dialogButton);
         if (dialogResult == 0) {
-            UserDetails obj = userService.getList().get(tblUser.getSelectedRow()); //Con cũ
+            UserDetails obj = userService.getList().get(index); //Con cũ
             obj.setStatus("Inactive");
-
             if (this.userService.deleteNewUser(obj)) {
                 this.main.notificationShowSUCCESS("Deleted");
                 loadDataToTable();
@@ -413,12 +464,17 @@ public class UserManagementForm extends javax.swing.JPanel {
     }
 
     public void handleUpdate() {
-        if (validateUserWhenUpdate()) {
-            if (this.userService.addNewUser(updateUserDetails(this.tempList.get(tblUser.getSelectedRow())))) {
+        int index = tblUser.getSelectedRow();
+        if (index < 0) {
+            this.main.notificationShowSUCCESS("Choose an employee to update !!!");
+            return;
+        }
+        if (validateUserWhenUpdate(index)) {
+            if (this.userService.addNewUser(updateUserDetails(this.tempList.get(index)))) {
                 this.main.notificationShowSUCCESS("Updated !!!");
                 loadDataToTable();
                 historyService.trackHistory(
-                        "Updated an user named: " + updateUserDetails(this.tempList.get(tblUser.getSelectedRow())).getUser().getUsername(),
+                        "Updated an user named: " + updateUserDetails(this.tempList.get(index)).getUser().getUsername(),
                         this.user.getUsername(),
                         HistoryProductService.ChangeType.UPDATE
                 );
@@ -533,8 +589,8 @@ public class UserManagementForm extends javax.swing.JPanel {
                 int dialogResult = JOptionPane.showConfirmDialog(this, "Are you sure to delete this type of salary", "Warning !!!", dialogButton);
                 if (dialogResult == 0) {
                     salaryService.deleteSalary(targetDelete);
-                        loadDataAndFillSalary();
-                        loadSalaryToTable();
+                    loadDataAndFillSalary();
+                    loadSalaryToTable();
                     historyService.trackHistory(
                             "Deleted the salary type named: " + createSalary().getSalaryType() + " " + fmMoney(createSalary().getSalaryAmount()),
                             this.user.getUsername(),
@@ -561,7 +617,6 @@ public class UserManagementForm extends javax.swing.JPanel {
         lblFullname = new javax.swing.JLabel();
         lblJobPosition = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        txtUsername = new udpm.fpt.swing.TextField();
         txtJobPosition = new udpm.fpt.swing.TextField();
         jLabel5 = new javax.swing.JLabel();
         rdoUser = new javax.swing.JRadioButton();
@@ -589,6 +644,7 @@ public class UserManagementForm extends javax.swing.JPanel {
         txtFullname = new udpm.fpt.swing.TextField();
         txtPassword = new udpm.fpt.swing.PasswordField();
         lblAva = new javax.swing.JLabel();
+        txtUsername = new udpm.fpt.swing.TextField();
         txtQuery = new udpm.fpt.swing.TextField();
         jScrollPane4 = new javax.swing.JScrollPane();
         tblSalary = new javax.swing.JTable();
@@ -647,13 +703,6 @@ public class UserManagementForm extends javax.swing.JPanel {
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel4.setText("Info");
-
-        txtUsername.setLabelText("Username");
-        txtUsername.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtUsernameActionPerformed(evt);
-            }
-        });
 
         txtJobPosition.setLabelText("Job Position");
         txtJobPosition.addActionListener(new java.awt.event.ActionListener() {
@@ -785,6 +834,13 @@ public class UserManagementForm extends javax.swing.JPanel {
 
         lblAva.setText("jLabel2");
 
+        txtUsername.setLabelText("Username");
+        txtUsername.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtUsernameActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -792,34 +848,36 @@ public class UserManagementForm extends javax.swing.JPanel {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGap(0, 20, Short.MAX_VALUE)
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 720, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtFullname, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtCitizenID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtBirthdate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(cboSalary, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(rdoAdmin)
-                                        .addGap(32, 32, 32)
-                                        .addComponent(rdoUser)
-                                        .addGap(39, 39, 39))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel5)
-                                        .addGap(151, 151, 151)))
-                                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(42, 42, 42)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel6)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(rdoMale)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(rdoFemale))))
-                            .addComponent(txtPassword, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(txtFullname, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(txtCitizenID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(txtBirthdate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(cboSalary, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                            .addComponent(rdoAdmin)
+                                            .addGap(32, 32, 32)
+                                            .addComponent(rdoUser)
+                                            .addGap(39, 39, 39))
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                            .addComponent(jLabel5)
+                                            .addGap(151, 151, 151)))
+                                    .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(42, 42, 42)
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel6)
+                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                            .addComponent(rdoMale)
+                                            .addGap(18, 18, 18)
+                                            .addComponent(rdoFemale))))
+                                .addComponent(txtPassword, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 349, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -830,15 +888,11 @@ public class UserManagementForm extends javax.swing.JPanel {
                                 .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(txtJobPosition, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 349, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                        .addContainerGap(20, Short.MAX_VALUE)
+                        .addGap(20, 20, 20)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 337, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(383, 383, 383))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -874,10 +928,13 @@ public class UserManagementForm extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtJobPosition, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(24, 24, 24)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(txtJobPosition, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(24, 24, 24))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel7)
@@ -1075,17 +1132,9 @@ public class UserManagementForm extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtUsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUsernameActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtUsernameActionPerformed
-
     private void txtQueryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtQueryActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtQueryActionPerformed
-
-    private void txtJobPositionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtJobPositionActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtJobPositionActionPerformed
 
     private void rdoUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoUserActionPerformed
         // TODO add your handling code here:
@@ -1123,7 +1172,7 @@ public class UserManagementForm extends javax.swing.JPanel {
     }//GEN-LAST:event_buttonMessage4ActionPerformed
 
     private void tblUserMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblUserMouseClicked
-        txtUsername.setEditable(false);
+
         handleOnClickTable();
 
     }//GEN-LAST:event_tblUserMouseClicked
@@ -1171,6 +1220,14 @@ public class UserManagementForm extends javax.swing.JPanel {
         List<Salary> list = salaryService.getSalaryList();
         fillSalaryToFields(list.get(tblSalary.getSelectedRow()));
     }//GEN-LAST:event_tblSalaryMouseClicked
+
+    private void txtJobPositionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtJobPositionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtJobPositionActionPerformed
+
+    private void txtUsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUsernameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtUsernameActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
