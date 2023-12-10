@@ -581,6 +581,14 @@ public class ProductForm extends javax.swing.JPanel {
                 txtPriceMax.requestFocus();
                 return true;
             }
+        }else if(!txtVolume.getText().isBlank()){
+            try {
+                Double.valueOf(txtVolume.getText().trim());
+            }catch (NumberFormatException numberFormatException){
+                txtVolume.requestFocus();
+                this.main.notificationShowWARNING("The volume is not in the correct format.");
+                return true;
+            }
         }
         return false;
     }
