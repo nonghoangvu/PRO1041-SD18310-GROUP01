@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.AbstractDocument;
 import udpm.fpt.component.Notification;
 import udpm.fpt.main.Main;
 import udpm.fpt.model.Milk;
@@ -23,6 +24,7 @@ import udpm.fpt.model.SaleMilk;
 import udpm.fpt.model.User;
 import udpm.fpt.service.SaleBillService;
 import udpm.fpt.service.SaleMilkService;
+import udpm.fpt.swing.NumberOnlyFilter;
 import udpm.fpt.swing.table.TableCustom;
 
 /**
@@ -80,6 +82,8 @@ public class SaleFinal extends javax.swing.JPanel {
         loadTableB();
         loadTableM();
         loadDataAndFillTable();
+        ((AbstractDocument) txtPTG.getDocument()).setDocumentFilter(new NumberOnlyFilter());
+        ((AbstractDocument) txtptg.getDocument()).setDocumentFilter(new NumberOnlyFilter());
     }
     //    SaleBill
 
