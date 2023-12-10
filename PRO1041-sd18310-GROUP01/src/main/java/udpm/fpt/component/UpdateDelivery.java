@@ -91,6 +91,7 @@ public class UpdateDelivery extends javax.swing.JFrame {
 
         txtDiaChi.setLabelText("Delivery address");
 
+        txtSDT.setEditable(false);
         txtSDT.setLabelText("Phone Number");
 
         txtTongTien.setEditable(false);

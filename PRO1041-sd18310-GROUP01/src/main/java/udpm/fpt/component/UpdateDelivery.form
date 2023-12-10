@@ -135,6 +135,7 @@
             </Component>
             <Component class="udpm.fpt.swing.TextField" name="txtSDT">
               <Properties>
+                <Property name="editable" type="boolean" value="false"/>
                 <Property name="labelText" type="java.lang.String" value="Phone Number"/>
               </Properties>
             </Component>
