@@ -328,15 +328,6 @@ public class DeliveryJFrame extends javax.swing.JFrame {
             new Notification(Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP,
                     "The Product is empty!").showNotification();
             return false;
-        } else {
-            try {
-                if (Float.parseFloat(txtTongTien.getText()) < 4000) {
-                    new Notification(Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP,
-                            "Invalid volume!").showNotification();
-                    return false;
-                }
-            } catch (NumberFormatException e) {
-            }
         }
         return true;
     }
