@@ -133,6 +133,11 @@ public class Login extends javax.swing.JFrame {
 
         jLabel1.setForeground(new java.awt.Color(102, 153, 255));
         jLabel1.setText("Forgot password?");
+        jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel1MouseClicked(evt);
+            }
+        });
 
         ckbRemember.setBackground(new java.awt.Color(51, 51, 255));
         ckbRemember.setForeground(new java.awt.Color(127, 127, 127));
@@ -192,6 +197,11 @@ public class Login extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
+        new ForgotPassword().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jLabel1MouseClicked
 
     private void btnLoginMouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_btnLoginMouseClicked
         getLogin();
