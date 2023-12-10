@@ -91,6 +91,7 @@ udpm\fpt\model\Milk.class
 udpm\fpt\swing\NumberOnlyFilter.class
 udpm\fpt\swing\Combobox$ComboUI.class
 udpm\fpt\component\Notification$Location.class
+udpm\fpt\form\FormBill$14.class
 udpm\fpt\component\Header$1.class
 udpm\fpt\model\Model_Menu.class
 udpm\fpt\form\ProductManagement.class
@@ -213,6 +214,7 @@ udpm\fpt\form\SaleFinal$14.class
 udpm\fpt\swing\TextField.class
 udpm\fpt\form\SaleFinal$17.class
 udpm\fpt\component\UpdateDelivery.class
+udpm\fpt\form\FormBill$15.class
 udpm\fpt\component\Header$2.class
 udpm\fpt\component\NewProduct$4.class
 udpm\fpt\swing\ModernScrollBarUI.class

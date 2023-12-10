@@ -76,7 +76,7 @@ public class Service {
             deliveryNoteexist.setBill_id2(delinotupdate.getBill_id2());
             deliveryNoteexist.setCreationdate(delinotupdate.getCreationdate());
             deliveryNoteexist.setCustomer_name(delinotupdate.getCustomer_name());
-            deliveryNoteexist.setNote(delinotupdate.getCustomer_name());
+            deliveryNoteexist.setNote(delinotupdate.getNote());
             deliveryNoteexist.setMilk_name(delinotupdate.getMilk_name());
             deliveryNoteexist.setQuantity(delinotupdate.getQuantity());
             deliveryNoteexist.setTransport_unit_id2(delinotupdate.getTransport_unit_id2());
