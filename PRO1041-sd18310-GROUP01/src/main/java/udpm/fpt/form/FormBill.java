@@ -197,6 +197,7 @@ public final class FormBill extends javax.swing.JPanel {
         txtTheAmountTheCustomerGives.setText("");
         txtMoneyPaid.setText("");
         txtExcessMoney.setText("");
+        txtTotalAmount.setText("");
     }
 
     public void OnlyNumberTextField() {

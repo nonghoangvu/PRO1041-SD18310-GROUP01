@@ -225,10 +225,10 @@ CREATE TABLE [Bill]
     [tax]                    MONEY,
     [total_amount_after_tax] MONEY,
     [notes]                  NVARCHAR(MAX),
-    [created_at]             DATETIME DEFAULT GETDATE(),
-	[shopping_method]		 NVARCHAR(MAX),
-    [staff_id]               INT,
+    [created_at]             DATETIME DEFAULT GETDATE(), 
+	[staff_id]               INT,
     [sale_bill_id]           INT,
+	[shopping_method]        NVARCHAR(250)              
 )
 GO
 CREATE TABLE [BillDetails]
@@ -533,11 +533,11 @@ VALUES (1, 1, N'Credit Card', N'Paid', 1, 0.05, 105.00, N'Note 1', '2023-11-25 1
        (10, 2, N'Credit Card', N'Paid', 5, 0.50, 150.00, N'Note 10', '2023-11-25 13:34:00', N'delivery');
 
 INSERT INTO [Status] ([statusname])
-VALUES (N'Chờ giao hàng');
+VALUES (N'Đang chuẩn bị');
+INSERT INTO [Status] ([statusname])
+VALUES (N'Bàn giao cho bên vận chuyển');
 INSERT INTO [Status] ([statusname])
 VALUES (N'Đang giao hàng');
-INSERT INTO [Status] ([statusname])
-VALUES (N' Đã giao hàng');
 INSERT INTO [Status] ([statusname])
 VALUES (N'Huỷ giao hàng');
 INSERT INTO [Status] ([statusname])
