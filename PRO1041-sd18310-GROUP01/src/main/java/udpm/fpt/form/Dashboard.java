@@ -1,6 +1,9 @@
 package udpm.fpt.form;
 
 import java.awt.Color;
+
+import udpm.fpt.model.DashboardProduct;
+import udpm.fpt.service.DashboardService;
 import udpm.fpt.swing.PolarAreaChartPackage.ModelPolarAreaChart;
 
 /**
@@ -8,17 +11,20 @@ import udpm.fpt.swing.PolarAreaChartPackage.ModelPolarAreaChart;
  * @author NONG HOANG VU
  */
 public class Dashboard extends javax.swing.JPanel {
-
+    private DashboardService data;
     public Dashboard() {
         initComponents();
+        this.data = new DashboardService();
         ProductStatistics();
         RevenueStatistics();
     }
-
+    private DashboardProduct getProductData(){
+        return this.data.getDashboardProduct();
+    }
     private void ProductStatistics() {
-        productStatistics.addItem(new ModelPolarAreaChart(new Color(52, 148, 203), "Total number of products", 60));
-        productStatistics.addItem(new ModelPolarAreaChart(new Color(175, 67, 237), "Inventory quantity", 50));
-        productStatistics.addItem(new ModelPolarAreaChart(new Color(87, 218, 137), " Expired products", 30));
+        productStatistics.addItem(new ModelPolarAreaChart(new Color(52, 148, 203), "Total number of products", getProductData().getTotalProduct()));
+        productStatistics.addItem(new ModelPolarAreaChart(new Color(175, 67, 237), "Inventory quantity", getProductData().getInventoryQuantity()));
+        productStatistics.addItem(new ModelPolarAreaChart(new Color(87, 218, 137), "Expired products", getProductData().getExpiredProducts()));
         productStatistics.start();
     }
     private void RevenueStatistics(){

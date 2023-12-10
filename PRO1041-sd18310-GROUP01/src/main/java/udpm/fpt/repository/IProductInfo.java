@@ -2,15 +2,16 @@ package udpm.fpt.repository;
 
 import java.util.Date;
 import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import udpm.fpt.model.DashboardProduct;
 import udpm.fpt.model.Milk;
 
 import udpm.fpt.model.ProductInfo;
 
 /**
- *
  * @author NONG HOANG VU
  */
 public interface IProductInfo extends JpaRepository<ProductInfo, Integer> {
@@ -42,6 +43,7 @@ public interface IProductInfo extends JpaRepository<ProductInfo, Integer> {
             @Param("maxPrice") Integer maxPrice,
             @Param("expiryStatus") String expiryStatus
     );
+
     @Query("SELECT p FROM ProductInfo p "
             + "JOIN FETCH p.milk m "
             + "JOIN FETCH p.flavor f "
@@ -70,4 +72,8 @@ public interface IProductInfo extends JpaRepository<ProductInfo, Integer> {
             @Param("maxPrice") Integer maxPrice,
             @Param("expiryStatus") String expiryStatus
     );
+    @Query("SELECT COALESCE(COUNT(m.amount), 0) FROM ProductInfo pi JOIN pi.milk m")
+    Integer getInventoryQuantity();
+    @Query("SELECT COALESCE(SUM(CASE WHEN m.expiration_date < CURRENT_DATE THEN 1 ELSE 0 END), 0) FROM ProductInfo pi JOIN pi.milk m")
+    Integer getExpiredProducts();
 }
