@@ -10,6 +10,8 @@ import com.raven.datechooser.listener.DateChooserAction;
 import com.raven.datechooser.listener.DateChooserAdapter;
 import java.awt.Color;
 import java.awt.Component;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -526,10 +528,13 @@ public class DeliveryNoteForm2 extends javax.swing.JPanel {
             return;
         }
         Long idDanhSach = Long.valueOf(tblDanhSach2.getValueAt(row, 0).toString());
-        Optional<DeliveryNote> list = sv.filById(idDanhSach);
-        UpdateDelivery update = new UpdateDelivery(this, idDanhSach, maVanDon, user, main);
-        update.setFrom(list);
-        update.setVisible(true);
+        for (DeliveryNote deli : listDeli) {
+            if (Objects.equals(deli.getId(), idDanhSach)) {
+                UpdateDelivery update = new UpdateDelivery(this, idDanhSach, maVanDon, user, main);
+                update.setFrom(deli);
+                update.setVisible(true);
+            }
+        }
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
@@ -678,13 +683,15 @@ public class DeliveryNoteForm2 extends javax.swing.JPanel {
         tblModel = (DefaultTableModel) tblDanhSach2.getModel();
         tblModel.setRowCount(0);
         for (DeliveryNote deli : data) {
+            BigDecimal bigDecimalValue = new BigDecimal(deli.getShippingCost());
+            BigDecimal scaledValue = bigDecimalValue.setScale(3, RoundingMode.HALF_UP);
             tblModel.addRow(new Object[]{
                 deli.getId(),
                 deli.getBill_id(),
                 deli.getWaybill_number(),
                 deli.getStatus_id2().getStatusName(),
                 deli.getTransport_unit_id2().getTransportUnitName(),
-                deli.getShippingCost()
+                scaledValue
             });
             this.listDeli.add(deli);
         }
@@ -731,7 +738,9 @@ public class DeliveryNoteForm2 extends javax.swing.JPanel {
         for (DeliveryNote dl : listDeli) {
             if (Objects.equals(dl.getId(), idPhieu)) {
                 lbNgayTao.setText(simple.format(dl.getCreationdate()));
-                lbTienCOD.setText(String.valueOf(dl.getTotal_amount()));
+                BigDecimal bigDecimalValue = new BigDecimal(dl.getTotal_amount());
+                BigDecimal scaledValue = bigDecimalValue.setScale(3, RoundingMode.HALF_UP);
+                lbTienCOD.setText(String.valueOf(scaledValue));
                 lbTenKhachHang.setText(String.valueOf(dl.getCustomer_name()));
                 lbSanPham.setText(sv.addLineBreak(dl.getMilk_name()));
                 lbDiaChi.setText(dl.getAddress());

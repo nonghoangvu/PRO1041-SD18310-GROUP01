@@ -205,13 +205,10 @@ public final class FormBill extends javax.swing.JPanel {
     }
 
     public boolean insert(String shoppingMethod) {
-        if (tblBill.getSelectedRow() == -1) {
-            new Notification(Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP,
-                    "The select bill!").showNotification();
-            return false;
-        }
         int selectedRow = tblBill.getSelectedRow();
         if (selectedRow == -1) {
+            new Notification(Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP,
+                    "The select bill!").showNotification();
             return false;
         }
         Integer maHoaDon = Integer.valueOf(tblBill.getValueAt(selectedRow, 0).toString());
@@ -828,11 +825,11 @@ public final class FormBill extends javax.swing.JPanel {
         hoaDon.setPayment_status("Pending");
         //hoaDon.setShopping_method(cbbShoppingMethod.getSelectedItem().toString());
         hoaDon.setPayment_method(cbbPaymentMethods.getSelectedItem().toString());
-        if (cbbPaymentMethods.getSelectedIndex() == 1) {
-            Customer sus = new Customer();
-            sus.setId(Integer.valueOf(txtIDCustomer.getText()));
-            hoaDon.setCustomerId(sus);
-        }
+//        if (cbbPaymentMethods.getSelectedIndex() == 1) {
+//            Customer sus = new Customer();
+//            sus.setId(Integer.valueOf(txtIDCustomer.getText()));
+//            hoaDon.setCustomerId(sus);
+//        }
         HOA_DON_REPO.add(hoaDon);
         loadHoaDon(HOA_DON_REPO);
     }//GEN-LAST:event_btnTaoHoaDonActionPerformed
@@ -843,8 +840,20 @@ public final class FormBill extends javax.swing.JPanel {
     }//GEN-LAST:event_btnChooseCustomerActionPerformed
 
     private void btnPayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPayActionPerformed
-        double excessMoney = Double.valueOf(txtExcessMoney.getText());
-        if (excessMoney < 0) {
+        int selectedRow = tblBill.getSelectedRow();
+        if (selectedRow == -1) {
+            new Notification(Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP,
+                    "The select bill!").showNotification();
+            return;
+        }
+        if (tblShoppingCart.getRowCount() == 0) {
+            new Notification(Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP,
+                    "The product is empty!").showNotification();
+            return;
+        }
+        double excessMoney = Double.valueOf(txtMoneyPaid.getText());
+        double moneyCustomer = Double.valueOf(txtTheAmountTheCustomerGives.getText());
+        if (excessMoney > moneyCustomer) {
             new Notification(Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP,
                     "Error!").showNotification();
             return;
@@ -857,6 +866,17 @@ public final class FormBill extends javax.swing.JPanel {
     }//GEN-LAST:event_btnPayActionPerformed
 
     private void buttonMessage3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonMessage3ActionPerformed
+        int selectedRow = tblBill.getSelectedRow();
+        if (selectedRow == -1) {
+            new Notification(Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP,
+                    "The select bill!").showNotification();
+            return;
+        }
+        if (tblShoppingCart.getRowCount() == 0) {
+            new Notification(Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP,
+                    "The product is empty!").showNotification();
+            return;
+        }
         if (txtIDCustomer.getText().trim().isEmpty() || txtCustomerName.getText().trim().isEmpty()) {
             new Notification(Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP,
                     "The Customer is empty!").showNotification();

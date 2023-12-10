@@ -329,33 +329,27 @@
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
+                          <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="txtExcessMoney" alignment="1" max="32767" attributes="0"/>
+                              <Component id="txtTheAmountTheCustomerGives" alignment="1" max="32767" attributes="0"/>
+                              <Component id="cbbPaymentMethods" alignment="0" max="32767" attributes="0"/>
+                              <Component id="txtIDCustomer" max="32767" attributes="0"/>
+                              <Component id="txtCustomerName" alignment="0" max="32767" attributes="0"/>
+                              <Component id="txtTotalAmount" alignment="0" max="32767" attributes="0"/>
+                              <Component id="txtMoneyPaid" alignment="0" max="32767" attributes="0"/>
                               <Group type="102" attributes="0">
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="btnChooseCustomer" min="-2" pref="121" max="-2" attributes="0"/>
-                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                              </Group>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <EmptySpace max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="txtExcessMoney" alignment="1" max="32767" attributes="0"/>
-                                      <Component id="txtTheAmountTheCustomerGives" alignment="1" max="32767" attributes="0"/>
-                                      <Component id="cbbPaymentMethods" alignment="0" max="32767" attributes="0"/>
-                                      <Component id="txtIDCustomer" max="32767" attributes="0"/>
-                                      <Component id="txtCustomerName" alignment="0" max="32767" attributes="0"/>
-                                      <Component id="txtTotalAmount" alignment="0" max="32767" attributes="0"/>
-                                      <Group type="102" attributes="0">
-                                          <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace min="0" pref="396" max="32767" attributes="0"/>
-                                      </Group>
-                                      <Component id="txtMoneyPaid" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="btnChooseCustomer" min="-2" pref="121" max="-2" attributes="0"/>
+                                      <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
                                   </Group>
+                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="1" attributes="0">
-                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          <EmptySpace min="0" pref="55" max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="btnPay" alignment="1" min="-2" pref="184" max="-2" attributes="0"/>
                               <Component id="btnTaoHoaDon" alignment="1" min="-2" pref="184" max="-2" attributes="0"/>

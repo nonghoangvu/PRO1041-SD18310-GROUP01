@@ -344,8 +344,8 @@ public class UpdateDelivery extends javax.swing.JFrame {
         estimatedtime.setLabelCurrentDayVisible(true);
     }
 
-    public void setFrom(Optional<DeliveryNote> list) {
-        DeliveryNote b = list.get();
+    public void setFrom(DeliveryNote list) {
+        DeliveryNote b = list;
         txtTenKhachHang.setText(b.getCustomer_name());
         txtDiaChi.setText(b.getAddress());
         txtSDT.setText(b.getSdt());
@@ -380,7 +380,7 @@ public class UpdateDelivery extends javax.swing.JFrame {
         String SDT = txtSDT.getText();
         String soLuong = txtSoLuong.getText();
         String tenkhachHang = txtTenKhachHang.getText();
-        String tenSanPham = txtGhiChu.getText();
+        String tenSanPham = txtTenSanPham.getText();
         String tongtien = txtTongTien.getText();
         String tienShip = txtTienPhi.getText();
         String maHoaDon = txtIDHoaDon.getText();
