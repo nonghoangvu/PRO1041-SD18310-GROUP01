@@ -8,10 +8,6 @@ import udpm.fpt.component.EnterGmail;
  * @author NONG HOANG VU
  */
 public class ForgotPassword extends javax.swing.JFrame {
-
-    /**
-     * Creates new form FogotPassword
-     */
     public ForgotPassword() {
         initComponents();
         setForm(new EnterGmail(this));

@@ -4,6 +4,7 @@
  */
 package udpm.fpt.component;
 
+import udpm.fpt.Utitlity.BcryptHash;
 import udpm.fpt.form.ForgotPassword;
 import udpm.fpt.model.User;
 import udpm.fpt.service.UserService;
@@ -78,13 +79,15 @@ public class EnterGmail extends javax.swing.JPanel {
         try {
             this.user = user.getUserByGmail(txtEmail.getText().trim()).getUser();
         } catch (Exception e) {
-            System.out.println("Not found!");
+            Notification notification = new Notification(Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP, "This email cannot be found!");
+            notification.showNotification();
             return;
         }
         if (this.user != null) {
             this.forgotPassword.setForm(new VerificationCode(this.forgotPassword, txtEmail.getText().trim(), this.user));
         } else {
-            System.out.println("Not found!");
+            Notification notification = new Notification(Notification.Type.WARNING, Notification.Location.DEFAULT_DESKTOP, "This email cannot be found!");
+            notification.showNotification();
         }
     }//GEN-LAST:event_button1ActionPerformed
 
