@@ -5,6 +5,8 @@
 package udpm.fpt.component;
 
 import udpm.fpt.form.ForgotPassword;
+import udpm.fpt.model.User;
+import udpm.fpt.service.UserService;
 
 /**
  *
@@ -16,6 +18,7 @@ public class EnterGmail extends javax.swing.JPanel {
      * Creates new form EnterGmail
      */
     private ForgotPassword forgotPassword;
+    private User user;
     public EnterGmail(ForgotPassword forgotPassword) {
         this.forgotPassword = forgotPassword;
         initComponents();
@@ -72,7 +75,13 @@ public class EnterGmail extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void button1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button1ActionPerformed
-        this.forgotPassword.setForm(new VerificationCode(this.forgotPassword, txtEmail.getText()));
+        UserService user = new UserService();
+        this.user = user.getUserByGmail(txtEmail.getText().trim()).getUser();
+        if (this.user != null) {
+            this.forgotPassword.setForm(new VerificationCode(this.forgotPassword, txtEmail.getText().trim(), this.user));
+        }else{
+            System.out.println("Not found!");
+        }
     }//GEN-LAST:event_button1ActionPerformed
 
 

@@ -3,6 +3,7 @@ package udpm.fpt.service;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.NoArgsConstructor;
+import udpm.fpt.model.User;
 import udpm.fpt.model.UserDetails;
 import static udpm.fpt.Application.getBean;
 
@@ -57,5 +58,11 @@ public class UserService {
 
     public List<UserDetails> filterEmployee(String userQuery) {
         return iUserDetails.findByQuery(userQuery);
+    }
+    public UserDetails getUserByGmail(String email){
+        return iUserDetails.findByEmail(email);
+    }
+    public Boolean changePassword(User newPassword){
+        return iUser.save(newPassword) != null;
     }
 }

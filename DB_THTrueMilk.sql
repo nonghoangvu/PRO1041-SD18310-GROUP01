@@ -555,3 +555,6 @@ SELECT * FROM Users
 SELECT * FROM MILK INNER JOIN PRODUCTINFO ON MILK.ID = PRODUCTINFO.MILK_ID
 */
 --Select * from Users
+Select * from UserDetails inner join Users on UserDetails.user_id  = Users.id
+
+update UserDetails set fullname = 'Nong Hoang Vu' where user_id = 2

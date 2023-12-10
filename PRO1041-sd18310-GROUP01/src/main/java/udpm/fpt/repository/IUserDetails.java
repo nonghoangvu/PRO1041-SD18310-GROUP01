@@ -15,4 +15,7 @@ public interface IUserDetails extends JpaRepository<UserDetails, Integer>{
     
     @Query("SELECT ud FROM UserDetails ud JOIN FETCH ud.user u WHERE u.username LIKE %:query% OR ud.fullname LIKE %:query%")
     List<UserDetails> findByQuery(@Param("query") String query);
+
+    @Query("SELECT ud FROM  UserDetails ud WHERE ud.email LIKE :email")
+    UserDetails findByEmail(@Param("email") String email);
 }
