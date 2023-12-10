@@ -209,12 +209,12 @@ public class Service {
         return this.bill.updateQuantity(status, billID);
     }
     public Boolean historyRemove(String message, User user) {
-            return this.historyProduct.trackHistory("The " + message, user.getUsername(), HistoryProductService.ChangeType.REMOVE);
+            return this.historyProduct.trackHistory( message, user.getUsername(), HistoryProductService.ChangeType.REMOVE);
     }
     public Boolean historyUpdate(String message, User user) {
-            return this.historyProduct.trackHistory("The " + message, user.getUsername(), HistoryProductService.ChangeType.UPDATE);
+            return this.historyProduct.trackHistory(message, user.getUsername(), HistoryProductService.ChangeType.UPDATE);
     }
     public Boolean historyInsert(String message, User user) {
-            return this.historyProduct.trackHistory("The " + message, user.getUsername(), HistoryProductService.ChangeType.NEW);
+            return this.historyProduct.trackHistory(message, user.getUsername(), HistoryProductService.ChangeType.NEW);
     }
 }

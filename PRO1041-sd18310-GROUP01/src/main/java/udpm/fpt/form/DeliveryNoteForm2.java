@@ -516,8 +516,13 @@ public class DeliveryNoteForm2 extends javax.swing.JPanel {
     }//GEN-LAST:event_btnDeliveryCompletedActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        int row = tblDanhSach2.getSelectedRow();
+        if (row == -1) {
+            return;
+        }
         if (this.deleteDeli()) {
             progressIndicator1.setProgress(0);
+            sv.historyRemove("The "+tblDanhSach2.getValueAt(row, 0).toString()+" delivery has been delete", user);
             this.main.notificationShowSUCCESS("SUCCESS!");
         }
     }//GEN-LAST:event_btnDeleteActionPerformed
