@@ -633,8 +633,15 @@
         </Component>
         <Component class="javax.swing.JLabel" name="lblAva">
           <Properties>
-            <Property name="text" type="java.lang.String" value="jLabel2"/>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="12" style="1"/>
+            </Property>
+            <Property name="horizontalAlignment" type="int" value="0"/>
+            <Property name="text" type="java.lang.String" value="Image not found"/>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lblAvaMouseClicked"/>
+          </Events>
         </Component>
         <Component class="udpm.fpt.swing.TextField" name="txtUsername">
           <Properties>

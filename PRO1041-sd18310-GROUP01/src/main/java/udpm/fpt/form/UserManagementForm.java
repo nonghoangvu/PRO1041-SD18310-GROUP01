@@ -832,7 +832,14 @@ public class UserManagementForm extends javax.swing.JPanel {
         txtPassword.setLabelText("Password");
         txtPassword.setShowAndHide(true);
 
-        lblAva.setText("jLabel2");
+        lblAva.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        lblAva.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblAva.setText("Image not found");
+        lblAva.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblAvaMouseClicked(evt);
+            }
+        });
 
         txtUsername.setLabelText("Username");
         txtUsername.addActionListener(new java.awt.event.ActionListener() {
@@ -1228,6 +1235,10 @@ public class UserManagementForm extends javax.swing.JPanel {
     private void txtUsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUsernameActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtUsernameActionPerformed
+
+    private void lblAvaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAvaMouseClicked
+        this.imgName = urlImage(false);
+    }//GEN-LAST:event_lblAvaMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
