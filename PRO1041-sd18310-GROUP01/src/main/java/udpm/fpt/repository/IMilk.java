@@ -22,6 +22,8 @@ public interface IMilk extends JpaRepository<Milk, Long> {
     @Query("UPDATE Milk SET amount = amount - :quanity WHERE id = :milkId")
     int updateQuantity(@Param("quanity") int amount, @Param("milkId") Long id);
     public Milk findAllByBarcode(Long barcode);
-    @Query("From Milk WHERE product_name LIKE CONCAT('%', :name, '%')")
+    @Query("SELECT m From Milk m WHERE m.isDelete like '0'")
+    List<Milk> findAllMilk();
+    @Query("SELECT m From Milk m WHERE m.product_name LIKE CONCAT('%', :name, '%') AND m.isDelete like '0'")
     List<Milk> findMilkByName(@Param("name") String name);
 }

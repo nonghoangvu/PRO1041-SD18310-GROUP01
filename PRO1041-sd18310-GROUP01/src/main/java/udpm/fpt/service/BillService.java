@@ -36,7 +36,7 @@ public class BillService {
     ISaleBill saleBill =getBean(ISaleBill.class);
     public CompletableFuture<List<Milk>> loadMilk() {
         return CompletableFuture.supplyAsync(() -> {
-            return milk.findAll();
+            return milkss.findAllMilk();
         }, Executors.newCachedThreadPool());
     }
     public CompletableFuture<List<Bill>> loadBill() {

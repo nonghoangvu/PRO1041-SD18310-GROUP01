@@ -397,7 +397,7 @@ public class DeliveryNoteForm2 extends javax.swing.JPanel {
         progressIndicator1.setForeground(new java.awt.Color(246, 242, 242));
         progressIndicator1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         progressIndicator1.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Đang chuẩn bị", "Đã bàn giao", "Đang giao hàng", "Giao thành công" };
+            String[] strings = { "Đang chuẩn bị", "Bàn giao bên vận chuyển", "Đang giao hàng", "Giao thành công" };
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
