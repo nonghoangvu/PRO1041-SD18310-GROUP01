@@ -1,5 +1,6 @@
 package udpm.fpt.repository;
 
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -21,4 +22,6 @@ public interface IMilk extends JpaRepository<Milk, Long> {
     @Query("UPDATE Milk SET amount = amount - :quanity WHERE id = :milkId")
     int updateQuantity(@Param("quanity") int amount, @Param("milkId") Long id);
     public Milk findAllByBarcode(Long barcode);
+    @Query("From Milk WHERE product_name LIKE CONCAT('%', :name, '%')")
+    List<Milk> findMilkByName(@Param("name") String name);
 }

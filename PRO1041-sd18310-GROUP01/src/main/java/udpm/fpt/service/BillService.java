@@ -87,4 +87,9 @@ public class BillService {
             return saleBill.findAll();
         }, Executors.newCachedThreadPool());
     }
+    public CompletableFuture<List<Milk>> findMilkByName(String name) {
+        return CompletableFuture.supplyAsync(() -> {
+            return milkss.findMilkByName(name);
+        }, Executors.newCachedThreadPool());
+    }
 }

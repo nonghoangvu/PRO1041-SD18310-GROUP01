@@ -173,7 +173,21 @@ public final class FormBill extends javax.swing.JPanel {
             return null;
         });
     }
-
+    
+    public void searchMilk(String name) {
+        CompletableFuture<List<Milk>> future = this.sv.findMilkByName(name);
+        System.out.println(name);
+        future.thenAcceptAsync(data -> {
+            SwingUtilities.invokeLater(() -> {
+                this.loadSanPham(data);
+                SAN_PHAM_REPO = data;
+            });
+        }).exceptionally(throwable -> {
+            throwable.printStackTrace(System.out);
+            return null;
+        });
+    }
+    
     public void addBill(Bill bill) {
         this.bill.save(bill);
     }
@@ -270,6 +284,8 @@ public final class FormBill extends javax.swing.JPanel {
         jLabel3 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         tblProduct = new javax.swing.JTable();
+        txtSearchProduct = new udpm.fpt.swing.TextField();
+        btnSearch = new udpm.fpt.swing.ButtonMessage();
         jPanel6 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         cbbPaymentMethods = new udpm.fpt.swing.Combobox();
@@ -385,6 +401,15 @@ public final class FormBill extends javax.swing.JPanel {
         });
         jScrollPane3.setViewportView(tblProduct);
 
+        txtSearchProduct.setLabelText("Search by name");
+
+        btnSearch.setText("Search");
+        btnSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
@@ -395,10 +420,14 @@ public final class FormBill extends javax.swing.JPanel {
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 972, Short.MAX_VALUE)
                     .addComponent(jScrollPane3)
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel3))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addComponent(jLabel1)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(txtSearchProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
@@ -407,11 +436,15 @@ public final class FormBill extends javax.swing.JPanel {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(40, 40, 40)
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(174, Short.MAX_VALUE))
+                .addGap(27, 27, 27)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3)
+                    .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtSearchProduct, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(143, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -924,10 +957,16 @@ public final class FormBill extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_tblSaleBillMouseEntered
 
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+        String name = txtSearchProduct.getText();
+        this.searchMilk(name);
+    }//GEN-LAST:event_btnSearchActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private udpm.fpt.swing.Button btnChooseCustomer;
     private udpm.fpt.swing.ButtonMessage btnPay;
+    private udpm.fpt.swing.ButtonMessage btnSearch;
     private udpm.fpt.swing.ButtonMessage btnTaoHoaDon;
     private udpm.fpt.swing.ButtonMessage buttonMessage1;
     private udpm.fpt.swing.ButtonMessage buttonMessage3;
@@ -957,6 +996,7 @@ public final class FormBill extends javax.swing.JPanel {
     private udpm.fpt.swing.TextField txtExcessMoney;
     private udpm.fpt.swing.TextField txtIDCustomer;
     private udpm.fpt.swing.TextField txtMoneyPaid;
+    private udpm.fpt.swing.TextField txtSearchProduct;
     private udpm.fpt.swing.TextField txtTheAmountTheCustomerGives;
     private udpm.fpt.swing.TextField txtTotalAmount;
     // End of variables declaration//GEN-END:variables
