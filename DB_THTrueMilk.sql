@@ -379,10 +379,10 @@ ALTER TABLE [DeliveryNote]
 GO
 INSERT INTO [Users] ([username], [password], [role])
 VALUES ('Admin', '$2a$10$roI7ElW8vMZ/aa/ndvev5ekg.szrhPLnsihszv5fyi1moKL5DNrN2', 'Admin'),
-       ('NongHoangVu04', '$2a$10$ALO4bzEz7frQ0XHXyU3a/ehNCLg1MC2ROOWQNuoRs7tpNpwsYvVEO', 'Admin'),
-       ('Employee001', '$2a$10$roI7ElW8vMZ/aa/ndvev5ekg.szrhPLnsihszv5fyi1moKL5DNrN2', 'User'),
-       ('convitcute', '$2a$10$roI7ElW8vMZ/aa/ndvev5ekg.szrhPLnsihszv5fyi1moKL5DNrN2', 'User'),
-	   ('Employee006', '$2a$10$roI7ElW8vMZ/aa/ndvev5ekg.szrhPLnsihszv5fyi1moKL5DNrN2', 'User');
+       ('vunhph33506', '$2a$10$ALO4bzEz7frQ0XHXyU3a/ehNCLg1MC2ROOWQNuoRs7tpNpwsYvVEO', 'User'),
+       ('phongvvutuan', '$2a$10$roI7ElW8vMZ/aa/ndvev5ekg.szrhPLnsihszv5fyi1moKL5DNrN2', 'User'),
+       ('nguyentranthanhdat', '$2a$10$roI7ElW8vMZ/aa/ndvev5ekg.szrhPLnsihszv5fyi1moKL5DNrN2', 'User'),
+	   ('hoangquocbinh0411', '$2a$10$roI7ElW8vMZ/aa/ndvev5ekg.szrhPLnsihszv5fyi1moKL5DNrN2', 'User');
 GO
 
 INSERT INTO Salary (salary_type, salary_mount, [status])
@@ -392,11 +392,11 @@ go
 
 INSERT INTO [UserDetails] ([user_id], [salary_id], [fullname], [gender], [tel], [email], [photo], [address], [birthdate], [citizen_id], [job_position], [note], [status])
 VALUES
-(1, 1, N'John Doe', N'Male', N'1234567890', N'john.doe@example.com', N'photo1.jpg', N'123 Main St, City', '1990-01-01', N'123456789', N'Manager', N'This is a note for John Doe', N'Active'),
-(2, 2, N'Jane Smith', N'Female', N'9876543210', N'jane.smith@example.com', N'photo2.jpg', N'456 Oak St, Town', '1985-05-15', N'987654321', N'Engineer', N'This is a note for Jane Smith', N'Active'),
-(3, 2, N'Bob Johnson', N'Male', N'5551112222', N'bob.johnson@example.com', N'photo3.jpg', N'789 Pine St, Village', '1982-11-30', N'555111222', N'Analyst', N'This is a note for Bob Johnson', N'Active'),
-(4, 2, N'Alice Brown', N'Female', N'7778889999', N'alice.brown@example.com', N'photo4.jpg', N'321 Elm St, County', '1988-07-20', N'777888999', N'Developer', N'This is a note for Alice Brown', N'Active'),
-(5, 1, N'Michael White', N'Male', N'9990001111', N'michael.white@example.com', N'photo5.jpg', N'654 Birch St, State', '1995-03-10', N'999000111', N'Sales', N'This is a note for Michael White', N'Active');
+(1, 1, N'Admin', N'Male', N'1234567890', N'admin@admin.com', N'hen.png', N'Internet', '1990-01-01', N'123456789', N'Manager', N'This is a note for John Doe', N'Active'),
+(2, 2, N'Nong Hoang Vu', N'Male', N'0345904585', N'vunhph33506@fpt.edu.vn', N'boy.png', N'My Dinh 2 - Ha Noi - VietNam', '2004-12-01', N'987654321', N'IT', N'This is a note for Nong Hoang Vu', N'Active'),
+(3, 2, N'Vũ Tuấn Phong', N'Male', N' 0345129882', N'phongvvutuan@gmail.com', N'photo3.jpg', N'Null', '2004-08-17', N'555111222', N'Analyst', N'This is a note for Bob Johnson', N'Active'),
+(4, 2, N'Nguyen Tran Thanh Dat', N'Female', N'0366097403 ', N' nguyentranthanhdat0000@gmail.com', N'photo4.jpg', N'Hoang Van Thu NamDinh', '2004-08-04', N'777888999', N'Developer', N'This is a note for Alice Brown', N'Active'),
+(5, 1, N'Hoang Quoc Binh', N'Male', N'0937818716', N'hoangquocbinh0411@gmail.com', N'photo5.jpg', N'654 Birch St, State', '2003-11-04', N'999000111', N'Sales', N'This is a note for Michael White', N'Active');
 GO
 
 INSERT INTO [Flavor] ([taste], [user_id])
