@@ -35,6 +35,7 @@ import udpm.fpt.repository.IBill_Respository;
 import udpm.fpt.service.BillService;
 import udpm.fpt.swing.table.TableCustom;
 import udpm.serviceDelivery.NumberFilter;
+import udpm.serviceDelivery.Service;
 
 /**
  *
@@ -51,7 +52,7 @@ public final class FormBill extends javax.swing.JPanel {
     private List<SaleBill1> saleBillList = new ArrayList<>();
     User user;
     Main main;
-
+    private Service svDeli = new Service();
     /**
      * Creates new form FromBill
      *
@@ -235,6 +236,7 @@ public final class FormBill extends javax.swing.JPanel {
                     hd.setTotalAmountAfterTax(Double.valueOf(txtMoneyPaid.getText()));
                 }
                 bill.save(hd);
+                svDeli.historyInsert(maHoaDon +" invoice has been added", user);
                 break;
             }
         }
